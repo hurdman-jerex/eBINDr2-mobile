@@ -1,0 +1,126 @@
+<?php 
+if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php";
+include "/home/definitions.php";
+
+include "/home/serv/public_html/m/_autoload/_autoload.php"; 
+include "/home/serv/library/json.php";
+
+define('AUTO_LOGOUT_TIME', "14400");
+if( isset( $_POST['username'] ) && isset( $_POST['password'] ) ){
+
+    $bbapi->set('database', $_POST['database']);
+    $bbapi->set('username', $_POST['username']);
+    $bbapi->set('password', $_POST['password']);
+    $bbapi->set('form_submit', 'y');
+    $login = $bbapi->auth(); 
+    
+    if( $login['reportr_username'] != 'deleted' ){
+        
+        session_start();
+
+        $login["reportr_keys"] = urldecode( $login["reportr_keys"] );
+        
+        $_SESSION["security"] = $login["security"];    
+        setcookie("security", $login["security"], time()+AUTO_LOGOUT_TIME, "/"); // check security
+        setcookie("reportr_auto_home", $login["reportr_auto_home"], time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
+        setcookie("BBBID", $login['BBBID'], time()+AUTO_LOGOUT_TIME, "/");        // database
+        setcookie("bbbidreal", $login["bbbidreal"], time()+AUTO_LOGOUT_TIME, "/"); // set the real bbbid not cid from customer table
+        setcookie("reportr_db", $login["reportr_db"], time()+AUTO_LOGOUT_TIME, "/");        // database
+        setcookie("reportr_username", $login["reportr_username"], time()+AUTO_LOGOUT_TIME, "/");        // username
+        setcookie("reportr_flag",$login["reportr_flag"], time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
+        setcookie("reportr_keys", $login["reportr_keys"], time()+AUTO_LOGOUT_TIME, "/");            // security keys for current user
+        setcookie("reportr_conf", $login["reportr_conf"], time()+AUTO_LOGOUT_TIME, "/");            // security keys for current user
+        setcookie("staff_name", $login["staff_name"], time()+AUTO_LOGOUT_TIME, "/"); // username field in staff table
+        setcookie("staff_email", $login["email"], time()+AUTO_LOGOUT_TIME, "/"); // email field in staff table
+
+        $_SESSION['user'] = $login;
+        //$_SESSION['bid'] = $login->person_bid;
+        $_SESSION['username'] = $login["reportr_username"];
+        $_SESSION['bbbidreal'] = $login["bbbidreal"];
+        $_SESSION['BBBID'] = $login["BBBID"];
+   
+        
+        //echo '<pre>'.print_r( $login, true ).'</pre>';
+        $bbapi->post('http://localhost/m/api/user/log/' . $login["reportr_username"]);
+        header("Location: /m/index.html");
+        
+    }else
+        $_SESSION['warning'] = "Incorrect username and/or password.";
+    
+    
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>eBINDr Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/m/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/m/assets/css/m.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #232a31;
+      }
+      body {
+        padding-top: 40px; 
+        height: 600px;
+      }
+      
+     .login-form {
+         
+     }
+    
+    .login-form h2 {
+        color: #fff;
+    }
+  
+    legend {
+      font-weight: bold;
+    }
+    .field { margin-bottom: 5px; }
+    center { margin-bottom: 10px;}
+    </style>
+    <script src="/m/assets/js/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span4" style="height: 2px;">&nbsp;</div>
+            <div class="span4 login-form">
+        
+                  <center style="margin-bottom: 30px;"><img width="270" src="/m/assets/img/sign-in-logo.png" /></center>
+                    <? if (isset($_SESSION['warning'])) { ?>
+                        <div class="alert alert-error" style="margin-top: 10px;">
+                            <?=$_SESSION['warning'];?>
+                            </div>
+                    <? } unset($_SESSION['warning']);?>    
+                  <form action="" method="post" id="login-form" class="form-horizontal">
+                  <input type='hidden' id="login-db-name" name='database' value='<?=LOCAL_DB?>'>
+                      <fieldset>                      
+                          <div class="field">
+                              <input type="text" name="username" class="span4" placeholder="Username">
+                          </div>
+                          <div class="field">
+                              <input class="span4" name="password" type="password" placeholder="Password">
+                          </div>
+                          <button class="btn btn-info" type="submit">Sign in</button>
+                          &nbsp;&nbsp;<a href="/ebindr" style="color: #999;">Desktop Version</button></a>
+                      </fieldset>
+                  </form>
+            </div>
+        </div>
+    </div>
+  </div> <!-- /container -->
+  <script src="/m/assets/js/m.js"></script>
+</body>
+</html>

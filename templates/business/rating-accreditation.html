@@ -1,0 +1,25 @@
+<?php
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/ratings/get/' . $_SESSION['bid'];
+$rating= json_decode($bbapi->get($url))->results;
+$rating=$rating[0];
+?>
+<h3>Rating &amp; Accreditation</h3>
+<table class="table table-striped table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <td>Current Rating</td>
+            <td><?=$rating->letter?></td>
+        </tr>
+        <tr>
+            <td>Currently</td>
+            <td>
+                <? if($rating->member=='y') { ?>
+                    BBB Accredited
+                <? } else { ?>
+                    Not Accredited
+                <? } ?>
+            </td>
+        </tr>
+    </tbody>
+</table>

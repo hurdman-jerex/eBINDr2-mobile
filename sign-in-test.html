@@ -1,0 +1,120 @@
+<?php
+define('AUTO_LOGOUT_TIME', "14400");
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    include "/home/serv/public_html/m/_autoload/_autoload.php"; 
+    include "/home/serv/library/json.php";
+    $url='http://localhost/m/api/user/login/' . $_POST['username'];
+
+  if ( strpos($_SERVER['SERVER_NAME'],'vancouver') !== false || strpos($_SERVER['SERVER_NAME'],'mbc') !== false ) {
+    $url = 'https://mbc-web.app.bbb.org/m/api/user/login/' . $_POST['username'];
+  }
+
+    $bbapi->set('REMOTE_ADDR', $_SERVER['REMOTE_ADDR']);
+    $bbapi->set('REQUEST_URI', $_SERVER['REQUEST_URI']);
+    $bbapi->set('password', $_POST['password']);
+    $login = json_decode($bbapi->post($url)); 
+    //echo "SERVER REMOTE_ADDR = ". $_SERVER['REMOTE_ADDR'] ."<br/>REQUEST_URI = ". $_SERVER['REQUEST_URI'];
+    //echo "LOGIN RESULT: <pre>"; print_r($login); echo "</pre>";
+    $login = $login->results[0]; 
+    if (isset($login->sid)) {
+
+        session_start();
+
+        $_SESSION["security"] = md5(sha1(strrev( rand(1000,100000) + time() + "hurdman" ) ) );    
+        setcookie("security", $_SESSION["security"], time()+AUTO_LOGOUT_TIME, "/"); // check security
+        setcookie("reportr_auto_home", $login->defaultdb, time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
+        setcookie("BBBID", BBBID, time()+AUTO_LOGOUT_TIME, "/");        // database
+        setcookie("bbbidreal", $login->bbbid, time()+AUTO_LOGOUT_TIME, "/"); // set the real bbbid not cid from customer table
+        setcookie("reportr_db", $login->db, time()+AUTO_LOGOUT_TIME, "/");        // database
+        setcookie("reportr_username", $login->initials, time()+AUTO_LOGOUT_TIME, "/");        // username
+        setcookie("reportr_flag",$login->flag, time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
+        setcookie("reportr_keys", ",".$login->securitykey.",", time()+AUTO_LOGOUT_TIME, "/");            // security keys for current user
+        setcookie("staff_name", $login->name, time()+AUTO_LOGOUT_TIME, "/"); // username field in staff table
+        setcookie("staff_email", $login->email, time()+AUTO_LOGOUT_TIME, "/"); // email field in staff table
+
+        $_SESSION['user'] = $login;
+        $_SESSION['bid'] = $login->person_bid;
+    $_SESSION['username'] = $_POST['username'];
+    // print_r($_SERVER);            
+        /*if ( $_SERVER['SERVER_PORT'] == '8080' || strpos($_SERVER['HTTP_HOST'],'hurdmantest.ebindr.com') !== false || strpos($_SERVER['HTTP_HOST'],'saltlake.ebindr.com') !== false || strpos($_SERVER['HTTP_HOST'],'dallas.ebindr.com') !== false )
+            header("Location: http://".$_SERVER['SERVER_NAME']."/m/index.html");
+    else */
+    $bbapi->post('http://localhost/m/api/user/log/' . $_POST['username']);
+    header("Location: /m/index.html");
+    } else {
+        $_SESSION['warning'] = "Incorrect username and/or password.";
+    }
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>eBINDr Mobile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/m/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/m/assets/css/m.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #232a31;
+      }
+      body {
+        padding-top: 40px; 
+        height: 600px;
+      }
+      
+     .login-form {
+         
+     }
+    
+    .login-form h2 {
+        color: #fff;
+    }
+  
+    legend {
+      font-weight: bold;
+    }
+    .field { margin-bottom: 5px; }
+    center { margin-bottom: 10px;}
+    </style>
+    <script src="/m/assets/js/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span4" style="height: 2px;">&nbsp;</div>
+            <div class="span4 login-form">
+        
+                  <center style="margin-bottom: 30px;"><img width="270" src="/m/assets/img/sign-in-logo.png" /></center>
+                    <? if (isset($_SESSION['warning'])) { ?>
+                        <div class="alert alert-error" style="margin-top: 10px;">
+                            <?=$_SESSION['warning'];?>
+                            </div>
+                    <? } unset($_SESSION['warning']);?>    
+                  <form action="" method="post" class="form-horizontal">
+                      <fieldset>                      
+                          <div class="field">
+                              <input type="text" name="username" class="span4" placeholder="Username">
+                          </div>
+                          <div class="field">
+                              <input class="span4" name="password" type="password" placeholder="Password">
+                          </div>
+                          <button class="btn btn-info" type="submit">Sign in</button>
+                          &nbsp;&nbsp;<a href="/ebindr" style="color: #999;">Desktop Version</button></a>
+                      </fieldset>
+                  </form>
+            </div>
+        </div>
+    </div>
+  </div> <!-- /container -->
+  <script src="/m/assets/js/m.js"></script>
+</body>
+</html>

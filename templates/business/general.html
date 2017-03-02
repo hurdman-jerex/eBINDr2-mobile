@@ -1,0 +1,79 @@
+<?
+$url = $myHost . $_SERVER['SERVER_NAME'];
+$bid = $_SESSION['bid'];
+$bbbid = $_SESSION['bbbidreal'];
+$_ajaxPage = $url . '/report/e2Mobile General Information/?editr&ebindr2=y&cid=0&bid='.$bid.'&bbbid='.$bbbid;
+//$_ajaxPage = $bbapi->getRootUrl() . '/m/templates/business/general-form.php?editr&ebindr2=y&noheader=y&cid=0&bid='.$bid.'&bbbid='.$bbbid;
+?>
+<style>
+    .textLabelReqd a{
+        color: indianred !important;
+    }
+</style>
+<h3 style="font-size: 18px !important;"><a alt="General" href="/m/business/general.html">General Business Info</a></h3>
+<div id="preloader">Loading... Please wait...</div>
+<div id="reportWrap" style="display: none;"></div>
+
+<script type="text/javascript">
+jQuery( document ).ready( function() {
+
+    var $ajaxUrl = "<?=$_ajaxPage?>";
+     
+    $http.postHtml( $ajaxUrl, 
+        function( response ){
+            jQuery( "#reportWrap" ).html( response );
+            jQuery( "#preloader" ).hide();
+            
+            var tmp = new DatePicker( '.date', {
+                pickerClass: 'datepicker_dashboard',
+                format: 'm/d/Y',
+                debug:false,
+                onSelect: function(field) {
+                    if( tmp.input ) {
+                        var onchange = tmp.input.get( 'onchange' );
+                        if( typeof(onchange) != 'null' ) {
+                            eval(onchange);
+                        }
+                    }
+                },
+                allowEmpty: true,
+                inputOutputFormat: 'm/d/Y',
+                toggleElements: '.picker'
+            });
+            tmp2 = new DatePicker( '.datetime', {
+                pickerClass: 'datepicker_dashboard',
+                format: 'm/d/Y g:i A',
+                allowEmpty: true,
+                inputOutputFormat: 'm/d/Y g:i A',
+                toggleElements: '.pickertime',
+                timePicker: true
+            });
+            
+            jQuery( '.cr-top' ).hide(); 
+            jQuery( '.breadcrumbs' ).hide(); 
+            jQuery( '#reportWrap' ).show(); 
+            
+            var $form = jQuery( 'form=[name=complaintform]' );
+            $form.attr( 'action', $ajaxUrl );
+            $form.find( 'input[name=STEP]' ).val(1);
+            $form.find( 'input[value="Submit"]' ).parent( 'div' ).hide();
+            //$form.append( jQuery( '<div class="row" style="text-align: center;"><input class="btn btn-primary" type="submit" name="next" value="Submit"><div>' ) );
+            $form.append( jQuery( '<div class="form-horizontal"><div class="form-actions"><button alt="Submit General Information Form" type="submit" class="btn btn-primary btn-medium"><i class="icon-ok icon-white"></i> Submit</button></div></div>' ) );
+            
+            // Set event for For Submit.
+            /*$http.formSubmit( 'form=[name=complaintform]', {}, 
+                function( response ){
+                    console.log( response );
+                }
+            );*/
+        } 
+    ); // End Post HTML
+    
+});
+</script>
+<style>
+h3 {
+    font-size: 18px !important;
+    line-height: 27px !important;
+}
+</style>

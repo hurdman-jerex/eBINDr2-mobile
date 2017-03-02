@@ -1,0 +1,109 @@
+<? include "../templates/header.html"; ?>
+<? include "../templates/nav-bar.html"; ?>
+<?
+// redirect if doesn't have access
+if ( securityCheck('bj') || (securityCheck('b*') && !securityCheck('bj') ) ) :
+
+// Check if post has values
+if ( sizeof($_POST)>0 ) {
+
+	$bbapi->set('staff', $_POST['staff']);
+	$bbapi->set('date', $_POST['date']);
+	$bbapi->set('type', $_POST['type']);
+	$bbapi->set('journal_notes', $_POST['journal_notes']);
+	$result = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/add/' . $_SESSION['bid']);
+
+	echo '<script>window.location = "/m/business/journal.html";</script>';
+	exit;
+}else {
+
+	$jturl = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/type');
+	$jtresult = json_decode($jturl);
+	$jtresult = $jtresult->results;
+}
+?>
+<link href="/m/assets/css/datepicker.css" rel="stylesheet">
+<script type="text/javascript" src="/m/assets/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+jQuery(function(){
+	jQuery('#date').datepicker({
+		format: 'mm-dd-yyyy'
+	});
+});
+</script>
+
+<div id="abox" class="modal hide fade in" style="display: none; ">
+<div class="modal-header">
+<a class="close" data-dismiss="modal">x</a>
+<h5>A required field is missing, please check the form and try again.</h5>
+</div>
+<div class="modal-footer">
+<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+</div>
+</div>
+
+<form id="jForm" action="" method="post" class="form-horizontal">
+  <div class="row">	
+      <div class="span12">
+          <fieldset>
+              <legend>Add Journal</legend>
+              <div class="control-group">
+                  <label class="control-label" for="name">Staff:</label>
+                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']->name;?></div>
+                  <input name="staff" id="staff" type="hidden" value="<?=$_SESSION['user']->initials;?>" />
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="contact">Type:</label>
+                  <div class="controls">
+                  <select id="type" name="type">
+                    <option value="">Select an option</option>
+						  <? foreach ($jtresult as $jtype) : ?>
+						  <option value="<?=$jtype->code?>"><?=$jtype->description?></option>
+						  <? endforeach; ?>
+						</select> 
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="name">Date:</label>
+                  <div class="controls">
+                  	<input name="date" id="date" class="input-xlarge" type="text" value="<?=date("m-d-Y");?>" style="width:100px;"/>
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="description">Notes:</label>
+                  <div class="controls">
+                      <textarea id="journal_notes" name="journal_notes" rows="5"></textarea>
+                  </div>
+              </div>
+          </fieldset>										
+      </div>
+  </div>
+
+  <div class="row">
+  		<div class="controls"><button class="btn btn-primary" data-toggle="modal" name="Submit" id="Submit">Submit Data</button></div>
+  </div>
+</form>
+<style type="text/css">
+.modal.fade.in {
+  top: 80%;
+}
+</style>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+
+	// validate some entries
+	jQuery('#Submit').click(function(event) {
+		event.preventDefault();
+		if ( !jQuery('#journal_notes').val() || !jQuery('#type').val() ) {
+			jQuery('#abox').modal('show');
+		}else {
+			jQuery('#jForm').submit();
+		}
+	});
+});
+</script>
+
+<? include "../templates/footer.html"; ?>
+<? else: ?>
+<? echo '<script>window.location = "/m/business.html";</script>'; ?>
+<? endif ?>  

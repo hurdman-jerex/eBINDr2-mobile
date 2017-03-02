@@ -1,0 +1,135 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+<?php
+function arr_stripslashes($array = array()) {
+    foreach ($array as $key => $value) {
+        if (is_object($array)) {
+            $array->$key = stripslashes($value);
+        } else if (is_array($array)) {
+            $array[$key] = stripslashes($value);
+            ;
+        }
+    }
+}
+
+if (sizeof($_POST) > 0) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+    
+    // Edit Complaint
+    $url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/edit/" . $_POST['CID'];
+    $complaint = json_decode($bbapi->post($url, $_POST));
+    $complaint = $complaint->results;
+    
+    // Edit Complaint Extra
+    $url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/editextra/" . $_POST['CID'];
+    $complaintextra = json_decode($bbapi->post($url, $_POST));
+    $complaintextra = $complaintextra->results;
+    
+}
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/user/staff/get";
+$staffs = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/stateprov/USA';
+$stateprovs = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/get/" . $_SESSION['bid'] . '/' . $_GET['cid'];
+$complaint = json_decode($bbapi->get($url));
+$complaint = $complaint->results;
+$complaint = $complaint[0];
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/closeCode";
+$closeCode = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/getSubCloseCodeByCode/".$complaint->SubCloseCode;
+$subCloseCodeInfo = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/getSubConcerningByCode/".$complaint->SubConcerning;
+$subConcerningInfo = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/getContacts/".$complaint->BID;
+$contacts = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/getLocations/".$complaint->BID;
+$locations = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/getDbas/".$complaint->BID;
+$dbas = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/types";
+$types = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/CBIDisabled";
+$CBIDisabled = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/concerning";
+$concernings = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/seriousReason";
+$seriousReasons = json_decode($bbapi->get($url))->results;
+
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/complaints/settlementDesired";
+$settlementDesired = json_decode($bbapi->get($url))->results;
+
+arr_stripslashes( $complaint ); 
+
+//echo '<pre>'.print_r( $CBIDisabled, true ).'</pre>';
+
+?>
+
+<link href="/m/assets/css/datepicker.css" rel="stylesheet">
+<link href="/m/assets/css/timepicker.css" rel="stylesheet">
+<script type="text/javascript" src="/m/assets/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/m/assets/js/bootstrap-timepicker.js"></script>
+
+<div id="abox" class="modal hide fade in" style="display: none; ">
+<div class="modal-header">
+<a class="close" data-dismiss="modal">x</a>
+<h5>A required field is missing, please check the form and try again.</h5>
+</div>
+<div class="modal-footer">
+<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+</div>
+</div>
+
+<form id="sForm" action="" method="post" class="form-horizontal">
+<input id="CID" name="CID" type="hidden" value="<?=$complaint->CID?>">
+  <div class="row">    
+      <div class="span12">
+      
+          <fieldset>
+              <legend>Edit Complaint Case# <?=$complaint->CID?></legend>
+              
+              <? include "../../business/complaints/edit-consumer-info.html";  ?>  
+              <br />         
+              <? include "../../business/complaints/edit-general-info.html";  ?>           
+
+          </fieldset>                                        
+
+      </div>
+
+  </div>
+
+  <div class="row">
+          <div class="controls"><button class="btn btn-primary" data-toggle="modal" name="Submit" id="Submit">Submit Data</button>
+        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/sales.html"><i class="icon-remove"></i> Cancel</a>
+        </div>
+  </div>
+</form>
+
+<? include "../../templates/footer.html"; ?>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    // validate some entries
+    jQuery('#Submit').click(function(event) {
+        event.preventDefault();
+        // TO DO
+        
+        
+            jQuery('#sForm').submit();
+    });
+});
+</script>

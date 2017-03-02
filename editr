@@ -1,0 +1,23 @@
+<?php
+  /**
+  * Editr
+  */
+  
+/**
+* @params /{class}/{method}/{mergecode}/{?variables}
+*/
+  
+list( $uri, $args ) = explode( "?", $_SERVER['REQUEST_URI'] );
+
+$segments = explode( "/", $uri );
+$segments = array_diff( array_filter( $segments ), array( 'm', 'editr' ) ); 
+
+include "../../includes/readme.php";
+
+include "/home/serv/public_html/m/app/editr/editr-top.php"; 
+include "/home/serv/public_html/m/app/editr/editr.php"; 
+
+//echo '<pre>'.print_r( $segments, true ).'</pre>'; 
+//echo '<pre>'.print_r( $uri, true ).'</pre>'; 
+//echo '<pre>'.print_r( $args, true ).'</pre>'; 
+?>

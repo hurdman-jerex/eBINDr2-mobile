@@ -1,0 +1,299 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+if ( ( securityCheck('bp') || (securityCheck('b*') && !securityCheck('bp') ) ) || ( securityCheck('bf') || (securityCheck('b*') && !securityCheck('bf') ) ) ) :
+function arr_stripslashes($array = array()) {
+    foreach ($array as $k => $v) {
+        if (is_object($array)) {
+            $array->$k = stripcslashes($v);
+        } else if (is_array($array)) {
+            $array[$k] = stripcslashes($v);
+        }
+    }
+}
+
+if (sizeof($_POST) > 0) {
+    if ($_POST['type'] == 'phone') {
+        arr_stripslashes($_POST);
+        $submit = true;
+
+        if (strlen($_POST['number']) <= 0) {
+            $submit = false;
+            $validation['number'] = array(
+                'result' => 'error',
+                'msg' => 'Phone Number field is required.',
+                'value' => $_POST['number']
+            );
+        } else {
+            $validation['number'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['number']
+            );
+        }
+
+        if ($submit) {
+            $bbapi->set('number', $_POST['number']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('location', $_POST['location']);
+            $bbapi->set('disconnected', $_POST['disconnected']);
+            $bbapi->set('SMS', $_POST['SMS']);
+            $bbapi->set('eQuote', $_POST['eQuote']);
+            $bbapi->set('CellPhone', $_POST['CellPhone']);
+
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/edit/' . $_SESSION['bid'] . '/' . $_GET['id'];
+            $bbapi->post($url);
+        }
+    } else if ($_POST['type'] == 'fax') {
+
+        $submit = true;
+        if (strlen($_POST['number']) <= 0) {
+            $submit = false;
+            $validation['number'] = array(
+                'result' => 'error',
+                'msg' => 'Phone Number field is required.',
+                'value' => $_POST['number']
+            );
+        } else {
+            $validation['number'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['number']
+            );
+        }
+
+        if ($submit) {
+            $bbapi->set('number', $_POST['number']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('location', $_POST['location']);
+            $bbapi->set('disconnected', $_POST['disconnected']);
+            $bbapi->set('massfax', $_POST['massfax']);
+
+            $url = 'http://h'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/fax/edit/' . $_SESSION['bid'] . '/' . $_GET['id'];
+            $bbapi->post($url);
+        }
+    }
+    if ($submit) {
+        ?>
+        <script type="text/javascript">window.location='/m/business.html';</script>
+        <?
+    }
+}
+
+if (isset($_GET)) {
+    if ($_GET['type'] == 'phone') {
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/get/' . $_SESSION['bid'] . '/' . $_GET['id'];
+        $data = json_decode($bbapi->get($url))->results;
+        $data = $data[0];
+    } else if ($_GET['type'] == 'fax') {
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/fax/get/' . $_SESSION['bid'] . '/' . $_GET['id'];
+        $data = json_decode($bbapi->get($url))->results;
+        $data = $data[0];
+    }
+    arr_stripslashes($data);
+}
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend><?= 'Edit ' . ($_GET['type'] == 'phone' ? 'Phone' : 'Fax') ?></legend>
+            <input type="hidden" name="type" value="<?= $_GET['type'] ?>" />
+
+            <div class="control-group <?= $validation['number']['result'] ?>">
+                <label class="control-label" id="lbl-type">Phone Number</label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $number = $validation['number']['value'];
+                    } else {
+                        $number = $data->number;
+                    }
+                    ?>
+                    <input type="text" name="number" class="input-xlarge" value="<?= $number ?>"/>
+                    <span class="help-inline"><?= $validation['number']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" id="lbl-label">Label</label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $label = $_POST['label'];
+                    } else {
+                        $label = $data->label;
+                    }
+                    ?>
+                    <input type="text" name="label" class="input-xlarge" value="<?= $label ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $main = $_POST['main'];
+                    } else {
+                        $main = $data->main;
+                    }
+                    ?>
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y" <?= ($main == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <? if ($main == 'n'): ?>
+                        <label class="radio inline">
+                            <input type="radio" name="main" value="n" <?= ($main == 'n' ? 'checked="checked"' : '') ?>/>
+                            No
+                        </label>    
+                    <? endif; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $report = $_POST['report'];
+                    } else {
+                        $report = $data->report;
+                    }
+                    ?>
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="y" <?= ($report == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="report" value="n" <?= ($report == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>    
+                </div>
+            </div>
+            <?php if ($_GET['type'] == 'phone') { ?>
+
+                <div class="control-group" id="CellPhone">
+                    <label class="control-label">Cell Phone?</label>
+                    <div class="controls">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            $CellPhone = $_POST['CellPhone'];
+                        } else {
+                            $CellPhone = $data->CellPhone;
+                        }
+                        ?>
+                        <label class="radio inline">
+                            <input type="radio" name="CellPhone" value="y" <?= ($CellPhone == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="CellPhone" value="n" <?= ($CellPhone == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>       
+                    </div>
+                </div>
+
+                <div class="control-group" id="SMS">
+                    <label class="control-label">SMS?</label>
+                    <div class="controls">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            $SMS = $_POST['SMS'];
+                        } else {
+                            $SMS = $data->SMS;
+                        }
+                        ?>
+                        <label class="radio inline">
+                            <input type="radio" name="SMS" value="y" <?= ($SMS == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="SMS" value="n" <?= ($SMS == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>     
+                    </div>
+                </div>
+
+                <div class="control-group" id="eQuote">
+                    <label class="control-label">eQuote?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <?
+                            if (sizeof($_POST) > 0) {
+                                $eQuote = $_POST['eQuote'];
+                            } else {
+                                $eQuote = $data->eQuote;
+                            }
+                            ?>
+                            <input type="radio" name="eQuote" value="y" <?= ($eQuote == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="eQuote" value="n" <?= ($eQuote == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>      
+                    </div>
+                </div>
+
+            <? } ?>
+
+            <?php if ($_GET['type'] == 'fax') { ?>
+
+                <div class="control-group" id="massfax">
+                    <label class="control-label">Mass Fax?</label>
+                    <div class="controls">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            $massfax = $_POST['massfax'];
+                        } else {
+                            $massfax = $data->massfax;
+                        }
+                        ?>
+                        <label class="radio inline">
+                            <input type="radio" name="massfax" value="y" <?= ($massfax == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="massfax" value="n" <?= ($massfax == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>       
+                    </div>
+                </div>
+
+            <? } ?>
+
+            <!--            <div class="control-group">
+                            <label class="control-label">Location</label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" name="location" value="y" checked="checked" />
+                                    No Address Attached
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="location" value="n" />
+                                    Address ni dre
+                                </label>       
+                            </div>
+                        </div>-->
+
+            <input type="hidden" name="location" value=""/>
+            <input type="hidden" name="disconnected" value="n"/>
+
+            <div class="form-actions">
+                <button class="btn btn-primary btn-medium"><i class="icon-ok icon-white"></i> Submit</button>
+                <a class="btn btn-medium" href="/m/business.html"><i class="icon-remove"></i> Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<? include "../../templates/footer.html"; ?>
+<? else: ?>
+<? echo '<script>window.location = "/m/business.html";</script>'; ?>
+<? endif ?>  

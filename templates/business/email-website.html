@@ -1,0 +1,166 @@
+<?php
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/email/listing/' . $_SESSION['bid'];
+$emails = json_decode($bbapi->post($url));
+$emails = $emails->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/website/listing/' . $_SESSION['bid'];
+$websites = json_decode($bbapi->post($url));
+$websites = $websites->results;
+?>
+
+<h3>Email &amp; Website 
+    <? if ( ( securityCheck('b@') || ( securityCheck('b*') && !securityCheck('b@') ) ) || ( securityCheck('bu') || ( securityCheck('b*') && !securityCheck('bu') ) ) ) { ?>
+    <a style="float: right;" href="/m/business/email-website/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <? } ?>
+</h3>
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Address</th>
+            <th>Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($emails as $email) { ?>
+            <tr data-id="<?=$email->eid?>" data-email="<?=$email->email?>">
+                <td class="email-edit">Email</td>
+                <td class="email-modal">
+                    <a href="#"><?=(stripslashes($email->email) . " "); ?></a>
+                    <?php if ($email->main == 'y') { ?>
+                        <span class="badge">Primary</span>
+                    <?php } ?>
+                </td>
+                <td class="email-edit"><?= stripslashes($email->label); ?></td>
+            </tr>
+        <?php } ?>  
+        <?php foreach ($websites as $website) { ?>
+            <tr data-id="<?=$website->wid?>" data-url="<?=$website->url?>" class="clickable-website">
+                <td class="website-edit">Website</td>    
+                <td class="website-modal">
+                    <a href="#"><?=(stripslashes((strlen(trim($website->displayurl)) == 0 ? '' . $website->url : '' . $website->displayurl)) . " ");?></a>
+                    <?php if ($website->main == 'y') { ?>
+                        <span class="badge">Primary</span>
+                    <?php } ?>
+                </td>    
+                <td class="website-edit"><?= stripslashes($website->label); ?></td>    
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function websitemodal(wid,gotourl) {
+
+        jQuery('#goto-site').attr('href','http://'+gotourl);
+        jQuery('#edit-website').attr('href','/m/business/email-website/edit.html?id='+wid+'&type=website');
+        jQuery('#website-modal').modal('toggle');
+    }
+    
+    function emailmodal(eid,address) {
+        jQuery('#send-mail').attr('href','mailto:'+address);
+        jQuery('#edit-email').attr('href','/m/business/email-website/edit.html?id='+eid+'&type=email');
+        jQuery('#email-modal').modal('toggle');
+    }
+</script>
+
+<? if ( securityCheck('bu') || (securityCheck('b*') && !securityCheck('bu') ) ): ?>
+    <script type="text/javascript">
+        function editwebsite(wid){
+            window.location='/m/business/email-website/edit.html?id='+wid+'&type=website';
+        }
+    </script>
+<? else: ?>
+    <script type="text/javascript">
+        function editwebsite(wid){}
+    </script>
+<? endif; ?>
+
+<? if ( securityCheck('b@') || (securityCheck('b*') && !securityCheck('b@') ) ): ?>
+    <script type="text/javascript">
+        function editemail(eid){
+            window.location='/m/business/email-website/edit.html?id='+eid+'&type=email';
+        }
+    </script>
+<? else: ?>
+    <script type="text/javascript">
+        function editemail(eid){}
+    </script>
+<? endif; ?>
+
+<script type="text/javascript">    
+    jQuery( document ).ready(function(e) {
+         jQuery('td.email-edit').on('click', function( e )
+         {
+            var el = jQuery(this);
+            var eid = el.parent('tr').data('id');
+
+            editemail( eid );      
+         });
+         
+         jQuery('td.email-modal').on('click', function( e )
+         {
+            var el = jQuery(this);
+            var eid = el.parent('tr').data('id');
+            var email = el.parent('tr').data('email');
+            
+            emailmodal( eid, email );      
+         });
+         
+         jQuery('td.website-edit').on('click', function( e )
+         {
+            var el = jQuery(this);
+            var eid = el.parent('tr').data('id');
+            
+            editwebsite( eid );      
+         });
+         
+         jQuery('td.website-modal').on('click', function( e )
+         {
+            var el = jQuery(this);
+            var eid = el.parent('tr').data('id');
+            var url = el.parent('tr').data('url');
+            
+            websitemodal( eid, url );      
+         });
+    });
+</script>
+
+<div id="email-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel"><? if ( securityCheck('b@') || (securityCheck('b*') && !securityCheck('b@') ) ) { ?>Edit or <? } ?>Send Mail</h3>
+    </div>
+    <div class="modal-body">
+        <h4></h4>
+        <p>Do you want to <? if ( securityCheck('b@') || (securityCheck('b*') && !securityCheck('b@') ) ) { ?>edit or <? } ?>send mail?</p>
+
+    </div>
+    <div class="modal-footer">
+        <!--        <a class="btn" data-dismiss="modal" id="call">Go to Site</a>-->
+        <a class="btn" id="send-mail" href=""><i class="icon-envelope"></i> Send Mail</a>
+        <? if ( securityCheck('b@') || (securityCheck('b*') && !securityCheck('b@') ) ) { ?>
+        <a class="btn btn-primary" id="edit-email" href=""><i class="icon-edit icon-white"></i> Edit</a>
+        <? } ?>
+    </div>
+</div>
+
+<div id="website-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel"><? if ( securityCheck('bu') || (securityCheck('b*') && !securityCheck('bu') ) ) { ?>Edit or <? } ?>Go to Site</h3>
+    </div>
+    <div class="modal-body">
+        <h4></h4>
+        <p>Do you want to <? if ( securityCheck('bu') || (securityCheck('b*') && !securityCheck('bu') ) ) { ?>edit or <? } ?>go to Site?</p>
+
+    </div>
+    <div class="modal-footer">
+        <!--        <a class="btn" data-dismiss="modal" id="call">Go to Site</a>-->
+        <a class="btn" id="goto-site" href="">Go to Site</a>
+        <? if ( securityCheck('bu') || (securityCheck('b*') && !securityCheck('bu') ) ) { ?>
+        <a class="btn btn-primary" id="edit-website" href=""><i class="icon-edit icon-white"></i> Edit</a>
+        <? } ?>
+    </div>
+</div>

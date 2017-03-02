@@ -1,0 +1,21 @@
+<?
+include "/home/serv/public_html/m/_autoload/_autoload.php"; 
+session_start();
+$bbapi->set('REMOTE_ADDR', $_SERVER['REMOTE_ADDR']);
+$bbapi->set('REQUEST_URI', $_SERVER['REQUEST_URI']);
+$url='http://localhost/m/api/user/logout/' . $_SESSION['username'];
+if ( strpos($_SERVER['SERVER_NAME'],'vancouver') !== false || strpos($_SERVER['SERVER_NAME'],'mbc') !== false ) {
+  $url='http://mbc-web.app.bbb.org/m/api/user/logout/' . $_SESSION['username'];
+}
+$bbapi->post($url);
+unset($_SESSION['user']);
+unset($_SESSION['bid']);
+$_SESSION['warning'] = "Thank you for using ebindr2go.";
+
+
+if ( strpos($_SERVER['SERVER_NAME'],'vancouver') !== false || strpos($_SERVER['SERVER_NAME'],'mbc') !== false ) {
+  header("Location: https://".$_SERVER['SERVER_NAME']."/m/sign-in.html");
+  exit();
+}
+header("Location: http://".$_SERVER['SERVER_NAME']."/m/sign-in.html");
+?>

@@ -1,0 +1,423 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+
+
+<title>hurdmantest - bureaudata.com</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript">
+
+if(window.parent.document.title=="eBINDr - 2.0")
+
+	document.write('<link rel="stylesheet" type="text/css" href="/css/reportr_default2.css" />');
+
+else
+
+	document.write('<link rel="stylesheet" type="text/css" href="/css/reportr_default.css" />');
+
+</script>
+
+<script src="/js-bin/control.js" type="text/javascript"></script>
+
+<script src="/js-bin/date.js" type="text/javascript"></script>
+
+<script src="/js-bin/functions.js" type="text/javascript"></script>
+
+<script>
+
+function KeyHandle() {
+
+//	event.returnValue=false; 
+
+	window.parent.editrLeft=document.body.scrollLeft;
+
+	window.parent.editrTop=document.body.scrollTop;
+
+	var myKey=event.altKey*100000+event.ctrlKey*10000+event.shiftKey*1000+event.keyCode;
+
+	if(myKey==10075 || myKey==11075 || myKey==1114 || myKey==10077) {
+
+		if(event.srcElement.type=='text') { // && (event.srcElement.name='name' || event.srcElement.name='Street1' || event.srcElement.name='FirstName' || event.srcElement.name='LastName')) {
+
+			var oRange=event.srcElement.createTextRange();
+
+			oRange.expand("textedit");
+
+			oRange.text=titleCase(oRange.text.toLowerCase());
+
+		}
+
+	}
+
+	if(myKey==10084) {
+
+		var mydate= new Date();
+
+		if(event.srcElement.type=='text' || event.srcElement.type=='textarea') {
+
+			event.srcElement.selection=document.selection.createRange();
+
+			event.srcElement.selection.text=(mydate.getMonth()+1)+"/"+mydate.getDate()+"/"+mydate.getYear();
+
+		}
+
+	}
+
+}
+
+</script>
+
+<script language='VBScript'>
+
+Function dates(id, doprompt)
+
+	setLocale("en-us")
+
+	text_val = document.getElementById(id).value
+
+	if len(text_val) > 0 then
+
+		if isdate(text_val) = false then
+
+			x = msgbox("Please enter a valid date.",vbOkCancel)
+
+			with document.getElementById(id)
+
+				if x = vbOk then
+
+					.focus
+
+					.select
+
+				Else
+
+					.value = ""
+
+					.focus
+
+					.select
+
+				End if
+
+			end with
+
+		Else
+
+			day_date = day(text_val)
+
+			if doprompt and day_date < 12 and instr(text_val,monthname(month(text_val),true))<1 and day_date<>month(text_val) then
+
+				d = msgbox("Did you want the date: " &day_date & "-" & monthname(month(text_val),true) & "-" & year(text_val),vbYesNoCancel)
+
+				if d = vbyes then
+
+					formated_date = day_date & "-" & monthname(month(text_val),true) & "-" & year(text_val)
+
+					formatted_date2 = year(text_val) & "-" & string(2-len(month(text_val)),"0") & month(text_val) & "-" & string(2-len(day(text_val)),"0") & day(text_val)
+
+				Elseif d=vbcancel then
+
+					document.getElementById(id).focus
+
+					exit function
+
+				else
+
+					formated_date = month(text_val) & "-" & monthname(day_date,true) & "-" & year(text_val)
+
+					formatted_date2 = year(text_val) & "-" & string(2-len(day_date),"0") & day_date & "-" & string(2-len(month(text_val)),"0") & month(text_val)
+
+				End if
+
+			Else
+
+				formated_date = day_date & "-" & monthname(month(text_val),true) & "-" & year(text_val)
+
+				formatted_date2 = year(text_val) & "-" & string(2-len(month(text_val)),"0") & month(text_val) & "-" & string(2-len(day(text_val)),"0") & day(text_val)
+
+			End if
+
+			document.getElementById(id).value = formated_date
+
+			document.getElementById(replace(id,"view_","")).value=formatted_date2
+
+		End if
+
+	else
+
+		document.getElementById(replace(id,"view_","")).value=""
+
+	End if
+
+end function
+
+</script>
+
+
+
+</head>
+
+<body onkeydown="key_select();KeyHandle();">
+
+
+
+
+
+
+
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="100%">
+
+	<tr>
+
+		<td class="menu">
+
+		<table>
+
+			<tr>
+
+				<td id="menu">
+
+<a href="javascript:Print('')">Print</a>
+
+				</td>
+
+				<td id="menu">
+
+				<a href="#" onClick="ExportXML()"><img border="0" src="/css/xml.gif" width=33 height=15></a>
+
+				<map name="exportmap">
+
+				<area alt="Export to Excel" title="Export to Excel" shape="rect" coords="2,2,17,17" href="#" onClick="Export()">
+
+				<area alt="Export to Word" title="Export to Word" shape="rect" coords="29,2,44,17" href="#" onClick="ExportWord()">
+
+				<area alt="Export Text File" title="Export Text File" shape="rect" coords="56,2,71,17" href="#" onClick="ExportText()">
+
+				</map>
+
+<img border="0" src="/css/export.gif" usemap="#exportmap">
+
+				<td id="menu"><a href="" onClick="document.location.reload();">Refresh</a></td>
+
+				<td id="menu"><a target="_blank" href="/report/About/?noheader&mymergecode=auth">About</a></td>
+
+				<td id="menu"><a href="#" onclick='window.parent.document.getElementById("frame_i").contentWindow.document.location.replace("report/add to favorites/?noheader&mymergecode=auth");'>Add to Favorites</a></td>
+
+			</tr>
+
+		</table>
+
+		
+
+		</td>
+
+	</tr>
+
+	<tr>
+
+		<td style="background: #666666; font-size: 2px;">&nbsp;</td>
+
+	</tr>
+
+	<tr>
+
+		<td style="background: #C5DEBE; height: 35px;" width="50%" valign="bottom">
+
+		<table border="0" cellpadding="0" cellspacing="0"><tr><td class="tabs" id="deselected">&nbsp;</td><td class="tabs" id="selected"><b><a class="heirarchy" href="#">auth</a></b></td></tr></table>
+
+		</td>
+
+	</tr>
+
+</table>
+
+
+
+<form name="limit" action="/report/auth" method="post">
+
+		
+
+<input type="hidden"  name="which_table" id="which_table" value="" />
+
+		
+
+		<a id="top" name="top"></a>
+
+		<table cellspacing="0" cellpadding="1">
+
+			<tr>
+
+				<td><input type="hidden" name="limit" value="" /><input type="hidden" name="limitback" value="" /></form>
+
+<form name="login" action="auth.login" method="post" onSubmit="var mydate=new Date();this.elements['usertime'].value=mydate.toGMTString()+'~'+mydate.getTimezoneOffset();">
+
+<input type="hidden" name="form_submit" value="y" />
+
+<input type="hidden" name="usertime" value="" />
+
+<table border="0">
+
+	<tr>
+
+		<td class="auth_title">Authentication Required</td>
+
+	</tr>
+
+	<tr>
+
+		<td class="auth">This program requires that you provide some<br />security information to identify yourself.<br /><br /></td>
+
+	</tr>
+
+	<tr>
+
+		<td>
+
+		<table>
+
+			<tr>
+
+				<td class="auth"><b>Username:</b></td>
+
+				<td><input type="text" name="username" /></td>
+
+			</tr>
+
+			<tr>
+
+				<td class="auth"><b>Password:</b></td>
+
+				<td><input type="password" name="password" onkeydown="if(event.keyCode==13) { document.getElementById('submitbutton').click();}" /><input type="hidden" name="pi" value="NzE2OTAwMjJEMyVkaWI2MiV5RDMlMnJkbmliZTYyJUtTQU9ORjMlRjIlbXRoLmV0YWRwdUYyJWVncmVtRjIldHJvcGVyRjIl"</td>
+
+			</tr>
+
+			<tr>
+
+				<td class="auth"><b>Database:</b></td>
+
+				<td><input type='hidden' name='database' value='hurdmantest'>  HurdmanTest</td>
+
+			</tr>
+
+			<tr>
+
+				<td>&nbsp;</td>
+
+				<td><input type="submit" id="submitbutton" value="Login" /></td>
+
+			</tr>
+
+		</table>
+
+		</td>
+
+	</tr>
+
+</table>
+
+</form>
+</td>
+
+			</tr>
+
+		</table>
+
+		<a class="toplink" style="display: none;" onclick="window.scrollTo( 0, $('top').getCoordinates().top ); return false;" href="#top">Back to Top</a>
+
+<script>
+
+if( document.location.toString().test(/\/report\/menu/gi) || document.location.toString().test(/\/report\/lite%20findr/gi) ) {
+
+	if( !$('prompt_value_1') ) {
+
+		$$('a.toplink').setStyle( 'display', '' );
+
+	}
+
+}
+
+</script>
+
+				
+
+
+
+
+		
+
+<br />
+
+</form>
+
+<form name="exportxmlform" action="/report/exportr,auth,,,/?tid=&EXPORT_OUTPUT=xml" method="post">
+
+		
+
+</form>
+
+<form name="exportform" action="/report/exportr,auth,,,/?tid=&EXPORT_OUTPUT=xls" method="post">
+
+		
+
+</form>
+
+<form name="exportwordform" action="/report/exportr,auth,,,/?tid=&EXPORT_OUTPUT=rtf" method="post">
+
+		
+
+</form>
+
+<form name="exporttextform" action="/report/exportr,auth,,,/?tid=&EXPORT_OUTPUT=txt&EXPORT_DELIM=%2C" method="post">
+
+		
+
+</form>
+
+<form name="printform" action="/report/auth/?print=true&" method="post" target="_blank">
+
+<input type="hidden" name="allrecords" id="allrecords" value="NO">
+
+<input type="hidden" name="printperpage" id="printperpage" value="">
+
+<input type="hidden" name="limit1" id="printpage" value="">
+
+<input type="hidden" name="which_table" id="print_which_table" value="">
+
+		
+
+</form>
+
+<form name="exceptform" action="" method="post">
+
+<input type="hidden" name="EXCEPTIONLIST" id="EXCEPTIONLIST" value="">
+
+		
+
+</form>
+
+<form name="reportlinkform" action="" method="get" target="_blank">
+
+		
+
+</form>
+
+<script language="javascript">
+
+function MergeReport(myloc) {
+
+	document.reportlinkform.action=myloc;
+
+	document.reportlinkform.submit();
+
+}
+
+</script>
+
+
+
+</body>
+
+</html>

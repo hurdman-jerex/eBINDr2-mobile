@@ -1,0 +1,191 @@
+<? $page = 'abnearme'; ?>
+<? include "templates/header.html"; ?>
+<? include "templates/nav-bar.html"; ?>
+
+<script type="text/javascript" src="/ebindr/scripts/framework/core.js"></script>
+<script type="text/javascript" src="/ebindr/scripts/framework/more.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="/ebindr/scripts/plugins/maps.js"></script>
+
+<? 
+echo md5("1234");
+$url = "http://".$_SERVER['SERVER_NAME']."/report/e2mobile.api.abnearme.find.prerun?ebindr2=y&NOASK&BYPASS=5g9f4ds8r&lat=40.921195&long=-111.897099";
+
+file_get_contents($url);
+
+$url = "http://".$_SERVER['SERVER_NAME']."/report/merge/JSON.htm?ebindr2=y&json=y&NOASK&query=e2mobile%2Fapi%2Fabnearme%2Ffind&BYPASS=5g9f4ds8r&lat=40.921195&long=-111.897099";
+
+
+
+ $data = file_get_contents($url); ?>
+
+<? //" . str_replace( "+", "%20", urlencode($_GET['address'] )?>
+<style type="text/css">
+#mymap {
+	border-radius: 5px;
+}
+.adp-placemark {
+	background-color: #666;
+-webkit-border-top-left-radius: 5px;
+-webkit-border-top-right-radius: 5px;
+-moz-border-radius-topleft: 5px;
+-moz-border-radius-topright: 5px;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+	color: #fff;
+	border: none;
+	margin-bottom: 0px;
+}
+.adp-text {
+	padding: 10px;
+	padding-left: 30px;
+}
+.adp-summary {
+	background-color: #999;
+	font-weight: bold;
+	color: #fff;
+	padding: 10px;
+	margin-bottom: 10px;
+-webkit-border-bottom-right-radius: 5px;
+-webkit-border-bottom-left-radius: 5px;
+-moz-border-radius-bottomright: 5px;
+-moz-border-radius-bottomleft: 5px;
+border-bottom-right-radius: 5px;
+border-bottom-left-radius: 5px;
+}
+</style>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12" id="mymap" style="height: 200px;"></div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12" id="panel"></div>
+	</div>
+
+<!--	<div class="row-fluid">
+		<div class="span12">
+<h2>AB Near Me &trade;</h2>
+<form class="well form-inline">
+	<label class="radio"><input type="radio" name="type" value="abonly" checked="checked" /> ABs Only </label>
+	<label class="radio"><input type="radio" name="type" value="all" /> All</label>
+	<input type="button" class="btn" value="Find" />
+</form>
+		</div>
+	</div>
+	<div class="row-fluid">
+	<div class="span12">
+
+		<table class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Phone</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><b>Hurdman Communications</b><br /><span class="badge badge-info">12mi</span> 1344 W 75 S Centerville, UT 84014</td>
+					<td>801 292-7673</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>-->
+</div>
+
+<script type="text/javascript">
+var locations=new Array();
+var SetTitles_count=0;
+var ClearTitles = function () {
+	$$('td.adp-text').each(function(el){
+		el.innerHTML="";
+	});
+}
+var SetTitles = function () {
+	SetTitles_count++;
+	if(SetTitles_count>20) return;
+	if($$('td.adp-text').length==0) setTimeout("SetTitles()",100); else SetTitles_count=0;
+	var loc=new String();
+	var i=0;
+	$$('td.adp-text').each(function(el){
+		if(el.innerHTML=="") {
+			setTimeout("SetTitles()",100);
+			return;
+		}
+		//if(String(el.innerHTML).indexOf("<?=$_GET["address"]?>")<0) {
+		loc=locations[i++];
+		if( loc != undefined ) {
+			
+			if(String(el.innerHTML).indexOf(loc)<0 ) el.innerHTML="<b>"+loc+"</b><br>"+el.innerHTML;
+		}
+	});
+}
+window.addEvent( 'domready', function(e) {
+initialize();
+});
+</script>
+<script>
+var initialLocation;
+var siberia = new google.maps.LatLng(60, 105);
+var newyork = new google.maps.LatLng(40.69847032728747, -73.9514422416687);
+var lasvegas = new google.maps.LatLng(36.08,  115.17);
+var tester = new google.maps.LatLng(40.921195, -111.897099);
+var browserSupportFlag =  new Boolean();
+
+function initialize() {
+  var myOptions = {
+    zoom: 6,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(document.getElementById("mymap"), myOptions);
+  
+  // Try W3C Geolocation (Preferred)
+  if(navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+	  runMap(initialLocation);
+    }, function() {
+      handleNoGeolocation(browserSupportFlag);
+    });
+  }
+  // Browser doesn't support Geolocation
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+  
+  function runMap(initialLocation) {
+	var data = <?=$data?>;
+	if( typeof(data) == 'object' ) {
+		// run the callback
+
+		atlas.load( 'mymap', [locations.latitude, locations.longitude], function() {
+			var el=data.resultset[0];
+			atlas.directions.start([initialLocation.Xa, initialLocation.Ya], $('panel') );
+			data.resultset.each( function(el, i) {
+				if(i<(data.resultset.length-1)) atlas.directions.addstop( el.Street1+', '+el.City+', '+el.StateProv+', '+el.PostalCode );
+				locations[locations.length]=el.Description;
+			});
+			el=data.resultset[data.resultset.length-1];
+			atlas.directions.end( el.Street1+', '+el.City+', '+el.StateProv+' '+el.PostalCode, SetTitles );
+		});
+	} else {
+		alert('no data');
+	}
+  }
+  
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+      initialLocation = newyork;
+    } else {
+      alert("Your browser doesn't support geolocation. We've placed you in Siberia.");
+      initialLocation = siberia;
+    }
+    map.setCenter(initialLocation);
+  }
+  
+}
+</script>
+<? include "templates/footer.html"; ?>

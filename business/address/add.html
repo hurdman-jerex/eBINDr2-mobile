@@ -1,0 +1,492 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+
+if (sizeof($_POST) > 0) {
+    
+    foreach($_POST as $key=>$value) {
+        $_POST[$key]=  stripslashes($value);
+    }
+
+    $submit = true;
+    $validation = array();
+
+    if (strlen($_POST['street1']) == 0) {
+        $submit = false;
+        $validation['street1'] = array(
+            'result' => 'error',
+            'msg' => 'Street 1 field is required.'
+        );
+    }
+
+    if (strlen($_POST['postalcode']) == 0) {
+        $submit = false;
+        $validation['postalcode'] = array(
+            'result' => 'error',
+            'msg' => 'Postal Code field is required.'
+        );
+    }
+
+    if (strlen($_POST['stateprov']) == 0) {
+        $submit = false;
+        $validation['stateprov'] = array(
+            'result' => 'error',
+            'msg' => 'Please select a State/Province.'
+        );
+    }
+
+    if (strlen($_POST['city']) == 0) {
+        $submit = false;
+        $validation['city'] = array(
+            'result' => 'error',
+            'msg' => 'City field is required.'
+        );
+    }
+
+    if ($submit) {
+        if ($_POST['locationclosed'] == 'y') {
+            $_POST['locationclosed'] = date('Y-m-d');
+        } else if ($_POST['locationclosed'] == 'n') {
+            $_POST['locationclosed'] = NULL;
+        }
+
+        for ($i = 0; $i < count($_POST['AssignAddress']); $i++) {
+            $assign_address.=$_POST['AssignAddress'][$i];
+            if ($i < (count($_POST['AssignAddress']) - 1)) {
+                $assign_address.=', ';
+            }
+        }
+        $_POST['AssignAddress'] = $assign_address;
+
+        for ($i = 0; $i < count($_POST['AssignPhone']); $i++) {
+            $assign_phone.=$_POST['AssignPhone'][$i];
+            if ($i < (count($_POST['AssignPhone']) - 1)) {
+                $assign_phone.=', ';
+            }
+        }
+        $_POST['AssignPhone'] = $assign_phone;
+
+        for ($i = 0; $i < count($_POST['AssignFax']); $i++) {
+            $assign_fax.=$_POST['AssignFax'][$i];
+            if ($i < (count($_POST['AssignFax']) - 1)) {
+                $assign_fax.=', ';
+            }
+        }
+        $_POST['AssignFax'] = $assign_fax;
+
+        $bbapi->set('street1', $_POST['street1']);
+        $bbapi->set('street2', $_POST['street2']);
+        $bbapi->set('postalcode', $_POST['postalcode']);
+        $bbapi->set('county', $_POST['county']);
+        $bbapi->set('city', $_POST['city']);
+        $bbapi->set('stateprov', $_POST['stateprov']);
+        $bbapi->set('label', $_POST['label']);
+        $bbapi->set('locationid', $_POST['locationid']);
+        $bbapi->set('locationclosed', $_POST['locationclosed']);
+        $bbapi->set('main', $_POST['main']);
+        $bbapi->set('billing', $_POST['billing']);
+        $bbapi->set('mailing', $_POST['mailing']);
+        $bbapi->set('complaint', $_POST['complaint']);
+        $bbapi->set('report', $_POST['report']);
+        $bbapi->set('addloc', $_POST['addloc']);
+        $bbapi->set('cguide', $_POST['cguide']);
+        $bbapi->set('dbaname', $_POST['dbaname']);
+        $bbapi->set('complaintcontact', $_POST['complaintcontact']);
+        $bbapi->set('AssignAddress', $_POST['AssignAddress']);
+        $bbapi->set('AssignPhone', $_POST['AssignPhone']);
+        $bbapi->set('AssignFax', $_POST['AssignFax']);
+
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/add/' . $_SESSION['bid'];
+        $bbapi->post($url);
+        ?>
+        <script type="text/javascript">window.location='/m/business.html'</script>
+        <?
+    }
+}
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/stateprov/USA';
+$stateprovs = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/dbaname/' . $_SESSION['bid'];
+$dbanames = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/assigncontact/' . $_SESSION['bid'];
+$assigncontacts = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/assignphone/' . $_SESSION['bid'] . '/1';
+$assignphones = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/assignfax/' . $_SESSION['bid'];
+$assignfaxes = json_decode($bbapi->get($url))->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/complaint/' . $_SESSION['bid'];
+$complaintcontacts = json_decode($bbapi->get($url))->results;
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>New Address</legend>
+
+            <div class="control-group <?= $validation['street1']['result'] ?>">
+                <label class="control-label">Street 1 </label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="street1" value="<?= $_POST['street1'] ?>"/>
+                    <span class="help-inline"><?= $validation['street1']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Street 2 </label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="street2" value="<?= $_POST['street2'] ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">County</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="county" value="<?= $_POST['county'] ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group <?= $validation['city']['result'] ?>">
+                <label class="control-label">City</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="city" value="<?= $_POST['city'] ?>"/>
+                    <span class="help-inline"><?= $validation['city']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group <?= $validation['stateprov']['result'] ?>">
+                <label class="control-label">State/Province </label>
+                <div class="controls">
+                    <select name="stateprov" class="input-xlarge">
+                        <?php foreach ($stateprovs as $stateprov): ?>
+                            <option value="<?= $stateprov->code ?>" <?= ($stateprov->code == $_POST['stateprov'] ? 'SELECTED' : '') ?>><?= $stateprov->name ?></option>
+                        <? endforeach; ?>
+                    </select>
+                    <span class="help-inline"><?= $validation['stateprov']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group <?= $validation['postalcode']['result'] ?>">
+                <label class="control-label">Postal Code </label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="postalcode" value="<?= $_POST['postalcode'] ?>"/>
+                    <span class="help-inline"><?= $validation['postalcode']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Label </label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="label" value="<?= $_POST['label'] ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Store ID </label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" name="locationid" value="<?= $_POST['locationid'] ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Location Closed? </label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <?php
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['locationclosed'] == 'y') {
+                                $lc_y = 'checked="checked"';
+                                $lc_n = '';
+                            } else {
+                                $lc_y = '';
+                                $lc_n = 'checked="checked"';
+                            }
+                        } else {
+                            $lc_y = '';
+                            $lc_n = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="locationclosed" value="y" <?= $lc_y ?>/>
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="locationclosed" value="n" <?= $lc_n ?>/>
+                        No
+                    </label>  
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y" <?= (sizeof($_POST) > 0 && $_POST['main'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['main'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="main" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Billing?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="billing" value="y" <?= (sizeof($_POST) > 0 && $_POST['billing'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['billing'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="billing" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Mailing?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="mailing" value="y" <?= (sizeof($_POST) > 0 && $_POST['mailing'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['mailing'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="mailing" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Complaint?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="complaint" value="y" <?= (sizeof($_POST) > 0 && $_POST['complaint'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['complaint'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="complaint" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="y" <?= (sizeof($_POST) > 0 && $_POST['report'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['report'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="report" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Additional Location?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="addloc" value="y" <?= (sizeof($_POST) > 0 && $_POST['addloc'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['addloc'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="addloc" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">CGuide?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="cguide" value="y" <?= (sizeof($_POST) > 0 && $_POST['cguide'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            if ($_POST['cguide'] == 'n') {
+                                $mark = 'checked="checked"';
+                            }
+                        } else {
+                            $mark = 'checked="checked"';
+                        }
+                        ?>
+                        <input type="radio" name="cguide" value="n" <?= $mark ?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Associated DBA Name </label>
+                <div class="controls">
+                    <?php foreach ($dbanames as $dbaname): ?>
+                        <label class="radio">
+                            <input type="radio" name="dbaname" value="<?= $dbaname->did ?>" checked="checked" />
+                            <?= $dbaname->Name ?>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Assign Contact </label>
+                <div class="controls">
+                    <?php foreach ($assigncontacts as $assigncontact): ?>
+                        <label class="checkbox">
+                            <?
+                            if(sizeof($_POST)>0 && sizeof($_POST['AssignAddress'])>0) {
+                                foreach($_POST['AssignAddress'] as $aa) {
+                                    if($aa==$assigncontact->pid) {
+                                        $check='checked="checked"';
+                                        break;
+                                    }
+                                    else {
+                                        $check='';
+                                    }
+                                }
+                            }
+                            ?>
+                            <input type="checkbox" name="AssignAddress[]" value="<?= $assigncontact->pid ?>" <?=$check?>/>
+                            <?= $assigncontact->ContactName ?>
+                        </label>
+                    <? endforeach; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Assign Phone: </label>
+                <div class="controls">
+                    <?php foreach ($assignphones as $assignphone): ?>
+                        <label class="checkbox">
+                            <?
+                            if(sizeof($_POST)>0 && sizeof($_POST['AssignPhone'])>0) {
+                                foreach($_POST['AssignPhone'] as $ap) {
+                                    if($ap==$assignphone->pid) {
+                                        $check='checked="checked"';
+                                        break;
+                                    }
+                                    else {
+                                        $check='';
+                                    }
+                                }
+                            }
+                            ?>
+                            <input type="checkbox" name="AssignPhone[]" value="<?= $assignphone->pid ?>" <?=$check?>/>
+                            <?= $assignphone->Phone ?>
+                        </label>
+                    <? endforeach; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Assign Fax </label>
+                <div class="controls">
+                    <?php foreach ($assignfaxes as $assignfax): ?>
+                        <label class="checkbox">
+                            <?
+                            if(sizeof($_POST)>0 && sizeof($_POST['AssignFax'])>0) {
+                                foreach($_POST['AssignFax'] as $af) {
+                                    if($af==$assignfax->fid) {
+                                        $check='checked="checked"';
+                                        break;
+                                    }
+                                    else {
+                                        $check='';
+                                    }
+                                }
+                            }
+                            ?>
+                            <input type="checkbox" name="AssignFax[]" value="<?= $assignfax->fid ?>" <?=$check?>/>
+                            <?= $assignfax->Fax ?>
+                        </label>
+                    <? endforeach; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Use Complaint Contact </label>
+                <div class="controls">
+                    <select name="complaintcontact" class="input-xlarge">
+                        <?php foreach ($complaintcontacts as $complaintcontact): ?>
+                            <option value="<?= $complaintcontact->pid ?>"><?= $complaintcontact->name ?></option>
+                        <? endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Save New Address</button>
+                <a href="/m/business.html" class="btn">Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+
+<? include "../../templates/footer.html"; ?>

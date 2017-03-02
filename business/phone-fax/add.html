@@ -1,0 +1,239 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+if (sizeof($_POST) > 0) {
+    
+    foreach($_POST as $key=>$value) {
+        $_POST[$key]=stripslashes($value);
+    }
+    
+    if ($_POST['type'] == 0) {
+        $submit = true;
+
+        if (strlen($_POST['number']) <= 0) {
+            $submit = false;
+            $validation['number'] = array(
+                'result' => 'error',
+                'msg' => 'Phone Number field is required.',
+                'value' => $_POST['number']
+            );
+        } else {
+            $validation['number'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['number']
+            );
+        }
+
+        if ($submit) {
+
+            $bbapi->set('number', $_POST['number']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('location', $_POST['location']);
+            $bbapi->set('disconnected', $_POST['disconnected']);
+            $bbapi->set('SMS', $_POST['SMS']);
+            $bbapi->set('eQuote', $_POST['eQuote']);
+            $bbapi->set('CellPhone', $_POST['CellPhone']);
+
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/add/' . $_SESSION['bid'];
+            $bbapi->post($url);
+        }
+    } else if ($_POST['type'] == 1) {
+        $submit = true;
+        if (strlen($_POST['number']) <= 0) {
+            $submit = false;
+            $validation['number'] = array(
+                'result' => 'error',
+                'msg' => 'Phone Number field is required.',
+                'value' => $_POST['number']
+            );
+        } else {
+            $validation['number'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['number']
+            );
+        }
+
+        if ($submit) {
+            $bbapi->set('number', $_POST['number']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('location', $_POST['location']);
+            $bbapi->set('disconnected', $_POST['disconnected']);
+            $bbapi->set('massfax', $_POST['massfax']);
+
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/fax/add/' . $_SESSION['bid'];
+            $bbapi->post($url);
+        }
+    }
+
+    if ($submit) {
+        ?>
+        <script type="text/javascript">window.location='/m/business.html';</script>
+        <?
+    }
+}
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>New Phone or Fax</legend>
+            <div class="control-group">
+                <label class="control-label">Type</label>
+                <div class="controls">
+                    <select name="type" class="input-small" id="type">
+                        <? if ( securityCheck('bp') || (securityCheck('b*') && !securityCheck('bp') ) ) { ?>
+                        <option value="0">Phone</option>
+                        <? } ?>
+                        <? if ( securityCheck('bf') || (securityCheck('b*') && !securityCheck('bf') ) ) { ?>
+                        <option value="1">Fax</option>
+                        <? } ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group <?=$validation['number']['result']?>">
+                <label class="control-label" id="lbl-type">Phone Number</label>
+                <div class="controls">
+                    <input type="text" name="number" class="input-xlarge" value="<?=$validation['number']['value']?>"/>
+                    <span class="help-inline"><?=$validation['number']['msg']?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" id="lbl-label">Label</label>
+                <div class="controls">
+                    <input type="text" name="label" class="input-xlarge" value="<?=$_POST['label']?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y" <?= ($_POST['main']=='y')?'checked="checked"':'checked="checked"'?>/>
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="n" <?= ($_POST['main']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="y" <?= ($_POST['report']=='y')?'checked="checked"':'checked="checked"'?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="n" <?= ($_POST['report']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group" id="CellPhone">
+                <label class="control-label">Cell Phone?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="CellPhone" value="y" <?= ($_POST['CellPhone']=='y')?'checked="checked"':'checked="checked"'?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="CellPhone" value="n" <?= ($_POST['CellPhone']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group" id="SMS">
+                <label class="control-label">SMS?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="SMS" value="y" <?= ($_POST['SMS']=='y')?'checked="checked"':'checked="checked"'?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="SMS" value="n" <?= ($_POST['SMS']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group" id="eQuote">
+                <label class="control-label">eQuote?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="eQuote" value="y" <?= ($_POST['eQuote']=='y')?'checked="checked"':'checked="checked"'?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="eQuote" value="n" <?= ($_POST['eQuote']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group" id="massfax">
+                <label class="control-label">Mass Fax?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="massfax" value="y" <?= ($_POST['massfax']=='y')?'checked="checked"':'checked="checked"'?> />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="massfax" value="n" <?= ($_POST['massfax']=='n')?'checked="checked"':''?>/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <!--            <div class="control-group">
+                            <label class="control-label">Location</label>
+                            <div class="controls">
+                                <label class="radio">
+                                    <input type="radio" name="location" value="y" checked="checked" />
+                                    No Address Attached
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="location" value="n" />
+                                    Address ni dre
+                                </label>       
+                            </div>
+                        </div>-->
+
+            <input type="hidden" name="location" value=""/>
+            <input type="hidden" name="disconnected" value="n"/>
+
+            <div class="form-actions">
+                <button class="btn btn-primary btn-medium"><i class="icon-ok icon-white"></i> Submit</button>
+                <a class="btn btn-medium" href="/m/business.html"><i class="icon-remove"></i> Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+    jQuery('#massfax').toggle();
+    jQuery('#type').change(function(){
+        var val=jQuery('#type').val();
+        jQuery('#lbl-type').text((val==0?'Phone':'Fax')+' Number');
+        
+        jQuery('#eQuote').toggle();
+        jQuery('#SMS').toggle();
+        jQuery('#CellPhone').toggle();
+        jQuery('#massfax').toggle();
+        
+    });
+</script>
+
+<? include "../../templates/footer.html"; ?>

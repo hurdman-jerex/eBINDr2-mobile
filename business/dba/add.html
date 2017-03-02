@@ -1,0 +1,187 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+function arr_stripslashes($array = array()) {
+    foreach ($array as $key => $value) {
+        if (is_object($array)) {
+            $array->$key = stripslashes($value);
+        } else if (is_array($array)) {
+            $array[$key] = stripslashes($value);
+            ;
+        }
+    }
+}
+
+if (sizeof($_POST) > 0) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+
+        $submit = true;
+        if (strlen($_POST['name']) <= 0) {
+            $submit = false;
+            $validation['name'] = array(
+                'result' => 'error',
+                'msg' => 'Name field is required.',
+                'value' => $_POST['name']
+            );
+        } else {
+            $validation['name'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['name']
+            );
+        }
+
+        if ($submit) {
+
+            $bbapi->set('name', $_POST['name']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('legal', $_POST['legal']);
+            $bbapi->set('cguide', $_POST['cguide']);
+            $bbapi->set('billing', $_POST['billing']);
+            $bbapi->set('rankid', $_POST['rankid']);
+            $bbapi->set('vrsname', $_POST['vrsname']);
+            $bbapi->set('sortby', $_POST['sortby']);
+            
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/dba2/add/' . $_SESSION['bid'];
+            $bbapi->post($url);
+        }
+
+    if ($submit) {
+        ?>
+        <script type="text/javascript">window.location='/m/business.html';</script>
+        <?
+    }
+}
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>Add Company Name</legend>
+
+                <div class="control-group <?=$validation['name']['result'] ?>">
+                    <label class="control-label">Name</label>
+                    <div class="controls">
+                        <input alt="Company Name" type="text" name="name" class="input-xlarge" value=""/>
+                        <span class="help-inline"><?= $validation['name']['msg'] ?></span>
+                    </div>
+                </div>
+
+            <div class="control-group">
+                <label class="control-label">Label</label>
+                <div class="controls">
+                    <input alt="Company Label" type="text" name="label" class="input-xlarge" value=""/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input alt="Primary" type="radio" name="main" value="y" />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input alt="Primary" type="radio" name="main" checked="checked" value="n" />
+                            No
+                        </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" alt="Report" name="report" value="y" />
+                        Yes
+                    </label>
+
+                        <label class="radio inline">
+                            <input alt="Report" type="radio" name="report" checked="checked" value="n" />
+                            No
+                        </label>     
+
+                </div>
+            </div>
+            
+            <div class="control-group">
+                    <label class="control-label">Legal?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input alt="Legal" type="radio" name="legal" value="y" />
+                            Yes
+                        </label>
+
+                            <label class="radio inline">
+                                <input alt="Legal" type="radio" name="legal" checked="checked" value="n" />
+                                No
+                            </label>   
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">C Guide?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input alt="C Guide" type="radio" name="cguide" value="y" />
+                            Yes
+                        </label>
+
+                            <label class="radio inline">
+                                <input alt="C Guide" type="radio" name="cguide" checked="checked" value="n" />
+                                No
+                            </label>   
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Billing?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input alt="Billing" type="radio" name="billing" value="y" />
+                            Yes
+                        </label>
+
+                            <label class="radio inline">
+                                <input alt="Billing" type="radio" name="billing" checked="checked" value="n" />
+                                No
+                            </label>   
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">RankID</label>
+                    <div class="controls">
+                        <input alt="Rank ID" type="text" maxlength="6" name="RankID" class="input-xlarge span1" value=""/>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="CaseNotes">VRSname:</label>
+                    <div class="controls">
+                        <textarea alt="VRS Name" id="VRSname" name="VRSname" rows="5"></textarea>
+                    </div>
+                </div>
+                
+              <div class="control-group">
+                <label class="control-label">SortBy</label>
+                <div class="controls">
+                    <input alt="Sort By" type="text" name="SortBy" class="input-xlarge" value=""/>
+                </div>
+            </div>  
+
+            <div class="form-actions">
+                <button alt="Submit Add DBA Form" class="btn btn-primary btn-medium"><i class="icon-ok icon-white"></i> Submit</button>
+                <a alt="Cancel Add DBA Form" class="btn btn-medium" href="/m/business.html?info=business-names"><i class="icon-remove"></i> Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<? include "../../templates/footer.html"; ?>

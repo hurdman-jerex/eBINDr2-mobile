@@ -1,0 +1,276 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+if (sizeof($_POST) > 0) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+
+    $submit = true;
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+
+    if (strlen($_POST['firstname']) <= 0) {
+        $submit = false;
+        $validation['firstname'] = array(
+            'result' => 'error',
+            'msg' => 'First Name field is required.',
+            'value' => $_POST['firstname']
+        );
+    } else {
+        $validation['lastname'] = array(
+            'result' => 'success',
+            'msg' => '',
+            'value' => $_POST['lastname']
+        );
+    }
+
+    if (strlen($_POST['lastname']) <= 0) {
+        $submit = false;
+        $validation['lastname'] = array(
+            'result' => 'error',
+            'msg' => 'Last Name field is required.',
+            'value' => $_POST['lastname']
+        );
+    } else {
+        $validation['lastname'] = array(
+            'result' => 'success',
+            'msg' => '',
+            'value' => $_POST['lastname']
+        );
+    }
+
+    if ($submit) {
+
+        $bbapi->set('prename', $_POST['prename']);
+        $bbapi->set('firstname', $_POST['firstname']);
+        $bbapi->set('lastname', $_POST['lastname']);
+        $bbapi->set('postname', $_POST['postname']);
+        $bbapi->set('title', $_POST['title']);
+        $bbapi->set('mailcode', $_POST['mailcode']);
+        $bbapi->set('main', $_POST['main']);
+        $bbapi->set('complaint', $_POST['complaint']);
+        $bbapi->set('servicecontact', $_POST['servicecontact']);
+        $bbapi->set('billing', $_POST['billing']);
+        $bbapi->set('salescontact', $_POST['salescontact']);
+        $bbapi->set('report', $_POST['report']);
+
+        //temporary field
+        $bbapi->set('complaintassign', $_POST['complaintassign']);
+
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/person/edit/' . $_SESSION['bid'] . '/' . $_GET['pid'];
+        $bbapi->post($url);
+        ?>
+        <script type="text/javascript">window.location='/m/business.html';</script>
+        <?
+    }
+} else {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/person/get/' . $_SESSION['bid'] . '/' . $_GET['pid'];
+    $person = json_decode($bbapi->get($url));
+    $person = $person->results;
+    $person = $person[0];
+
+    foreach ($person as $key => $value) {
+        $person->$key = stripslashes($value);
+    }
+}
+?>
+<!-- Unfinished Business TODO -->
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>Edit People and Contact</legend>
+            <div class="control-group">
+                <label class="control-label">Pre Name </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $prename = $_POST['prename'];
+                    } else {
+                        $prename = $person->prename;
+                    }
+                    ?>
+                    <input type="text" name="prename" value="<?= $prename ?>" class="input-large"/>
+                </div>
+            </div>
+
+            <div class="control-group <?= $validation['firstname']['result'] ?>">
+                <label class="control-label">First Name </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $firstname = $_POST['firstname'];
+                    } else {
+                        $firstname = $person->firstname;
+                    }
+                    ?>
+                    <input type="text" name="firstname" value="<?= $firstname ?>" class="input-xlarge"/>
+                    <span class="help-inline"><?= $validation['firstname']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group <?= $validation['lastname']['result'] ?>">
+                <label class="control-label">Last Name </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $lastname = $_POST['lastname'];
+                    } else {
+                        $lastname = $person->lastname;
+                    }
+                    ?>
+                    <input type="text" name="lastname" value="<?= $lastname ?>" class="input-xlarge"/>
+                    <span class="help-inline"><?= $validation['lastname']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Post Name </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $postname = $_POST['postname'];
+                    } else {
+                        $postname = $person->postname;
+                    }
+                    ?>
+                    <input type="text" name="postname" value="<?= $postname ?>" class="input-large"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Title </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $title = $_POST['title'];
+                    } else {
+                        $title = $person->title;
+                    }
+                    ?>
+                    <input type="text" name="title" value="<?= $title ?>" class="input-xlarge"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Mail Code </label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $mailcode = $_POST['mailcode'];
+                    } else {
+                        $mailcode = $person->MailCode;
+                    }
+                    ?>
+                    <input type="text" name="mailcode" value="<?= $mailcode ?>" class="input-xlarge"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y" <?= ($person->main == 'y' || $_POST['main'] == 'y' ? 'checked="checked"' : '') ?>/>
+                        Yes
+                    </label>
+                    <?php if ($person->main == 'n'): ?>
+                        <label class="radio inline">
+                            <input type="radio" name="main" value="n" <?= ($person->main == 'n' || $_POST['main'] == 'n' ? 'checked="checked"' : '') ?>/>
+                            No
+                        </label>   
+                    <? endif; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Complaint?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="complaint" value="y" <?= ($person->complaint == 'y' || $_POST['complaint'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="complaint" value="n" <?= ($person->complaint == 'n' || $_POST['complaint'] == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>     
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Service Contact?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="servicecontact" value="y" <?= ($person->servicecontact == 'y' || $_POST['servicecontact'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="servicecontact" value="n" <?= ($person->servicecontact == 'n' || $_POST['servicecontact'] == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>   
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Billing?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="billing" value="y" <?= ($person->billing == 'y' || $_POST['billing'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="billing" value="n" <?= ($person->billing == 'n' || $_POST['billing'] == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>    
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Sales?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="salescontact" value="y" <?= ($person->salescontact == 'y' || $_POST['salescontact'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="salescontact" value="n" <?= ($person->salescontact == 'n' || $_POST['salescontact'] == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>   
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="y" <?= ($person->report == 'y' || $_POST['report'] == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                        <label class="radio inline">
+                            <input type="radio" name="report" value="n" <?= ($person->report == 'n' || $_POST['report'] == 'n' ? 'checked="checked"' : '') ?> />
+                            No
+                        </label>   
+                </div>
+            </div>
+            <!-- Temporary Field -->
+            <div class="control-group">
+
+                <div class="controls">
+                    <input type="hidden" name="complaintassign" value="n" />
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary btn-medium" type="submit"><i class="icon-ok icon-white"></i> Submit</button>
+                <a class="btn btn-medium" href="http://<?= $_SERVER['SERVER_NAME'] ?>/m/business.html"><i class="icon-remove"></i> Cancel</a>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+
+<? include "../../templates/footer.html"; ?>

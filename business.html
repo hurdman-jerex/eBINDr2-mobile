@@ -1,0 +1,45 @@
+<? include "templates/header.html"; ?>
+<? $page = 'info'; include "templates/nav-bar.html"; ?>
+<?  include "templates/business/_container-start.html";?>
+
+<? $_page = isset( $_GET['info'] ) ? $_GET['info'] : ''; ?>
+
+<div class="row-fluid">
+    <div class="span12">
+
+<? switch( $_page ){
+    
+    case 'business-names':
+        include "templates/business/dba.html";    
+    break;
+    case 'rating-accreditation':
+        include "templates/business/rating-accreditation.html";    
+    break;
+    case 'people-contacts':
+        include "templates/business/people-contacts.html";    
+    break;
+    case 'phone-fax':
+        include "templates/business/phone-fax.html";    
+    break;
+    case 'email-website':
+        include "templates/business/email-website.html";    
+    break;
+    case 'address':
+        include "templates/business/address.html";    
+    break;
+    case 'tobs':
+        include "templates/business/tobs.html";    
+    break;
+    
+    default:
+        include "templates/business/basic-info.html";    
+     ?> 
+        
+        <!--<script type="text/javascript">window.location='/m/business-info.html';</script>-->
+<?  break; } ?>
+
+    </div>
+</div>
+          
+<? include "templates/business/_container-end.html"; ?>  
+<? include "templates/footer.html"; ?>

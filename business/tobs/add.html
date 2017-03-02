@@ -1,0 +1,205 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+<script type="text/javascript">
+        
+    function populateTob(tob,search) {
+
+        jQuery.get('/m/api/business/basic/tobs/search/'+search,function(data){
+            var res=jQuery.parseJSON(data);
+            res=res.results;
+            jQuery('#tob').empty();
+            
+            if(res.length==0){
+                jQuery('#tob').append('<option value="">No Results Found</option>');
+            }
+            
+            for(var i=0;i<res.length;i++) {
+                jQuery('#tob').append('<option value="'+res[i].Code+'" '+(tob==res[i].Code?'SELECTED':'')+'>'+res[i].Descriptions+'</option>');
+            }
+        });
+    
+    }
+</script>
+<?
+if (sizeof($_POST) > 0) {
+    
+    foreach($_POST as $key=>$value) {
+        $_POST[$key]=stripslashes($value);
+    }
+    
+    $submit = true;
+    if (strlen($_POST['label']) == 0) {
+        $submit = false;
+        $result['label'] = array(
+            'res' => 'error',
+            'msg' => 'The Label Field is required.'
+        );
+    } else {
+        $result['label'] = array(
+            'res' => 'success',
+            'msg' => ''
+        );
+    }
+
+    if (strlen($_POST['tob']) == 0 || $_POST['tob'] == '') {
+        $submit = false;
+        $result['tob'] = array(
+            'res' => 'error',
+            'msg' => 'Select a valid Type of Business.'
+        );
+    } else {
+        $result['tob'] = array(
+            'res' => 'success',
+            'msg' => ''
+        );
+        ?>
+        <script type="text/javascript">populateTob('<?=$_POST['tob']?>','<?=$_POST['searchtob']?>');</script>
+        <?
+    }
+
+    if ($submit) {
+        $bbapi->set('tob', $_POST['tob']);
+        $bbapi->set('main', $_POST['main']);
+        $bbapi->set('roster', $_POST['roster']);
+        $bbapi->set('cguide', $_POST['cguide']);
+        $bbapi->set('equote', $_POST['equote']);
+        $bbapi->set('label', $_POST['label']);
+
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/tobs/add/' . $_SESSION['bid'];
+        $bbapi->post($url);
+        ?>
+        <script type="text/javascript">window.location='/m/business.html'</script>
+        <?
+    }
+}
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>New Business</legend>
+
+            <div class="control-group">
+                <label class="control-label">Search</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <input type="text" id="searchtob" name="searchtob" value="" class="input-large"/><button type="button" class="btn" id="search" onclick="searchTob();"><i class="icon-search"></i></button>
+                        <span id="loader">&nbsp;&nbsp;<img src="/m/assets/img/159.gif" alt="searching..." height="25"/> Searching...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group" id="tob-control-group">
+                <label class="control-label">Type of Business</label>
+                <div class="controls">
+                    <select name="tob" id="tob" class="input-xlarge">
+                        <option value="">- Search Type of Business -</option>
+                    </select>
+                    <span class="help-inline"><?= $result['tob']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y"  />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="n" checked="checked"/>
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Roster?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="roster" value="y" checked="checked" />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="roster" value="n" />
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">CGuide?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="cguide" value="y" checked="checked" />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="cguide" value="n" />
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">eQuote?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="equote" value="y" checked="checked" />
+                        Yes
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="equote" value="n" />
+                        No
+                    </label>       
+                </div>
+            </div>
+
+            <div class="control-group <?= $result['label']['res'] ?>">
+                <label class="control-label">Label</label>
+                <div class="controls">
+                    <input type="text" name="label" value="<?= ($result['label']['res'] == 'success' ? '' . $_POST['label'] : '') ?>" class="input-large"/>
+                    <span class="help-inline"><?= $result['label']['msg'] ?></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <a href="/m/business.html" class="btn">Cancel</a>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+    
+    
+    jQuery('#searchtob').keypress(function(e){
+        if (e.keyCode == '13') {
+            e.preventDefault();
+            searchTob();
+        }
+
+    });
+    
+    jQuery('#loader').hide();
+    function searchTob() {
+        jQuery('#loader').fadeIn(500);
+        jQuery.get('/m/api/business/basic/tobs/search/'+jQuery('#searchtob').val(),function(data){
+            var res=jQuery.parseJSON(data);
+            res=res.results;
+            jQuery('#tob').empty();
+            
+            if(res.length==0){
+                jQuery('#tob').append('<option value="">No Results Found</option>');
+            }
+            
+            for(var i=0;i<res.length;i++) {
+                jQuery('#tob').append('<option value="'+res[i].Code+'">'+res[i].Descriptions+'</option>');
+            }
+        });
+        jQuery('#loader').fadeOut(500);
+    }
+</script>
+<? include "../../templates/footer.html"; ?>

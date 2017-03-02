@@ -1,0 +1,62 @@
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#"><b style="color: #fff;">eBINDr</b> Mobile</a>
+              <div class="dropdown btn-group pull-right">
+              	<a class="dropdown-toggle btn" data-toggle="dropdown"><i class="icon-user"></i> <?=$_SESSION['username']?> <b class="caret"></b></a>
+              	<ul class="dropdown-menu">
+					<li><a href="/m/sign-out.html">Sign Out</a></li>
+				</ul>
+			</div>
+
+        
+
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li <? if( $page == 'search' ) { ?> class="active" <? } ?>><a alt="Search" href="/m/index.html">Search</a></li>
+							
+              <li <? if( $page == 'info' ) { ?> class="active" <? } ?> class="dropdown">
+                                
+                  <a class="dropdown-toggle" href="/m/business.html" data-toggle="dropdown">Business <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                                    <? if (securityCheck('/^b/', true)) { ?>
+                      <li><a alt="Record Information" href="/m/business.html">Record Information</a></li>
+                                    <? } ?>
+                                    <? if (securityCheck('/^c/', true)) { ?>
+                      <li><a alt="Complaints" href="/m/business/complaints.html">Complaints</a></li>
+                                    <? } ?>
+                      <li><a alt="Rating" href="/m/business/ratings.html">Rating</a></li>
+                                    <? if (securityCheck('bj') || securityCheck('b*')) { ?>
+                      <li><a alt="Journal" href="/m/business/journal.html">Journal</a></li>
+                                    <? } ?>
+                                    <? if (securityCheck('bs') || securityCheck('b*')) { ?>
+                      <li><a alt="Sales" href="/m/business/sales.html">Sales</a></li>
+                                    <? } ?>
+                                    <? if (securityCheck('bg') || securityCheck('b*')) { ?>
+                      <li><a alt="General" href="/m/business/general.html">General</a></li>
+                                    <? } ?>
+                                    <? if (securityCheck('is') || securityCheck('i*')) { ?>
+                      <li><a alt="Snapshot" href="/m/business/snapshot.html">Snapshot</a></li>
+                                    <? } ?>
+                      <li class="divider"></li>
+                      <li class="force_update"><a alt="Force Update" href="#">Force Update</a></li>
+                  </ul>
+                  
+              </li>
+              
+              <? if (securityCheck('is') || securityCheck('i*')) { ?>
+              <li <? if( $page == 'reports' ) { ?> class="active" <? } ?>><a alt="Reports" href="/m/reports.html">Reports</a></li>
+              
+              <? } ?>
+							
+              <li <? if( $page == 'abnearme' ) { ?> class="active" <? } ?>><a href="/m/abnearme.html">AB Near Me &trade;</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>

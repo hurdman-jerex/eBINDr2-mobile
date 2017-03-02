@@ -1,0 +1,373 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+
+<?
+$type = 'Email';
+
+function arr_stripslashes($array = array()) {
+    foreach ($array as $key => $value) {
+        if (is_object($array)) {
+            $array->$key = stripslashes($value);
+        } else if (is_array($array)) {
+            $array[$key] = stripslashes($value);
+            ;
+        }
+    }
+}
+
+if ($_GET['type'] == 'email') {
+    $type = 'Email';
+
+    $url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/basic/email/get/" . $_SESSION['bid'] . '/' . $_GET['id'];
+    $email = json_decode($bbapi->get($url));
+    $email = $email->results;
+    $email = $email[0];
+
+    arr_stripslashes($email);
+
+    $url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/basic/person/listing/" . $_SESSION['bid'];
+    $people = json_decode($bbapi->get($url));
+    $people = $people->results;
+
+    arr_stripslashes($people);
+} else if ($_GET['type'] == 'website') {
+    $type = 'Website';
+
+    $url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/basic/website/get/" . $_SESSION['bid'] . '/' . $_GET['id'];
+    $website = json_decode($bbapi->get($url));
+    $website = $website->results;
+    $website = $website[0];
+
+    arr_stripslashes($website);
+}
+
+
+if (sizeof($_POST) > 0) {
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+
+    if ($type == 'Email') {
+        $submit = true;
+        if (strlen($_POST['email']) <= 0) {
+            $submit = false;
+            $validation['email'] = array(
+                'result' => 'error',
+                'msg' => 'Email field is required.',
+                'value' => $_POST['email']
+            );
+        } else {
+            $validation['email'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['email']
+            );
+        }
+
+        if ($submit) {
+
+            $bbapi->set('email', $_POST['email']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('eQuote', $_POST['eQuote']);
+            $bbapi->set('massemail', $_POST['massemail']);
+            $bbapi->set('returned', $_POST['returned']);
+            $bbapi->set('AssignEmail', $_POST['AssignEmail']);
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/email/edit/' . $_SESSION['bid'] . '/' . $_GET['id'];
+            $bbapi->post($url);
+        }
+    } else if ($type == 'Website') {
+
+        $submit = true;
+        if (strlen($_POST['url']) <= 0) {
+            $submit = false;
+            $validation['url'] = array(
+                'result' => 'error',
+                'msg' => 'URL field is required.',
+                'value' => $_POST['url']
+            );
+        } else {
+            $validation['url'] = array(
+                'result' => 'success',
+                'msg' => '',
+                'value' => $_POST['url']
+            );
+        }
+
+        if ($submit) {
+            $bbapi->set('url', $_POST['url']);
+            $bbapi->set('label', $_POST['label']);
+            $bbapi->set('main', $_POST['main']);
+            $bbapi->set('report', $_POST['report']);
+            $bbapi->set('cguide', $_POST['cguide']);
+            $bbapi->set('facebook', $_POST['facebook']);
+            $bbapi->set('twitter', $_POST['twitter']);
+            $bbapi->set('inactive', $_POST['inactive']);
+            $bbapi->set('bbbonline', $_POST['bbbonline']);
+            $bbapi->set('ratingadvertised', $_POST['ratingadvertised']);
+            $bbapi->set('displayurl', $_POST['displayurl']);
+
+            $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/website/edit/' . $_SESSION['bid'] . '/' . $_GET['id'];
+            $bbapi->post($url);
+        }
+    }
+
+    if ($submit) {
+        ?>
+        <script type="text/javascript">window.location='/m/business.html';</script>
+        <?
+    }
+}
+?>
+
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>Edit <?= $type ?></legend>
+
+            <?php if ($type == 'Website'): ?>
+                <div class="control-group <?= $validation['url']['result'] ?>">
+                    <label class="control-label">URL</label>
+                    <div class="controls">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            $wurl = $_POST['url'];
+                        } else {
+                            $wurl = $website->url;
+                        }
+                        ?>
+                        <input type="text" name="url" class="input-xlarge" value="<?= $wurl ?>"/>
+                        <span class="help-inline"><?= $validation['url']['msg'] ?></span>
+                    </div>
+                </div>
+            <? endif; ?>
+
+            <?php if ($type == 'Email'): ?>
+                <div class="control-group <?= $validation['email']['result'] ?>">
+                    <label class="control-label">Email</label>
+                    <div class="controls">
+                        <?
+                        if (sizeof($_POST) > 0) {
+                            $email_value = $_POST['email'];
+                        } else {
+                            $email_value = $email->email;
+                        }
+                        ?>
+                        <input type="text" name="email" class="input-xlarge" value="<?= $email_value ?>"/>
+                        <span class="help-inline"><?= $validation['email']['msg'] ?></span>
+                    </div>
+                </div>
+            <? endif; ?>
+
+            <div class="control-group">
+                <label class="control-label">Label</label>
+                <div class="controls">
+                    <?php
+                    if (sizeof($_POST) > 0) {
+                        $lbl = $_POST['label'];
+                    } else {
+                        if ($_GET['type'] == 'email') {
+                            $lbl = $email->label;
+                        } else if ($_GET['type'] == 'website') {
+                            $lbl = $website->label;
+                        }
+                    }
+                    ?>
+                    <input type="text" name="label" class="input-xlarge" value="<?= $lbl ?>"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Primary?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="main" value="y" <?= ($email->main == 'y' || $website->main == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+                    <? if ($email->main == 'n' || $website->main == 'n'): ?>
+                        <label class="radio inline">
+                            <input type="radio" name="main" value="n" <?= ($email->main == 'n' || $website->main == 'n' ? 'checked="checked"' : '') ?>/>
+                            No
+                        </label>       
+                    <? endif; ?>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Report?</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="report" value="y" <?= ($email->report == 'y' || $website->report == 'y' ? 'checked="checked"' : '') ?> />
+                        Yes
+                    </label>
+
+                        <label class="radio inline">
+                            <input type="radio" name="report" value="n" <?= ($email->report == 'n' || $website->report == 'n' ? 'checked="checked"' : '') ?>/>
+                            No
+                        </label>     
+
+                </div>
+            </div>
+
+            <?php if ($type == 'Website'): ?>
+                <div class="control-group">
+                    <label class="control-label">C Guide?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="cguide" value="y" <?= ($website->cguide == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+
+                            <label class="radio inline">
+                                <input type="radio" name="cguide" value="n" <?= ($website->cguide == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>   
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Facebook?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="facebook" value="y" <?= ($website->facebook == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="facebook" value="n" <?= ($website->facebook == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>   
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Twitter?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="twitter" value="y" <?= ($website->twitter == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="twitter" value="n" <?= ($website->twitter == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>     
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Inactive?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="inactive" value="y"  <?= ($website->inactive == 'y' ? 'checked="checked"' : '') ?>/>
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="inactive" value="n" <?= ($website->inactive == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>   
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">BBB Online?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="bbbonline" value="y" <?= ($website->bbbonline == 'y' ? 'checked="checked"' : '') ?>/>
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="bbbonline" value="n" <?= ($website->bbbonline == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>    
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Rating Advertised?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="ratingadvertised" value="y" <?= ($website->ratingadvertised == 'y' ? 'checked="checked"' : '') ?>/>
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="ratingadvertised" value="n" <?= ($website->ratingadvertised == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>   
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Display URL</label>
+                    <div class="controls">
+                        <input type="text" name="displayurl" class="input-xlarge" value="<?= $website->displayurl ?>"/>
+                    </div>
+                </div>
+            <? endif; ?>
+
+            <?php if ($type == 'Email'): ?>
+                <div class="control-group">
+                    <label class="control-label">eQuote?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="eQuote" value="y" <?= ($email->equote == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="eQuote" value="n" <?= ($email->equote == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>      
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label">Mass Email?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="massemail" value="y" <?= ($email->massemail == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="massemail" value="n" <?= ($email->massemail == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>     
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Returned?</label>
+                    <div class="controls">
+                        <label class="radio inline">
+                            <input type="radio" name="returned" value="y" <?= ($email->returned == 'y' ? 'checked="checked"' : '') ?> />
+                            Yes
+                        </label>
+                            <label class="radio inline">
+                                <input type="radio" name="returned" value="n" <?= ($email->returned == 'n' ? 'checked="checked"' : '') ?>/>
+                                No
+                            </label>    
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Assign Email</label>
+                    <div class="controls">
+                        <select name="AssignEmail">
+                            <option value="">Not assigned</option>
+                            <? foreach ($people as $person): ?>
+                                <option value="<?= $person->pid ?>" <?=$email->pid==$person->pid?'SELECTED':''?>><?= $person->firstname ?> <?= $person->lastname ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            <? endif; ?>
+
+            <div class="form-actions">
+                <button class="btn btn-primary btn-medium"><i class="icon-ok icon-white"></i> Submit</button>
+                <a class="btn btn-medium" href="/m/business.html"><i class="icon-remove"></i> Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<? include "../../templates/footer.html"; ?>

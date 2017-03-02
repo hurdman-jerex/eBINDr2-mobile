@@ -1,0 +1,203 @@
+<h3>Consumer Info:</h3>
+<div class="control-group">
+    <label class="control-label" for="AssociatedBusinessName">Business Name: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="AssociatedBusinessName" name="AssociatedBusinessName" value="<?=$complaint->AssociatedBusinessName?>">
+    </div>
+</div>
+<div class="control-group">
+                  <label class="control-label" for="PreName">PreName:</label>
+                  <div class="controls">
+                  <select id="PreName" name="PreName" class="span1">
+                    <option value=""></option>
+                    <option <?=( ($complaint->PreName == 'Mr.') ? "selected='selected'" : '' )?> value="Mr.">Mr.</option>
+                    <option <?=( ($complaint->PreName == 'Ms.') ? "selected='selected'" : '' )?> value="Ms.">Ms.</option>
+                    <option <?=( ($complaint->PreName == 'Mrs.') ? "selected='selected'" : '' )?> value="Mrs.">Mrs.</option>
+                    <option <?=( ($complaint->PreName == 'Miss.') ? "selected='selected'" : '' )?> value="Miss.">Miss.</option>
+                    <option <?=( ($complaint->PreName == 'Attorney') ? "selected='selected'" : '' )?> value="Attorney">Attorney</option>
+                    <option <?=( ($complaint->PreName == 'Dr.') ? "selected='selected'" : '' )?> value="Dr.">Dr.</option>
+                    <option <?=( ($complaint->PreName == 'Admiral') ? "selected='selected'" : '' )?> value="Admiral">Admiral</option>
+                    <option <?=( ($complaint->PreName == 'Ambassador') ? "selected='selected'" : '' )?> value="Ambassador">Ambassador</option>
+                    <option <?=( ($complaint->PreName == 'Baroness') ? "selected='selected'" : '' )?> value="Baroness">Baroness</option>
+                    <option <?=( ($complaint->PreName == 'Brig General') ? "selected='selected'" : '' )?> value="Brig General">Brig General</option>
+                    <option <?=( ($complaint->PreName == 'Brother') ? "selected='selected'" : '' )?> value="Brother">Brother</option>
+                    <option <?=( ($complaint->PreName == 'Captain') ? "selected='selected'" : '' )?> value="Captain">Captain</option>
+                    <option <?=( ($complaint->PreName == 'Chef') ? "selected='selected'" : '' )?> value="Chef">Chef</option>
+                    <option <?=( ($complaint->PreName == 'Colonel') ? "selected='selected'" : '' )?> value="Colonel">Colonel</option>
+                    <option <?=( ($complaint->PreName == 'Deacon') ? "selected='selected'" : '' )?> value="Deacon">Deacon</option>
+                    <option <?=( ($complaint->PreName == 'Father') ? "selected='selected'" : '' )?> value="Father">Father</option>
+                    <option <?=( ($complaint->PreName == 'General') ? "selected='selected'" : '' )?> value="General">General</option>
+                    <option <?=( ($complaint->PreName == 'Governor') ? "selected='selected'" : '' )?> value="Governor">Governor</option>
+                    <option <?=( ($complaint->PreName == 'Judge') ? "selected='selected'" : '' )?> value="Judge">Judge</option>
+                    <option <?=( ($complaint->PreName == 'Lady') ? "selected='selected'" : '' )?> value="Lady">Lady</option>
+                    <option <?=( ($complaint->PreName == 'Major') ? "selected='selected'" : '' )?> value="Major">Major</option>
+                    <option <?=( ($complaint->PreName == 'Master') ? "selected='selected'" : '' )?> value="Master">Master</option>
+                    <option <?=( ($complaint->PreName == 'Mayor') ? "selected='selected'" : '' )?> value="Mayor">Mayor</option>
+                    <option <?=( ($complaint->PreName == 'Padre') ? "selected='selected'" : '' )?> value="Padre">Padre</option>
+                    <option <?=( ($complaint->PreName == 'Pastor') ? "selected='selected'" : '' )?> value="Pastor">Pastor</option>
+                    <option <?=( ($complaint->PreName == 'Princess') ? "selected='selected'" : '' )?> value="Princess">Princess</option>
+                    <option <?=( ($complaint->PreName == 'Professor') ? "selected='selected'" : '' )?> value="Professor">Professor</option>
+                    <option <?=( ($complaint->PreName == 'Rabbi') ? "selected='selected'" : '' )?> value="Rabbi">Rabbi</option>
+                    <option <?=( ($complaint->PreName == 'Reverend') ? "selected='selected'" : '' )?> value="Reverend">Reverend</option>
+                    <option <?=( ($complaint->PreName == 'Senator') ? "selected='selected'" : '' )?> value="Senator">Senator</option>
+                    <option <?=( ($complaint->PreName == 'Sergeant') ? "selected='selected'" : '' )?> value="Sergeant">Sergeant</option>
+                    <option <?=( ($complaint->PreName == 'Sir') ? "selected='selected'" : '' )?> value="Sir">Sir</option>
+                    <option <?=( ($complaint->PreName == 'Sister') ? "selected='selected'" : '' )?> value="Sister">Sister</option>
+                    <option <?=( ($complaint->PreName == 'The Honorable') ? "selected='selected'" : '' )?> value="The Honorable">The Honorable</option>
+                    <option <?=( ($complaint->PreName == 'Viscount') ? "selected='selected'" : '' )?> value="Viscount">Viscount</option>
+                    <option <?=( ($complaint->PreName == 'Viscountess') ? "selected='selected'" : '' )?> value="Viscountess">Viscountess</option>
+                  </select> 
+                  </div>
+              </div>
+              
+<div class="control-group">
+    <label class="control-label" for="FirstName">First Name: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="FirstName" name="FirstName" value="<?=$complaint->FirstName?>">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="LastName">Last Name: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="LastName" name="LastName" value="<?=$complaint->LastName?>">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="PostName">Post Name: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="PostName" name="PostName" value="<?=$complaint->PostName?>">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="HomePhone">Home Phone: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="HomePhone" name="HomePhone" value="<?=$complaint->HomePhone?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="WorkPhone">Work Phone: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="WorkPhone" name="WorkPhone" value="<?=$complaint->WorkPhone?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="CellPhone">Cell Phone: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="CellPhone" name="CellPhone" value="<?=$complaint->CellPhone?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="Fax">Fax: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="Fax" name="Fax" value="<?=$complaint->Fax?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="Email">Email Address: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="Email" name="Email" value="<?=$complaint->Email?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="Street1">Street1: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="Street1" name="Street1" value="<?=$complaint->Street1?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="Street2">Street2: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="Street2" name="Street2" value="<?=$complaint->Street2?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="PostalCode">Zip: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="PostalCode" name="PostalCode" value="<?=$complaint->PostalCode?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="City">City: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="City" name="City" value="<?=$complaint->City?>">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="StateProv">State: </label>
+    <div class="controls">
+        <select id="StateProv" name="StateProv" class="input-xlarge">
+            <?php foreach ($stateprovs as $stateprov): ?>
+                <option value="<?= $stateprov->code ?>" <?=( ($stateprov->code == $complaint->StateProv) ? "selected='selected'" : '') ?>><?= $stateprov->name ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+<!-- Certification
+<div class="control-group">
+    <label class="control-label" for="Certification">Certification: </label>
+    <div class="controls">
+        <a href="#">Click here to certify this address</a>
+    </div>
+</div>
+-->
+<div class="control-group">
+    <label class="control-label" for="control-label">Senior: </label>
+    <div class="controls">
+        <label class="radio">
+            <input <?=( ($complaint->Senior == '') ? 'checked="checked"' : '' )?> name="Senior" value="" type="radio"> Unknown
+        </label>
+        <label class="radio">
+            <input <?=( ($complaint->Senior == 'y') ? 'checked="checked"' : 'y' )?> name="Senior" value="y" type="radio"> Yes
+        </label>
+        <label class="radio">
+            <input <?=( ($complaint->Senior == 'n') ? 'checked="checked"' : 'n' )?> name="Senior" value="n" type="radio"> No
+        </label>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="MilitaryAffiliate">MilitaryAffiliate: </label>
+    <div class="controls">
+        <select id="MilitaryAffiliate" name="MilitaryAffiliate" class="input-xlarge">
+            <option <?=( ($complaint->MilitaryAffiliate == '') ? "selected='selected'" : '' )?> value="">Unknown</option>
+            <option <?=( ($complaint->MilitaryAffiliate == 'y') ? "selected='selected'" : '' )?> value="y">Yes</option>
+            <option <?=( ($complaint->MilitaryAffiliate == 'n') ? "selected='selected'" : '' )?> value="n">No</option>
+        </select>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="Ethnicity">Ethnicity: </label>
+    <div class="controls">
+        <select id="Ethnicity" name="Ethnicity" class="input-xlarge">
+            <option <?=( ($complaint->Ethnicity == '') ? "selected='selected'" : '' )?> value="">--- Please select from the list ---</option>
+            <option <?=( ($complaint->Ethnicity == 'i') ? "selected='selected'" : '' )?> value="i">American Indian or Alaska Native</option>
+            <option <?=( ($complaint->Ethnicity == 'a') ? "selected='selected'" : '' )?> value="a">Asian</option>
+            <option <?=( ($complaint->Ethnicity == 'b') ? "selected='selected'" : '' )?> value="b">Black or African American</option>
+            <option <?=( ($complaint->Ethnicity == 'h') ? "selected='selected'" : '' )?> value="h">Hispanic</option>
+            <option <?=( ($complaint->Ethnicity == 'p') ? "selected='selected'" : '' )?> value="p">Native Hawaiian or Other Pacific Islander</option>
+            <option <?=( ($complaint->Ethnicity == 'w') ? "selected='selected'" : '' )?> value="w">White</option>
+        </select>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="control-label">Senior: </label>
+    <div class="controls">
+        <label class="radio">
+            <input <?=( ($complaint->SendBy == 'e') ? "checked='checked'" : '' )?> name="SendBy" value="e" type="radio"> Email
+            </label>
+        <label class="radio">
+            <input <?=( ($complaint->SendBy == 'f') ? "checked='checked'" : '' )?> name="SendBy" value="f" type="radio"> Fax
+            </label>
+        <label class="radio">
+            <input <?=( ($complaint->SendBy == 'm') ? "checked='checked'" : '' )?> name="SendBy" value="m" type="radio"> Mail
+        </label>
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="webpassword">WebPassword: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="webpassword" name="webpassword" value="<?=$complaint->webpassword?>">
+    </div>
+</div>

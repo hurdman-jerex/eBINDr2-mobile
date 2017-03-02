@@ -1,0 +1,55 @@
+<h3>
+Business Names (DBA) 
+    <? if ( ( securityCheck('b@') || ( securityCheck('b*') && !securityCheck('b@') ) ) || ( securityCheck('bn') || ( securityCheck('b*') && !securityCheck('bn') ) ) ) { ?>
+        <a alt="Add New Business Name" style="float: right;" href="/m/business/dba/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <? } ?>
+</h3>
+
+<?
+$url = "http://".$_SERVER['SERVER_NAME']."/m/api/business/basic/dba2/listing/" . $_SESSION['bid'];
+$api = json_decode($bbapi->get($url));
+$dbas = $api->results;
+
+//var_dump( $dbas );
+?>
+
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>RankID</th>
+            <th>VRS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <? if( $api->rows == 0 ): ?>
+            <tr>
+                <td colspan="4">No Business Names yet...</td>
+            </tr>
+        <? else: foreach( $dbas as $dba ): ?>
+        <? //echo '<pre>'.print_r( $dba, true ).'</pre>'; ?>
+            <tr alt="Business Name Information" class="clickable" id="<?=$dba->DID?>">
+                <td><?=stripslashes($dba->Name)?>
+                    <? if( $dba->Main == 'y' ): ?><span class="badge badge-important">Primary</span><? endif; ?>
+                    <? if( $dba->Report == 'y' ): ?><span class="badge badge-success">Report</span><? endif; ?>
+                    <? if( $dba->Legal == 'y' ): ?><span class="badge badge-warning">Legal</span><? endif; ?>
+                    <? if( $dba->CGuide == 'y' ): ?><span class="badge">CGuide</span><? endif; ?>
+                    <? if( $dba->Billing == 'y' ): ?><span class="badge badge-info">Billing</span><? endif; ?>
+                </td>
+                <td><?=stripslashes($dba->Label)?></td>
+                <td><?=$dba->RankID?></td>
+                <td><?=$dba->Vrs?></td>
+            </tr>
+        <? endforeach; ?>
+        <? endif; ?>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+<? if (securityCheck('bn') || ( securityCheck('b*') && !securityCheck('bn') ) ) { ?>
+    jQuery('.clickable').click(function(){
+        window.location='/m/business/dba/edit.html?did='+this.id;
+    });
+<? } ?>
+</script>

@@ -1,0 +1,118 @@
+<?php 
+include "../templates/header.html"; 
+include "../templates/nav-bar.html"; 
+$page = 'ratings'; 
+include "../templates/business/_container-start.html"; 
+
+//get rating values via api
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/ratings/get/' . $_SESSION['bid'];
+$ratings = json_decode($bbapi->post($url));
+$ratings = $ratings->results;
+$ratings = $ratings[0];
+
+//echo "<!--";
+//print_r(json_decode($bbapi->post($url)));
+//echo "-->";
+//foreach ($ratings as $key => $rating) {
+//	echo "<br/> [" . $key . "]" . $rating;
+//}
+
+?>
+<style type="text/css">
+p.help-block.adjust { margin-top: 5px;} label.control-label { font-weight: bold; }
+</style>
+
+<h2><a alt="Business Rating" href="/m/business/ratings.html" class="btn btn-info" style="font-size: 40px;"><?=$ratings->Row1;?></a> Current Rating</h2>
+
+<form class="form-horizontal">
+  <fieldset>
+
+		<div class="control-group"><?=$ratings->Row3;?></div>
+    <legend>Business Size</legend>
+		
+    <div class="control-group">
+    	<label class="control-label">Size of Company</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->companysize;?>.</p></div>			
+    </div>
+    <div class="control-group">
+    	<label class="control-label">Size determined by</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->sizecompdet;?></p></div> 
+			<?=$ratings->Row5;?>
+    </div>
+    <legend>Rating Sub-Scores</legend>
+    <div class="control-group">
+    	<label class="control-label">TOB Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->TOBScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Time in Business Score (8)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->TimeInBusinessScore;?></p></div>			
+    </div>		
+    <div class="control-group">
+    	<label class="control-label">License Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->LicenseScore;?></p></div>			
+    </div>		
+    <div class="control-group">
+    	<label class="control-label">Complaint Volume Score (20)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->TotalComplaintScore;?></p></div>			
+    </div>
+    <div class="control-group">
+    	<label class="control-label">Unanswered Complaint Score (20)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->UnansweredScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Unresolved Complaint Score (10)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->UnresolvedScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Serious Complaint Score (15)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->SeriousScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Complaint Analysis Score (8)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->TotalUnsatScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Complaint Resolution Delayed Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->DelayedScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Failure to Address Complaint Pattern Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->PatternScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Government Action Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->GovernmentScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Ad Review Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->AdReviewScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Background Information Score (5)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->BackgroundScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Failure to comply with/hold an Arbitration Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->ArbitrationScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Clear Understanding Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->UnderstandingScore;?></p></div>			
+    </div>	
+    <div class="control-group">
+    	<label class="control-label">Revocation Terminated Score (0)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->TermScore;?></p></div>			
+    </div>			
+    <div class="control-group">
+    	<label class="control-label">AB Score (4)</label>
+    	<div class="controls"><p class="help-block adjust"><?=$ratings->ABScore;?></p></div>			
+    </div>
+  </fieldset>
+</form>
+<script>
+//to check if data has red font
+jQuery('.control-group').has('.controls').has('font').children().css('color', 'red');
+</script>          
+<? include "../templates/business/_container-end.html"; ?>  
+<? include "../templates/footer.html"; ?>

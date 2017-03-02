@@ -1,0 +1,338 @@
+<h3>General Complaint Info:</h3>
+
+<div class="control-group">
+    <label class="control-label" for="OpenDate">OpenDate:</label>
+    <div class="controls">
+        <input name="OpenDate" id="OpenDate" class="input-medium datepicker" type="text" value="<?=$complaint->OpenDate?>" />
+        <i class="icon-calendar" style="margin: 2px 0 0 -22.5px; pointer-events: none; position: relative;"></i>
+    </div>
+</div>
+<div style="height:220px; width:100%;" class="OpenDateDspace">&nbsp;</div>
+
+<div class="control-group">
+    <label class="control-label" for="OpenedBy">OpenedBy: </label>
+    <div class="controls">
+        <select id="OpenedBy" name="OpenedBy" class="input-xlarge">
+            <?php foreach ($staffs as $staff): ?>
+                <option value="<?= $staff->initials ?>" <?=( ($staff->initials == $complaint->OpenedBy ) ? "selected='selected'" : '') ?>><?=$staff->username ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="AssignedTo">AssignedTo: </label>
+    <div class="controls">
+        <select id="AssignedTo" name="AssignedTo" class="input-xlarge">
+            <?php foreach ($staffs as $staff): ?>
+                <option value="<?= $staff->initials ?>" <?=($staff->initials == $complaint->AssignedTo ? 'SELECTED' : '') ?>><?=$staff->username ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="CloseDate">CloseDate:</label>
+    <div class="controls">
+        <input name="CloseDate" id="CloseDate" class="input-medium datepicker" type="text" value="<?=$complaint->CloseDate?>" />
+        <i class="icon-calendar" style="margin: 2px 0 0 -22.5px; pointer-events: none; position: relative;"></i>
+    </div>
+</div>
+<div style="height:220px; width:100%;" class="CloseDateDspace">&nbsp;</div>
+
+<div class="control-group">
+    <label class="control-label" for="CloseCode">CloseCode: </label>
+    <div class="controls">
+        <select id="CloseCode" name="CloseCode" class="input-xlarge">
+            <?php foreach ($closeCode as $code): ?>
+                <option value="<?= $code->code ?>" <?=($code->code == $complaint->CloseCode ? 'SELECTED' : '') ?>><?=$code->description ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="SubCloseCode">Close Code Reason: </label>
+    <div class="controls">
+        <strong><?=$subCloseCodeInfo[0]->description;?></strong>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="ClosedBy">ClosedBy: </label>
+    <div class="controls">
+        <select id="ClosedBy" name="ClosedBy" class="input-xlarge">
+            <?php foreach ($staffs as $staff): ?>
+                <option value="<?= $staff->initials ?>" <?=( ($staff->initials == $complaint->ClosedBy ) ? "selected='selected'" : '') ?>><?=$staff->username ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="control-label">Type: </label>
+    <div class="controls">
+        <?php foreach ($types as $type): ?>
+            <label class="radio"><input <?=( ( $type->code == $complaint->Type ) ? "checked='checked'" : '' )?> name="Type" value="<?=$type->code?>" type="radio"> <?=$type->description ?></label>
+        <? endforeach; ?>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="Source">Source: </label>
+    <div class="controls">
+        <select id="Source" name="Source" class="input-xlarge">
+            <option <?=( ($complaint->Source == '') ? "selected='selected'" : '' )?> value="">Other</option>
+            <option <?=( ($complaint->Source == 'Web') ? "selected='selected'" : '' )?> value="Web">Web</option>
+            <option <?=( ($complaint->Source == 'Email') ? "selected='selected'" : '' )?> value="Email">Email</option>
+            <option <?=( ($complaint->Source == 'Council') ? "selected='selected'" : '' )?> value="Council">Council</option>
+            <option <?=( ($complaint->Source == 'Mail') ? "selected='selected'" : '' )?> value="Mail">Mail</option>
+            <option <?=( ($complaint->Source == 'Phone') ? "selected='selected'" : '' )?> value="Phone">Phone</option>
+            <option <?=( ($complaint->Source == 'Fax') ? "selected='selected'" : '' )?> value="Fax">Fax</option>
+            <option <?=( ($complaint->Source == 'In Person') ? "selected='selected'" : '' )?> value="In Person">In Person</option>
+            <option <?=( ($complaint->Source == 'Attorney General') ? "selected='selected'" : '' )?> value="Attorney General">Attorney General</option>
+            <option <?=( ($complaint->Source == 'Other Bureau') ? "selected='selected'" : '' )?> value="Other Bureau">Other Bureau</option>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="control-label">Complaint Type: </label>
+    <div class="controls">
+        <?php foreach ($concernings as $concerning): ?>
+            <label class="radio"><input <?=( ( $concerning->Code == $complaint->Concerning ) ? "checked='checked'" : '' )?> name="Concerning" value="<?=$concerning->Code?>" type="radio"> <?=$concerning->Description ?></label>
+        <? endforeach; ?>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="SubCloseCode">Concerning Reason: </label>
+    <div class="controls">
+        <strong><?=$subConcerningInfo[0]->description;?></strong>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="Source">Source: </label>
+    <div class="controls">
+        <select id="Source" name="Source" class="input-xlarge">
+            <option <?=( ($complaint->Source == '') ? "selected='selected'" : '' )?> value="">Other</option>
+            <option <?=( ($complaint->Source == 'Web') ? "selected='selected'" : '' )?> value="Web">Web</option>
+            <option <?=( ($complaint->Source == 'Email') ? "selected='selected'" : '' )?> value="Email">Email</option>
+            <option <?=( ($complaint->Source == 'Council') ? "selected='selected'" : '' )?> value="Council">Council</option>
+            <option <?=( ($complaint->Source == 'Mail') ? "selected='selected'" : '' )?> value="Mail">Mail</option>
+            <option <?=( ($complaint->Source == 'Phone') ? "selected='selected'" : '' )?> value="Phone">Phone</option>
+            <option <?=( ($complaint->Source == 'Fax') ? "selected='selected'" : '' )?> value="Fax">Fax</option>
+            <option <?=( ($complaint->Source == 'In Person') ? "selected='selected'" : '' )?> value="In Person">In Person</option>
+            <option <?=( ($complaint->Source == 'Attorney General') ? "selected='selected'" : '' )?> value="Attorney General">Attorney General</option>
+            <option <?=( ($complaint->Source == 'Other Bureau') ? "selected='selected'" : '' )?> value="Other Bureau">Other Bureau</option>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="delayedresponse">Delayed Response: </label>
+    <div class="controls">
+        <select id="delayedresponse" name="delayedresponse" class="input-xlarge">
+            <option <?=( ($complaint->DelayedResponseOverride == '') ? "selected='selected'" : '' )?> value="no">No (auto-calculated)</option>
+            <option <?=( ($complaint->DelayedResponseOverride == 1) ? "selected='selected'" : '' )?> value="override_yes">Override - Yes</option>
+            <option <?=( ($complaint->DelayedResponseOverride == 0) ? "selected='selected'" : '' )?> value="override_noall">Override - No (all delayed complaints)</option>
+            <option value="default_all">Auto-calculate (for all complaints)</option>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="control-label">Serious (Internal Only)?: </label>
+    <div class="controls">
+        <label class="radio">
+            <input <?=( ($complaint->Serious == 'e') ? "checked='checked'" : '' )?> name="Serious" value="y" type="radio"> Yes
+            </label>
+        <label class="radio">
+            <input <?=( ($complaint->Serious == 'f') ? "checked='checked'" : '' )?> name="Serious" value="n" type="radio"> No
+            </label>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="SeriousReason">Serious Reason (Internal Only): </label>
+    <div class="controls">
+        <select id="SeriousReason" name="SeriousReason" class="input-xlarge">
+            <?php foreach ($seriousReasons as $seriousReason): ?>
+                <option value="<?= $seriousReason->code ?>" <?=( ($seriousReason->code == $complaint->SeriousReason ) ? "selected='selected'" : '') ?>><?=$seriousReason->code?> - <?=$seriousReason->description ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="NatureOfDispute">NatureOfDispute:</label>
+    <div class="controls">
+        <textarea id="NatureOfDispute" name="NatureOfDispute" rows="5"><?=$complaint->NatureOfDispute?></textarea>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="SettlementDesired">Resolution Desired: </label>
+    <div class="controls">
+        <select id="SettlementDesired" name="SettlementDesired" class="input-xlarge">
+            <?php foreach ($settlementDesired as $desired): ?>
+                <option value="<?= $desired->code ?>" <?=( ($desired->code == $complaint->SettlementDesired ) ? "selected='selected'" : '') ?>><?=$desired->code?> - <?=$desired->description ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="DesiredResolution">Desired Resolution detail:</label>
+    <div class="controls">
+        <textarea id="DesiredResolution" name="DesiredResolution" rows="5"><?=$complaint->DesiredResolution?></textarea>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="ComplaintDate1">Most recent date contacted business:</label>
+    <div class="controls">
+        <input name="ComplaintDate1" id="ComplaintDate1" class="input-medium datepicker" type="text" value="<?=$complaint->ComplaintDate1?>" />
+        <i class="icon-calendar" style="margin: 2px 0 0 -22.5px; pointer-events: none; position: relative;"></i>
+    </div>
+</div>
+<div style="height:220px; width:100%;" class="ComplaintDate1Dspace">&nbsp;</div>
+
+<div class="control-group">
+    <label class="control-label" for="DollarValue">OpenDate:</label>
+    <div class="controls">
+        <div class="input-prepend input-append">
+            <span class="add-on">$</span><input class="span2" id="DollarValue" name="DollarValue" value="<?=$complaint->DollarValue?>" size="16" type="text">
+        </div>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="CaseNotes">CaseNotes:</label>
+    <div class="controls">
+        <textarea id="CaseNotes" name="CaseNotes" rows="5"><?=$complaint->CaseNotes?></textarea>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="OperatorAlert">OperatorAlert:</label>
+    <div class="controls">
+        <textarea id="OperatorAlert" name="OperatorAlert" rows="5"><?=$complaint->OperatorAlert?></textarea>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="Contact">Attention: </label>
+    <div class="controls">
+        <select id="Contact" name="Contact" class="input-xlarge">
+            <?php foreach ($contacts as $contact): ?>
+                <option value="<?= $contact->pid ?>" <?=( ($contact->pid == $complaint->Contact ) ? "selected='selected'" : '') ?>><?=$contact->ContactName ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="Location">Involved Location: </label>
+    <div class="controls">
+        <select id="Location" name="Location" class="input-xlarge">
+            <?php foreach ($locations as $location): ?>
+                <option value="<?= $location->AID ?>" <?=( ($location->AID == $complaint->Location ) ? "selected='selected'" : '') ?>><?=$location->address ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="control-label">Business Name: </label>
+    <div class="controls">
+        <?php foreach ($dbas as $dba): ?>
+            <label class="radio"><input <?=( ( $dba->did == $complaint->DbaName ) ? "checked='checked'" : '' )?> name="DbaName" value="<?=$dba->did?>" type="radio"> <?=$dba->name ?></label>
+        <? endforeach; ?>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="CBIDisabled">CBI Disabled: </label>
+    <div class="controls">
+        <select id="CBIDisabled" name="CBIDisabled" class="input-xlarge">
+            <?php foreach ($CBIDisabled as $disabled): ?>
+                <option value="<?= $disabled->code ?>" <?=( ($disabled->code == $complaint->CBIDisabled ) ? "selected='selected'" : '') ?>><?=$disabled->desc ?></option>
+            <? endforeach; ?>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="AccountNumber">AccountNumber: </label>
+    <div class="controls">
+        <input type="text" class="input-xlarge" id="AccountNumber" name="AccountNumber" value="<?=$complaint->AccountNumber?>">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="control-label">Willing to speak to media?: </label>
+    <div class="controls">
+            <label class="radio"><input <?=( ( $complaint->SpeakToMedia == 'y' ) ? "checked='checked'" : '' )?> name="SpeakToMedia" value="y" type="radio">Yes</label>
+            <label class="radio"><input <?=( ( $complaint->SpeakToMedia == 'n' ) ? "checked='checked'" : '' )?> name="SpeakToMedia" value="n" type="radio">No</label>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="HIPAAAccepted">HIPAAAccepted: </label>
+    <div class="controls">
+        <input type="text" class="input-small" id="HIPAAAccepted" name="HIPAAAccepted" maxlength="1" value="<?=$complaint->HIPAAAccepted?>">
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="HIPAASubmit">HIPAASubmit:</label>
+    <div class="controls">
+        <input name="HIPAASubmit" id="HIPAASubmit" class="input-medium datepicker" type="text" value="<?=$complaint->HIPAASubmit?>" />
+        <i class="icon-calendar" style="margin: 2px 0 0 -22.5px; pointer-events: none; position: relative;"></i>
+    </div>
+</div>
+<div style="height:220px; width:100%;" class="HIPAASubmitDspace">&nbsp;</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery( "#OpenDate" ).datepicker( {
+        format: "yyyy-mm-dd",
+        defaultDate: -1,
+        onClose: ''    
+    });
+    jQuery( '.OpenDateDspace' ).slideUp("slow");
+    
+    jQuery( "#CloseDate" ).datepicker( {
+        format: "yyyy-mm-dd",
+        defaultDate: -1,
+        onClose: ''
+    });
+    jQuery( '.CloseDateDspace' ).slideUp("slow");
+    
+    jQuery( "#ComplaintDate1" ).datepicker( {
+        format: "yyyy-mm-dd",
+        defaultDate: -1,
+        onClose: ''
+    });
+    jQuery( '.ComplaintDate1Dspace' ).slideUp("slow");
+    
+    jQuery( "#HIPAASubmit" ).datepicker( {
+        format: "yyyy-mm-dd",
+        defaultDate: -1,
+        onClose: ''
+    });
+    jQuery( '.HIPAASubmitDspace' ).slideUp("slow");
+    
+    jQuery( '.datepicker' ).blur( function( event ){
+        var $dsId = jQuery( this ).attr( 'id' );
+        jQuery( '.'+$dsId+'Dspace' ).slideUp("slow");
+    } );
+    
+    jQuery( '.datepicker' ).focus(function ( event ) {
+        var $dsId = jQuery( this ).attr( 'id' );
+        jQuery( '.'+$dsId+'Dspace' ).slideDown("slow");
+    });
+});
+</script>

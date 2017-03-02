@@ -1,0 +1,17 @@
+<? include "../templates/header.html"; ?>
+<? $page = 'general'; include "../templates/nav-bar.html"; ?>
+<?  include "../templates/business/_container-start.html";?>
+
+<div class="row-fluid">
+    <div class="span12">
+        <? if( isset( $_POST["DOUPDATE"] ) ): ?>
+            <? echo '<pre>'.print_r( $_POST, true ).'</pre>'; ?>
+            
+        <? else: ?>
+            <? include "../templates/business/general.html"; ?>
+        <? endif; ?>
+    </div>
+</div>
+          
+<? include "../templates/business/_container-end.html"; ?>  
+<? include "../templates/footer.html"; ?>

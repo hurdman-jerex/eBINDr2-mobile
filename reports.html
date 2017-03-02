@@ -1,0 +1,44 @@
+<? include "templates/header.html"; ?>
+<? $page = 'reports'; include "templates/nav-bar.html"; ?>
+<?  include "templates/business/_container-start.html";?>
+
+<? $menu = ''; ?>
+<? if( isset( $_GET['menu'] ) ){
+   list( $menu, $reportpage ) = explode( "-", $_GET['menu'] ); 
+} ?>
+
+<div class="row-fluid">
+    <div class="span12">
+    
+    <h2><a href="/m/reports.html">Reports</a></h2>
+<? 
+include "templates/reports/list.html";
+/*try{
+    switch( $menu ){
+    
+    case 'sales':
+        include "templates/reports/sales/". $reportpage . '.html';    
+    break;
+    case 'stats':
+        include "templates/reports/stats/". $reportpage . '.html';    
+    break;
+    case 'financial':
+        include "templates/reports/financial/". $reportpage . '.html';    
+    break;
+    
+    default:
+        include "templates/reports/list.html";  
+    break;  
+     ?> 
+
+<?  break; } 
+} catch( Exception $e )
+{
+    include "templates/reports/list.html";
+}*/ ?>
+
+    </div>
+</div>
+          
+<? include "templates/business/_container-end.html"; ?>  
+<? include "templates/footer.html"; ?>

@@ -1,0 +1,73 @@
+<?
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/address/listing/' . $_SESSION['bid'];
+$addresses = json_decode($bbapi->get($url));
+$addresses = $addresses->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/addressgeo/get/' . $_SESSION['bid'] .'/2';
+$addressgeo = json_decode($bbapi->get($url));
+//print_r($addressgeo);
+
+foreach($addresses as $address) {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/addressgeo/get/' . $_SESSION['bid'] .'/'.$address->aid;
+    $addressgeo = json_decode($bbapi->get($url))->results;
+    $addressgeo = $addressgeo[0];
+    $address->latitude = $addressgeo->Latitude;
+    $address->longitude = $addressgeo->Longitude;
+}
+
+?>
+
+<h3>Addresses 
+    <? if ( securityCheck('ba') || ( securityCheck('b*') && !securityCheck('ba') ) ) { ?>
+    <a style="float: right;" href="/m/business/address/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <? } ?>
+</h3>
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        <? foreach($addresses as $address): ?>
+        <tr>
+            <td  onclick="transferEdit(<?=$address->aid?>);"><?=stripslashes($address->Label)?></td>
+            <td>
+                <div class="pull-left" onclick="transferEdit(<?=$address->aid?>);">
+                    <?= stripslashes($address->Address)?>, 
+                    <? if(strlen(trim($address->County))>0):?>
+                        <?=stripslashes($address->County)?>, 
+                    <? endif;?>
+                    <?= stripslashes($address->City)?>, 
+                    <?= stripslashes($address->StateProv)?> 
+                    <?= stripslashes($address->PostalCode)?>
+
+                    <?if($address->main=='y'): ?>
+                    <span class="badge">Primary</span>
+                    <?endif;?>
+                </div>
+                
+                <?
+                if($address->longitude != '' && $address->latitude!='') {
+                    $map="http://".$_SERVER['SERVER_NAME']."/m/abnearme.html?long=".$address->longitude."&lat=".$address->latitude . "&aid=" . $address->aid; 
+                ?>
+                <a href="<?=$map?>" class="btn btn-mini pull-right" href="#"><i class="icon-map-marker"></i></a>
+                <?}?>
+            </td>
+        </tr>
+        <? endforeach;?>
+    </tbody>
+</table>
+<script type="text/javascript">
+    <? if ( securityCheck('ba') || (securityCheck('b*') && !securityCheck('ba') ) ) : ?>
+    function transferEdit(aid) {
+        window.location='/m/business/address/edit.html?aid='+aid;
+    }
+    <? else:  ?>
+    function transferEdit(aid) {
+
+    }    
+    <? endif; ?>
+</script>

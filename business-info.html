@@ -1,0 +1,21 @@
+<? include "templates/bootstrap3.3.7/header.php"; ?>
+<? $page = 'info'; ?>
+
+<? $_page = isset( $_GET['type'] ) ? $_GET['type'] . '.html' : 'basic-info.php'; ?>
+<div class="container-fluid">
+<? include "templates/bootstrap3.3.7/nav-bar.php"; ?>
+<div class="row">
+   <!-- Add the extra clearfix for only the required viewport -->
+  <div class="clearfix visible-xs-block"></div>
+   
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <? include "templates/bootstrap3.3.7/biz-nav-bar.php";?>
+  </div>
+  
+  <div class="col-xs-12 col-md-8">
+    <? include "templates/bootstrap3.3.7/business/".$_page; ?>
+  </div>
+</div>
+</div>
+
+<? include "templates/bootstrap3.3.7/footer.php"; ?>

@@ -1,0 +1,196 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+<?
+// redirect if doesn't have access
+if (securityCheck('bs') || securityCheck('b*')) :
+
+$sid = isset( $_GET['sid'] ) ? (int) $_GET['sid'] : 0;
+//echo $sid. '-' . $_SESSION['bid'];
+//exit;
+if( $sid == 0 )
+{
+    echo '<script>window.location = "/m/business/sales.html";</script>';
+    exit;
+}
+
+$url='http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/getbyid/' . $_SESSION['bid'] . '/' . $sid;
+$sales = json_decode($bbapi->post($url));
+
+//echo '<pre>'.print_r( $sales, true ).'</pre>';
+//exit;
+
+if( !$sales->rows )
+{
+    echo '<script>window.location = "/m/business/sales.html";</script>';
+    exit;
+}
+
+$sales = $sales->results;
+$sale = $sales[0];
+
+// Check the Submit button is press
+if ( sizeof($_POST)>0 ) {
+
+    $bbapi->set('staff', $_POST['staff']);
+    $bbapi->set('callresult', $_POST['callresult']);
+    $bbapi->set('callagain', $_POST['callagain']);
+    $bbapi->set('calltime', $_POST['calltime']);
+    $bbapi->set('contact', $_POST['contact']);
+    $bbapi->set('reminder', $_POST['reminder']);
+    $bbapi->set('comment', $_POST['comment']);
+    $bbapi->set('sid', $_POST['salesid']);
+
+    $result = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/edit/' . $_SESSION['bid'] . '/' . $_POST['salesid'] );
+    echo '<pre>'.print_r( $result, true ).'</pre>';
+    //echo '<script>window.location = "/m/business/sales.html";</script>';
+    exit;
+
+}else {
+    $callurl = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/callresult');
+    $callresult = json_decode($callurl);
+    $callresult = $callresult->results;
+
+    $contacturl = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/contact/' . $_SESSION['bid']);
+    $contactresult = json_decode($contacturl);
+    $contactresult = $contactresult->results;
+}
+?>
+
+<link href="/m/assets/css/datepicker.css" rel="stylesheet">
+<link href="/m/assets/css/timepicker.css" rel="stylesheet">
+<script type="text/javascript" src="/m/assets/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/m/assets/js/bootstrap-timepicker.js"></script>
+<script type="text/javascript">
+jQuery(function(){
+    jQuery('#callagain').datepicker({
+        format: 'mm-dd-yyyy'
+    });
+});
+</script>
+
+<div id="abox" class="modal hide fade in" style="display: none; ">
+<div class="modal-header">
+<a class="close" data-dismiss="modal">x</a>
+<h5>A required field is missing, please check the form and try again.</h5>
+</div>
+<div class="modal-footer">
+<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+</div>
+</div>
+
+<form id="sForm" action="" method="post" class="form-horizontal">
+<input name="salesid" value="<?=$sale->sid?>" type="hidden">
+  <div class="row">    
+      <div class="span12">
+          <fieldset>
+              <legend>Edit Sales Call Log</legend>
+              <div class="control-group">
+                  <label class="control-label" for="name">Staff:</label>
+                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']['staff_name'];?></div>
+                  <input name="staff" id="staff" class="input-xlarge" type="hidden" value="<?=$_SESSION['user']['reportr_username'];?>" readonly/>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="callresult">Call Result:</label>
+                  <div class="controls">
+                  <select id="callresult" name="callresult">
+                    <option value="">Select an option</option>
+                    <? foreach ($callresult as $cr) : ?>
+                          <option value="<?=$cr->Code?>" <?=(($sale->CallResult==$cr->Code)?'selected="selected"':'')?>><?=$cr->Description?></option>
+                          <? endforeach; ?>
+                        </select> 
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="contact">Contact:</label>
+                  <div class="controls">
+                  <select id="contact" name="contact">
+                    <option value="">Select an option</option>
+                          <? foreach ($contactresult as $contact) : ?>
+                          <option value="<?=$contact->pid?>" <?=(($sale->Contact==$contact->pid)?'selected="selected"':'')?>><?=$contact->ContactName?></option>
+                          <? endforeach; ?>
+                        </select> 
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="reminder">Reminder:</label>
+                  <div class="controls">
+                  <select id="reminder" name="reminder">
+                    <option value="">Select an option</option>
+                          <option value="No reminder" <?=(($sale->Reminder=='No reminder')?'selected="selected"':'')?> >No reminder</option>
+                          <option value="5 minutes before" <?=(($sale->Reminder=='5 minutes before')?'selected="selected"':'')?>>5 minutes before</option>
+                          <option value="10 minutes before" <?=(($sale->Reminder=='10 minutes before')?'selected="selected"':'')?>>10 minutes before</option>
+                          <option value="30 minutes before" <?=(($sale->Reminder=='30 minutes before')?'selected="selected"':'')?>>30 minutes before</option>
+                          <option value="1 hour before" <?=(($sale->Reminder=='1 hour before')?'selected="selected"':'')?>>1 hour before</option>
+                          <option value="24 hours before" <?=(($sale->Reminder=='24 hours before')?'selected="selected"':'')?>>24 hours before</option>
+                          <option value="Morning of" <?=(($sale->Reminder=='Morning of')?'selected="selected"':'')?>>Morning of</option>
+                        </select> 
+                  </div>
+              </div>
+              <div class="control-group">
+                  <label class="control-label" for="name">Call Again:</label>
+                  <input name="callagain_old" type="hidden" value="<?=$sale->CallAgain?>">
+                  <div class="controls">
+                      <input name="callagain" id="callagain" class="input-xlarge" type="text" value="<?=$sale->CallAgainDate?>" style="width:80px;"/>
+                      @
+                      <input name="calltime" id="calltime" class="timepicker-2" type="text" value="<?=$sale->CallAgainTime?>" style="width:75px;"/>
+                      <i class="icon-time" style="margin: 2px 0 0 -22.5px; pointer-events: none; position: relative;"></i>
+                  </div>
+              </div>
+              <div style="height:220px; width:100%;" id="dspace">&nbsp;</div>
+              <div class="control-group">
+                  <label class="control-label" for="comment">Comment:</label>
+                  <div class="controls">
+                      <textarea id="comment" name="comment" rows="5"><?=$sale->comment?></textarea>
+                  </div>
+              </div>
+          </fieldset>                                        
+
+      </div>
+
+  </div>
+
+  <div class="row">
+          <div class="controls"><button class="btn btn-primary" data-toggle="modal" name="Submit" id="Submit">Submit Data</button>
+        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/sales.html"><i class="icon-remove"></i> Cancel</a>
+        </div>
+  </div>
+</form>
+<? include "../../templates/footer.html"; ?>
+<style type="text/css">
+.modal.fade.in {
+  /*top: 10%; use to adjust height of the modal to appear but just use scrollTop for now. See below.*/
+}
+</style>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    jQuery('#callagain').trigger('focus');
+    jQuery("#callagain").blur(function () {
+        jQuery("#dspace").slideUp("slow");
+    });
+    jQuery("#callagain").focus(function () {
+        jQuery("#dspace").slideDown("slow");
+    });
+    jQuery('.timepicker-2').timepicker({
+        minuteStep: 1,
+        showInputs: false,
+        disableFocus: true
+    });
+    jQuery('#btn_close').click(function() {
+        jQuery('#comment').trigger('click');
+    });
+    
+    // validate some entries
+    jQuery('#Submit').click(function(event) {
+        event.preventDefault();
+        /*if ( !jQuery('#callresult').val() || !jQuery('#contact').val() || !jQuery('#reminder').val() || !jQuery('#comment').val() ) {
+            jQuery('body,html').scrollTop(0);
+            jQuery('#abox').modal('show');
+        }else {*/
+            jQuery('#sForm').submit();
+        //}
+    });
+});
+</script>
+<? else: ?>
+<? echo '<script>window.location = "/m/sales.html";</script>'; ?>
+<? endif ?>  

@@ -1,0 +1,44 @@
+<? include "../templates/header.html"; ?>
+<? include "../templates/nav-bar.html"; ?>
+<?
+// redirect if doesn't have access
+if (securityCheck('bs') || securityCheck('b*')) :
+?>
+<? 
+$page = 'sales'; include "../templates/business/_container-start.html"; 
+$url='http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/get/' . $_SESSION['bid'];
+$sales = json_decode($bbapi->post($url));
+$sales = $sales->results;
+?>
+<? if (securityCheck('bs+') || securityCheck('b*')) : ?>
+<div class="row-fluid">
+	<div class="span12">
+		<a href="/m/business/add-sales-call-log.html" class="btn btn-success">Add Sales Call Log</a>
+	</div>
+</div>
+<? endif; ?>
+<?php
+foreach ( $sales as $sale ) { 
+$timedDate = strtotime ( $sale->day );
+$saleDate = date('M. d, Y', $timedDate);
+$timedDate = strtotime ( $sale->callback );
+$callDate = date('M. d, Y @ g:ia', $timedDate);
+?>
+<div class="row-fluid" style="margin-top: 10px;">
+	<div class="span12" style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <? if( $_SESSION['user']->initials == $sale->Staff ): ?>
+            <a style="float: right;" href="/m/business/sales/edit.html?sid=<?=$sale->sid?>" class="btn btn-danger btn-mini"><i class="icon-white icon-pencil"></i> Edit</a>
+        <? endif; ?>
+    
+		<b><?=$saleDate;?></b> <span style="color: #999;"><?=$sale->Staff;?> wrote: </span>
+		<p><span class="badge badge-success">Call Back <?=$callDate;?></span> <span class="badge"><?=$sale->description?></span></p>
+		<p> <?=stripslashes($sale->comment);?> </p>
+        
+	</div>
+</div>
+<? } ?>
+<? else: ?>
+<? echo '<script>window.location = "/m/business.html";</script>'; ?>
+<? endif ?>  
+<? include "../templates/business/_container-end.html"; ?>  
+<? include "../templates/footer.html"; ?>

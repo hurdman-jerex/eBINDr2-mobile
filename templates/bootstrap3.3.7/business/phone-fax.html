@@ -1,0 +1,83 @@
+<?php
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/fax/listing/' . $_SESSION['bid'];
+$faxes = json_decode($bbapi->post($url));
+$faxes = $faxes->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/listing/' . (sizeof($_GET)>0?$_GET['bid']:$_SESSION['bid']);
+$phones = json_decode($bbapi->post($url));
+$phones = $phones->results;
+
+function remove_phone_format($number) {
+    $number=trim($number);
+    $number=  str_replace('-', '', $number);
+    $number= str_replace(' ','',$number);
+    return $number;
+}
+?>
+<div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 id="myModalLabel"><? if ( securityCheck('bp') || (securityCheck('b*') && !securityCheck('bp') ) ) { ?>Edit or <? } ?>Call</h3>
+    </div>
+    <div class="modal-body">
+        <h4></h4>
+        <p>Do you want to <? if ( securityCheck('bp') || (securityCheck('b*') && !securityCheck('bp') ) ) { ?>edit or <? } ?>call?</p>
+
+    </div>
+    <div class="modal-footer">
+        <a class="btn" data-dismiss="modal" id="call" href="">Call</a>
+        <? if ( securityCheck('bp') || (securityCheck('b*') && !securityCheck('bp') ) ) : ?>
+        <a class="btn btn-primary" id="edit" href=""><i class="icon-edit icon-white"></i> Edit</a>
+        <? endif; ?>
+    </div>
+</div>
+
+<h3>Phone &amp; Fax 
+    <? if ( ( securityCheck('bp') || ( securityCheck('b*') && !securityCheck('bp') ) ) || ( securityCheck('bf') || ( securityCheck('b*') && !securityCheck('bf') ) ) ) { ?>
+    <a style="float: right;" href="/m/business/phone-fax/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <? } ?>
+</h3>
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Number</th>
+            <th>Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($phones as $phone) { ?>
+        <tr class="phone-clickable" onclick="calledit('<?=$phone->pid?>','phone','<?=remove_phone_format($phone->number)?>');">
+            <td>Phone</td>
+            <td><?= $phone->number . " "; ?><?php if ($phone->main == 'y') { ?><span class="badge">Primary</span></td><?php } ?>
+            <td><?= stripslashes($phone->label); ?></td>
+        </tr>
+        <?php } ?>
+        <?php foreach ($faxes as $fax) { ?>
+        <tr class="fax-clickable" onclick="edit('<?=$fax->fid?>','fax');">
+            <td>Fax</td>
+            <td><?= $fax->number . " "; ?><?php if ($fax->main == 'y') { ?><span class="badge">Primary</span></td><?php } ?>
+            <td><?= stripslashes($fax->label); ?></td>
+        </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function calledit(id,type,num) {
+        jQuery('#call').text(''+num);
+        jQuery('#call').attr('href','tel:'+num);
+        jQuery('#edit').attr('href','/m/business/phone-fax/edit.html?id='+id+'&type='+type);
+        jQuery('#modal').modal('toggle');
+    }
+    <? if ( securityCheck('bf') || (securityCheck('b*') && !securityCheck('bf') ) ) : ?>
+    function edit(id,type) {
+        window.location='/m/business/phone-fax/edit.html?id='+id+'&type='+type;
+    }
+    <? else: ?>
+    function edit(id,type) {
+       
+    }   
+    <? endif; ?>
+</script>

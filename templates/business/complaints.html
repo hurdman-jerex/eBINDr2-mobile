@@ -1,0 +1,291 @@
+<? if (securityCheck('c*') || securityCheck('cs')) { ?>
+<?
+    if( isset( $_GET['cid'] ) && is_numeric( $_GET['cid'] ) ):
+    $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/get/' . $_SESSION['bid'] . '/' . $_GET['cid'];
+    $complaint = json_decode($bbapi->post($url));
+    $complaint = $complaint->results;
+    $complaint = $complaint[0];
+    
+    ?>
+<h3 style="padding-bottom: 25px;">Case #: <?=$complaint->CID?> <a class="btn btn-primary" id="edit-complaint" href="/m/business/complaints/edit.html?cid=<?=$complaint->CID?>"><i class="icon-edit icon-white"></i> Edit</a></h3>
+    <table class="table table-striped table-bordered table-condensed">
+     <thead>
+        <tr>
+          <th>Consumer Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <table class="table table-striped table-bordered table-condensed"> 
+                <tr>
+                    <th>Business Name:</th>
+                    <th>Name:</th>
+                    <th>Contact:</th>
+                    <th>Email:</th>
+                    <th>Address:</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <?=$complaint->bname?>
+                        </td>
+                        <td>
+                            <?=$complaint->PreName?> <?=$complaint->FirstName?> <?=$complaint->LastName?> <?=( ', '. $complaint->PostName)?>  
+                        </td>
+                        <td>
+                            Home: <?=$complaint->HomePhone?>, Work: <?=$complaint->WorkPhone?>, Cell: <?=$complaint->CellPhone?>, Fax: <?=$complaint->Fax?>
+                        </td>
+                        <td>
+                            Email: <?=$complaint->Email?>
+                        </td>
+                        <td>
+                            <?=$complaint->Street1?> <?=$complaint->Street2?> <?=$complaint->City?> <?=( ', '. $complaint->StateProv)?>  <?=$complaint->PostalCode?>  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-striped table-bordered table-condensed">
+     <thead>
+        <tr>
+          <th>General Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <table class="table table-striped table-bordered table-condensed"> 
+                <tr>
+                    <th>Open Date:</th>
+                    <th>Close Code:</th>
+                    <th>Type:</th>
+                    <th>Nature Of Dispute:</th>
+                    <th>Desired Resolution:</th>
+                    <th>Case Notes:</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <?=$complaint->OpenDate?>
+                        </td>
+                        <td>
+                            <?=$complaint->CloseCode?>
+                        </td>
+                        <td>
+                            <?=$complaint->Type?>
+                        </td>
+                        <td>
+                            <?=$complaint->NatureOfDispute?>
+                        </td>
+                        <td>
+                            <?=$complaint->DesiredResolution?>
+                        </td>
+                        <td>
+                            <?=$complaint->CaseNotes?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <hr />
+    <?
+    
+    endif;
+?>
+
+<?php
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/summary/' . $_SESSION['bid'];
+$summary = json_decode($bbapi->post($url));
+$summary = $summary->results;
+$summary = $summary[0];
+$_summary = get_object_vars($summary);
+//echo '<pre>'.print_r( $_summary, true ).'</pre>';
+?>
+
+<h3>Summary</h3>
+<table class="table table-striped table-bordered table-condensed">
+ <thead>
+    <tr>
+      <th>Pending</th>
+      <th>Close Code</th>
+      <th>110</th>
+      <th>120</th>
+      <th>150</th>
+      <th>200</th>
+      <th>300</th>
+      <th>400</th>
+      <th>500</th>
+      <th>600</th>
+      <th>999</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><?=$_summary['Pending'];?></td>
+      <td><?=$_summary['Close Code'];?></td>
+      <td><?=$_summary[110];?></td>
+      <td><?=$_summary[120];?></td>
+      <td><?=$_summary[150];?></td>
+      <td><?=$_summary[200];?></td>
+      <td><?=$_summary[300];?></td>
+      <td><?=$_summary[400];?></td>
+      <td><?=$_summary[500];?></td>
+      <td><?=$_summary[600];?></td>
+      <td><?=$_summary[999];?></td>
+    </tr>
+  </tbody>
+</table>
+<? } ?>
+<? if (securityCheck('c*') || securityCheck('cc')) { ?>
+<?
+//print_r($_SESSION);
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/latestComplaints/' . $_SESSION['bid'];
+$latest_complaints = json_decode($bbapi->post($url));
+$latest_complaints = $latest_complaints->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/advance/' . $_SESSION['bid'];
+$advance_complaints = json_decode($bbapi->post($url));
+$advance_complaints = $advance_complaints->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/compliments/' . $_SESSION['bid'];
+$compliments_complaints = json_decode($bbapi->post($url));
+$compliments_complaints = $compliments_complaints->results;
+
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/complaints/oldComplaints/' . $_SESSION['bid'];
+$old_complaints = json_decode($bbapi->post($url));
+$old_complaints = $old_complaints->results;
+//print_r($old_complaints);
+
+//echo '<pre>'.print_r( $latest_complaints, true ).'</pre>';
+?>
+<? if (count($latest_complaints) > 0) { ?>
+<h3>Complaints</h3>
+<table class="table table-striped table-bordered table-condensed">
+ <thead>
+    <tr>
+      <th>Consumer</th>
+      <th>Code</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>ID</th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+        <? foreach($latest_complaints as $latest_complaint) { ?>
+        <? $open = date('M j, Y', strtotime($latest_complaint->opendate)); ?>
+        <? $close = ($latest_complaint->closedate ? date('M j, Y', strtotime($latest_complaint->closedate)) : ''); ?>
+        <tr>
+            <td><?=$latest_complaint->Consumer;?></td>
+            <td><?=$latest_complaint->closecode;?></td>
+            <td><?=$open;?></td>
+            <td><?=$close;?></td>
+            <td><a href="/m/business/complaints.html?cid=<?=$latest_complaint->cid?>"><?=$latest_complaint->cid;?></a></td>
+            <td>
+                <a target="_blank" href="http://<?=$latest_complaint->appurl?>/complaint/view/<?=$latest_complaint->cid?>/b/<?=$latest_complaint->bwebpassword?>">
+                    <span class="badge badge-important">b</span>
+                </a>
+                <a target="_blank" href="http://<?=$latest_complaint->appurl?>/complaint/view/<?=$latest_complaint->cid?>/c/<?=$latest_complaint->webpassword?>">
+                    <span class="badge badge-info">c</span>
+                </a>
+            </td>
+        </tr>        
+        <? } ?>
+  </tbody>
+</table>
+<? } ?>
+<? if (count($advance_complaints) > 0) { ?>
+<h3>Ad Reviews</h3>
+<table class="table table-striped table-bordered table-condensed">
+ <thead>
+    <tr>
+      <th>Consumer</th>
+      <th>Code</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>ID</th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+        <? foreach($advance_complaints as $latest_complaint) { ?>
+        <? $open = date('M j, Y', strtotime($latest_complaint->opendate)); ?>
+        <? $close = ($latest_complaint->closedate ? date('M j, Y', strtotime($latest_complaint->closedate)) : ''); ?>
+        <tr>
+            <td><?=$latest_complaint->Consumer;?></td>
+            <td><?=$latest_complaint->closecode;?></td>
+            <td><?=$open;?></td>
+            <td><?=$close;?></td>
+            <td><a href="/m/business/complaints.html?cid=<?=$latest_complaint->cid?>"><?=$latest_complaint->cid;?></a></td>
+            <td><a target="_blank" href="http://<?=$latest_complaint->appurl?>/complaint/view/<?=$latest_complaint->cid?>/b/<?=$latest_complaint->bwebpassword?>"><span class="badge badge-important">b</span></a></td>
+        </tr>        
+        <? } ?>
+  </tbody>
+</table>
+<? } ?>
+<? if (count($compliments_complaints) > 0) { ?>
+<h3>Compliments</h3>
+<table class="table table-striped table-bordered table-condensed">
+ <thead>
+    <tr>
+      <th>Consumer</th>
+      <th>Code</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>ID</th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+        <? foreach($compliments_complaints as $latest_complaint) { ?>
+        <? $open = date('M j, Y', strtotime($latest_complaint->opendate)); ?>
+        <? $close = ($latest_complaint->closedate ? date('M j, Y', strtotime($latest_complaint->closedate)) : ''); ?>
+        <tr>
+            <td><?=$latest_complaint->Consumer;?></td>
+            <td><?=$latest_complaint->closecode;?></td>
+            <td><?=$open;?></td>
+            <td><?=$close;?></td>
+            <td><a href="/m/business/complaints.html?cid=<?=$latest_complaint->cid?>"><?=$latest_complaint->cid;?></a></td>
+            <td>
+                <a target="_blank" href="http://<?=$latest_complaint->appurl?>/complaint/view/<?=$latest_complaint->cid?>/b/<?=$latest_complaint->bwebpassword?>"><span class="badge badge-important">b</span></a>
+                <a target="_blank" href="http://<?=$latest_complaint->appurl?>/complaint/view/<?=$latest_complaint->cid?>/c/<?=$latest_complaint->webpassword?>"><span class="badge badge-info">c</span></a>
+            </td>
+        </tr>        
+        <? } ?>
+  </tbody>
+</table>
+<? } ?>
+<? if (count($old_complaints) > 0) { ?>
+<h3>Old Complaints</h3>
+<table class="table table-striped table-bordered table-condensed">
+ <thead>
+    <tr>
+      <th>Consumer</th>
+      <th>Code</th>
+      <th>Open</th>
+      <th>Close</th>
+    </tr>
+  </thead>
+  <tbody>
+        <? foreach($old_complaints as $latest_complaint) { ?>
+        <? $open = date('M j, Y', strtotime($latest_complaint->opendate)); ?>
+        <? $close = ($latest_complaint->closedate ? date('M j, Y', strtotime($latest_complaint->closedate)) : ''); ?>
+        <tr>
+            <td><?=$latest_complaint->Consumer;?></td>
+            <td><?=$latest_complaint->closecode;?></td>
+            <td><?=$open;?></td>
+            <td><?=$close;?></td>
+        </tr>        
+        <? } ?>
+  </tbody>
+</table>
+<? } ?>
+<? } ?>

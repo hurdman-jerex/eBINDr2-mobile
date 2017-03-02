@@ -1,0 +1,17 @@
+<?
+$url = $myHost . $_SERVER['SERVER_NAME'];
+$bid = $_SESSION['bid'];
+$staff = $_SESSION['username'];
+$_menuPage = $url . '/report/menu.Stats.Inquiry%20by%20Bid?ebindr2=y&BYPASS=gure8wh3&bid='.$bid.'&noheader&BYPASS2=9vfjesu3hgi&staff='.$staff;
+?>
+<h3><a href="/m/business/snapshot.html">SnapShot</a></h3>
+<iframe id="reportIframe" class="mochaIframe" src="<?=$_menuPage?>" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+
+<script type="text/javascript">
+// A $( document ).ready() block.
+jQuery( document ).ready(function() {
+    var reportIframeHeight = ( window.screen.height - 100 );
+    jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
+    console.log( reportIframeHeight );
+});
+</script>

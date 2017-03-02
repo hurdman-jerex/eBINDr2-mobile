@@ -1,0 +1,13 @@
+<?
+$url = $myHost . $_SERVER['SERVER_NAME'];
+$_menuPage = $url . '/mreport/menu.Sales.Calls%20by%20Choice,1,Calls%20by%20Choice,Calls%20by%20Choice,Calls%20by%20Choice/?ebindr2=y';
+?>
+<h3><a href="/m/reports.html?menu=sales-callsbychoice">Sales - Calls by Choice</a></h3>
+<iframe id="reportIframe" class="mochaIframe" src="<?=$_menuPage?>" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+
+<script type="text/javascript">
+jQuery( document ).ready(function() {
+    var reportIframeHeight = ( window.screen.height - 100 );
+    jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
+});
+</script>

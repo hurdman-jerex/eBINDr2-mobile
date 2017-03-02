@@ -1,0 +1,134 @@
+<? include "../../templates/header.html"; ?>
+<? include "../../templates/nav-bar.html"; ?>
+<?
+// ini_set('display_errors','1');
+// error_reporting(E_ALL);
+
+if (! (securityCheck('bj') || securityCheck('b*') ) ) {
+    ?>
+    <script type="text/javascript">window.location='/m/business/journal.html';</script>
+    <?
+}
+
+$jturl = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/type');
+$jtresult = json_decode($jturl);
+$jtresult = $jtresult->results;
+
+if (sizeof($_POST) > 0) {
+
+    $submit = true;
+
+    foreach ($_POST as $key => $value) {
+        $_POST[$key] = stripslashes($value);
+    }
+
+    if (strlen( trim( $_POST['journal_notes'] ) ) <= 0) {
+        $submit = false;
+        $validation['journal_notes'] = array(
+            'result' => 'error',
+            'msg' => 'Notes field is required.',
+            'value' => $_POST['journal_notes']
+        );
+    }
+
+    $prestaff = $_POST['staff'];
+    $prejid = $_POST['jid'];
+    $pretype = $_POST['type'];
+    $preday = $_POST['date'];
+    $prenotes = $_POST['journal_notes'];
+
+    if ($submit) {
+        $bbapi->set('staff', $_POST['staff']);
+        $bbapi->set('date', $_POST['date']);
+        $bbapi->set('type', $_POST['type']);
+        $bbapi->set('journal_notes', $_POST['journal_notes']);
+
+        $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/edit/' . $_SESSION['bid'] . '/' . $_POST['jid'];
+        $bbapi->post($url);
+        ?>
+        <script type="text/javascript">window.location='/m/business/journal.html';</script>
+        <?
+    }
+} else {
+    $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/getByJid/' . $_SESSION['bid'] . '/' . $_GET['jid'];
+    $journalEntry = json_decode($bbapi->get($url));
+    $journalEntry = $journalEntry->results;
+
+    $journalEntry = $journalEntry[0];
+    // print_r($journalEntry);
+    foreach ($journalEntry as $key => $value) {
+        $journalEntry->$key = stripslashes($value);
+    }
+
+    $date_array = explode("-", $journalEntry->day);
+    $date = $date_array[1] . '-' . $date_array[2] . '-' . $date_array[0];
+
+    $prestaff = $journalEntry->Staff;
+    $prejid = $journalEntry->jid;
+    $pretype = $journalEntry->Type;
+    $preday = $date;
+    echo $preday;
+    $prenotes = $journalEntry->Notes;
+
+    if (! (securityCheck('bj') || securityCheck('b*') ) ) {
+    ?>
+    <script type="text/javascript">window.location='/m/business/journal.html';</script>
+    <?
+}
+}
+?>
+<link href="/m/assets/css/datepicker.css" rel="stylesheet">
+<script type="text/javascript" src="/m/assets/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+jQuery(function(){
+    jQuery('#date').datepicker({
+        format: 'mm-dd-yyyy'
+    });
+});
+</script>
+<div class="container-fluid">
+    <form class="form-horizontal" method="post" action="">
+        <fieldset>
+            <legend>Edit Journal</legend>
+
+            <div class="control-group">
+              <label class="control-label" for="name">Staff:</label>
+              <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']->name;?></div>
+              <input name="staff" id="staff" type="hidden" value="<?=$prestaff;?>" />
+              <input name="jid" id="jid" type="hidden" value="<?=$prejid;?>" />
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="contact">Type:</label>
+              <div class="controls">
+              <select id="type" name="type">
+                <option value="">Select an option</option>
+                      <? foreach ($jtresult as $jtype) : ?>
+                      <option value="<?=$jtype->code?>" <?=( $jtype->code == $pretype ? 'selected="selected"' : '' );?>><?=$jtype->description?></option>
+                      <? endforeach; ?>
+                    </select> 
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="name">Date:</label>
+              <div class="controls">
+                <input name="date" id="date" class="input-xlarge" type="text" value="<?=$preday;?>" style="width:100px;"/>
+              </div>
+            </div>
+            <div class="control-group <?= $validation['journal_notes']['result'] ?>">
+              <label class="control-label" for="description">Notes:</label>
+              <div class="controls">
+                  <textarea id="journal_notes" name="journal_notes" rows="5"><?=$prenotes;?></textarea>
+                  <span class="help-inline"><?= $validation['journal_notes']['msg'] ?></span>
+              </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary btn-medium" type="submit"><i class="icon-ok icon-white"></i> Submit</button>
+                <a class="btn btn-medium" href="http://<?= $_SERVER['SERVER_NAME'] ?>/m/business/journal.html"><i class="icon-remove"></i> Cancel</a>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+
+<? include "../../templates/footer.html"; ?>

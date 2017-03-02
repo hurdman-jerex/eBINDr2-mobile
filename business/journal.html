@@ -1,0 +1,76 @@
+<? include "../templates/header.html"; ?>
+<? include "../templates/nav-bar.html"; ?>
+<?
+// redirect if doesn't have access
+if (securityCheck('bj') || securityCheck('b*')) :
+
+$page = 'journal';
+include "../templates/business/_container-start.html";
+$url='http://'.$_SERVER['SERVER_NAME'].'/m/api/business/journal/get/' . $_SESSION['bid'];
+$entries = json_decode($bbapi->post($url));
+$entries = $entries->results;
+// print_r($_SESSION['user']);
+?>
+<? if ( securityCheck('bj') || (securityCheck('b*') && !securityCheck('bj') ) ) { ?>
+<div class="row-fluid">
+	<div class="span12">
+		<a href="/m/business/add-journal.html" class="btn btn-success">Add Journal Entry</a>
+	</div>
+</div>
+<? } ?>
+<?php 
+foreach ( $entries as $entry ) {
+	$timedDate = strtotime ( $entry->day );
+	$entryDate = date('M. d, Y', $timedDate);
+?>
+<div class="row-fluid" style="margin-top: 10px;">
+	<div class="span12 jentry" style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
+        <? if ( ( ( securityCheck('bj') || (securityCheck('b*') && !securityCheck('bj') ) ) && $_SESSION['user']->initials == $entry->Staff ) || ( ( securityCheck('bj') || (securityCheck('b*') && !securityCheck('bj') ) ) && $_SESSION['user']->manager ) ) : ?>
+        <p style="display:inline; float: right;"><a href="/m/business/journal/edit.html?jid=<?=$entry->jid;?>" class="btn btn-danger btn-mini"><i class="icon-white icon-pencil"></i> Edit</a></p>
+        <? endif; ?>
+    
+		<b><?=$entryDate;?></b> <span style="color: #999;"><?=$entry->Staff;?> wrote: </span>
+		<p class="cn"><?=stripslashes($entry->Notes)?></p>
+		<? if (strlen($entry->Notes)<100) : ?>
+		<p style="display:none;"><button class="btn btn-mini">Full Entry</button></p>
+		<? else :?>
+		<p style="display:inline;" class="fbtn"><button class="btn btn-mini">Full Entry</button></p>
+		<? endif; ?>
+		
+	</div>
+</div>
+<? } ?>
+
+<? include "../templates/business/_container-end.html"; ?>  
+<? include "../templates/footer.html"; ?>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery('.jentry').each(function(i, obj) {
+		var txtlong = false;
+		var domEl = jQuery(obj).children('.cn');
+		var txtval = domEl.text();
+		var txvaltm = txtval;
+		if ( txvaltm.length > 100 ) txvaltm = txvaltm.substring(0,101) + '...';
+		domEl.text(txvaltm);
+		var dombn = jQuery(obj).children('.fbtn').children('.btn');
+
+		dombn.click(function () {
+			var position = domEl.position();
+			if ( txvaltm.length < 105 ) {
+				domEl.text(txtval);
+				txvaltm = txtval;
+				dombn.text('Collapse');
+			}else{
+				txvaltm = txvaltm.substring(0,101) + '...';
+				domEl.text(txvaltm);
+				// scroll to top most position of the selected note when viewed on mobile
+				jQuery('body,html').scrollTop( (position.top) - 20 );
+				dombn.text('Full Entry');
+			}
+		});
+	});
+});
+</script>
+<? else: ?>
+<? echo '<script>window.location = "/m/business.html";</script>'; ?>
+<? endif ?>

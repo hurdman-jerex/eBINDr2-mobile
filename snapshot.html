@@ -1,0 +1,17 @@
+<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet"> -->
+<style type="text/css">
+
+div.snapshot table td.description {
+background-color: #d9edf7;
+border-color: #bce8f1;
+color: #31708f;
+}
+</style>
+<?php
+include "library/mobileSnapShot.php";
+$snapshot = new mobileSnapShot( new simple_html_dom() );
+$html = $snapshot->retrieve( $_GET['bid'], 'rbf', 'default' );
+
+echo $html;
+
+?>
