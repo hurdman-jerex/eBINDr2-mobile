@@ -1,30 +1,35 @@
 // add methods/functions to ebindr
 ebindr.extend({
+    /*
+       Will open an iframe
+     */
+    initIFrame: function( iframe, url )
+    {
+        document.getElementById( iframe ).src = url;
+    },
 
 	/*
 		Will set and open a bid
 		TODO: clear out business fields before loading BID
 	*/
 	openBID: function( bid, start, cid, minimize ) {
-		$( 'keydownfield' ).focus();
 		// log the action
 		ebindr.log( 'Attempting to open BID ' + bid );
-	
+		ebindr.console( 'Attempting to open BID ' + bid );
+
 		// check to see if eBINDr is just starting
 		if( typeof(start) == 'undefined' ) var start = false;
 		if( typeof(cid) == 'undefined' ) var cid = 0;
 		if( typeof(minimize) == 'undefined' ) var minimize = ( ebindr.current.bid != bid );
 
-		// show the loader for all of the frames
-		$$('iframe.records').fireEvent('reload','/ebindr/blank.html');
-
 		// check and make sure we have a valid bid
 		if( $chk(bid) ) {
 			// log the last bid
 			ebindr.log( 'Previous BID ' + ebindr.current.bid );
+			ebindr.console( 'Previous BID ' + ebindr.current.bid );
 			// set the last bid and dba
 			ebindr.current.lastbid = ebindr.current.bid;
-			ebindr.current.lastdba = $('bn').get('text');
+			//ebindr.current.lastdba = $('bn').get('text');
 			// set the current bid
 			ebindr.current.bid = bid;
 			ebindr.current.cid = cid;
@@ -34,6 +39,7 @@ ebindr.extend({
 			this.onOpenBID=function(){return;};
 		}
 
+        window.location = '/m/searchlink.html?bid='+ebindr.current.bid;
 	},
 	
 	onOpenBID: function( ) {

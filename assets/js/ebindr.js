@@ -151,14 +151,15 @@ var ebindr = new Hash({
 	initialize: function() {
 
 		// make sure we are logged in, if we are not launch the login method
-		ebindr.authenticate({
+		/*ebindr.authenticate({
 			onFalse: function() {
 				ebindr.login();
 			}
-		});
+		});*/
 
 		// check to see if we are authenticated
-		if( ebindr.authenticate() ) ebindr.load();
+		//if( ebindr.authenticate() )
+            ebindr.load();
 	},
 	
 	/*
