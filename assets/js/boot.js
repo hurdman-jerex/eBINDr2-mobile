@@ -1,5 +1,3 @@
-window.addEvents({
-	'domready': function(e) {
-		ebindr.initialize();
-	}
+jQuery( document ).ready( function() {
+	ebindr.initialize();
 });
