@@ -15,21 +15,8 @@ $dba = $dba[0];
         <div class="span3" style="padding-bottom: 10px;">
         
             <h3 style="padding-bottom: 10px;"><a alt="Company Name" href="/m/business.html?info=business-names"><?=$dba->Name?></a> <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/dba/edit.html?did=<?=$dba->DID?>"><i class="icon-edit icon-white"></i></a></h3>
-            
-            <!-- Tab -->
-            
-                <div class="tabbable"> <!-- Only required for left/right tabs -->
-                  <ul class="nav nav-tabs">
-                    <li class="active"><a alt="Business Tab" href="#business-tab" data-toggle="tab">Business</a></li>
-                    <li><a alt="Inquiry Tab" href="#inquiry-tab" data-toggle="tab">Inquiry</a></li>
-                    <li><a alt="Accreditation Tab" href="#accreditation-tab" data-toggle="tab">Accreditation</a></li>
-                    <li><a alt="Complaints Tab" href="#complaints-tab" data-toggle="tab">Complaints</a></li>
-                  </ul>
-                  <div class="tab-content">
-                    
-                    <div class="tab-pane active" id="business-tab">
-                        <!-- Business Tab -->
-                        <div class="nav">
+
+                <div class="nav">
                             <ul class="nav nav-tabs nav-stacked biz-collapse">
                                 <li<?= ( $page == 'info' ? ' class="active"' : '' ) ?>><a alt="Record Information" href="/m/business.html">Record Information</a></li>
                                 <li<?= ( $page == 'complaints' ? ' class="active"' : '' ) ?>><a alt="Complaints" href="/m/business/complaints.html">Complaints</a></li>
@@ -42,26 +29,6 @@ $dba = $dba[0];
                                 <li class="force_update" <?= ( $page == 'force-update' ? ' class="active"' : '' ) ?>><a href="#">Force Update</a></li>
                             </ul>
                         </div>
-                    </div>
-                    
-                    <div class="tab-pane" id="inquiry-tab">
-                        <!-- Inquiry Tab -->
-                        <p>I'm in Inquiry Tab.</p>
-                    </div>
-                    
-                    <div class="tab-pane" id="accreditation-tab">
-                        <!-- Accreditation Tab -->
-                        <p>I'm in Accreditation Tab.</p>
-                    </div>
-                    
-                    <div class="tab-pane" id="complaints-tab">
-                        <!-- Complaints Tab -->
-                        <p>I'm in Complaints Tab.</p>
-                    </div>
-                  </div>
-                </div>
-            
-            <!-- End of Tab -->
             
                     
         </div><!--/span-->

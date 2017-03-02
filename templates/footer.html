@@ -1,7 +1,7 @@
 <script src="/m/assets/js/bootstrap.js"></script>
 <script src="/m/assets/js/bootstrap-tab.js"></script>
   <? if ($page != 'abnearme')  { ?>
-    
+
 	<script src="/m/assets/js/m.js"></script>
 	<? } ?>
 	<script>
@@ -16,7 +16,7 @@
 				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 					alert( jQuery( '<p>' + xmlhttp.responseText.replace( '<br><br>', '' ) + '</p>' ).text() );
 					//jQuery('#force_success').fadeIn('slow', function() {});
-					//jQuery('#force_success').fadeOut(5000, function() {});					
+					//jQuery('#force_success').fadeOut(5000, function() {});
 				}
 			}
 			xmlhttp.open("GET","/report/merge/update.htm/?NOASK&ebindr2=y&bid=<?=$_SESSION['bid'];?>",true);
@@ -27,6 +27,12 @@
 			jQuery('#force_success').hide();
 		});
 	</script>
-  </body>
 
+<script src="/m/assets/js/mootools/core-1.2.4.js" type="text/javascript"></script>
+<script src="/m/assets/js/mootools/more-1.2.4.2.js" type="text/javascript"></script>
+
+<script src="/m/assets/js/ebindr.js.php?flex" type="text/javascript"></script>
+<script type="text/javascript" src="/m/assets/js/boot.js"></script>
+
+  </body>
 </html>
