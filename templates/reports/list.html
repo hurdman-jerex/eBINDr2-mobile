@@ -13,11 +13,6 @@ $_menuPage = $url . '/report/menu?ebindr2=y';
 <script type="text/javascript">
     jQuery( document ).ready(function() {
 
-        function dopage( request )
-        {
-            window.location = '/m/searchlink.html?bid='+ebindr.current.bid;
-        }
-
         ebindr.initialize();
         ebindr.initIFrame( 'reportIframe', '<?=$_menuPage?>' );
     });
