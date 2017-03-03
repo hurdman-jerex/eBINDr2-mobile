@@ -39,8 +39,6 @@ $_SESSION['username'] = $login["reportr_username"];
 $_SESSION['bbbidreal'] = $login["bbbidreal"];
 $_SESSION['BBBID'] = $login["BBBID"];
 
-
-//echo '<pre>'.print_r( $login, true ).'</pre>';
 $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/log/' . $login["reportr_username"]);
 header("Location: /m/index.html");
 
