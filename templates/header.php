@@ -22,7 +22,6 @@ if (strpos($_SERVER['SERVER_NAME'],'mbc') !== false) $___ebindr2mobile_http['pro
 
 // Finally set our Base URL
 $___ebindr2mobile_http[ 'url' ] = $___ebindr2mobile_http[ 'protocol' ] . $___ebindr2mobile_http[ 'servername' ] . '/m/';
-$___ebindr2mobile_http[ 'report_url' ] = $___ebindr2mobile_http[ 'protocol' ] . $___ebindr2mobile_http[ 'servername' ] . '/report/';
 
 include "/home/serv/public_html/m/_autoload/_autoload.php";
 include "/home/serv/library/json.php";

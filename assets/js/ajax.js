@@ -15,8 +15,8 @@ AjaxService.prototype = {
                 {
                     case 'status'  :
                     case 'results' :
-                    case 'success' :
-                        break;
+                    case 'success' : 
+                    break;
                     default :
                         $message.push( $value );
                 }
@@ -28,7 +28,7 @@ AjaxService.prototype = {
 
     post : function( $url, $data, type, callback, preload ) {
         var $self = this;
-
+        
         jQuery.ajax(
             {
                 url    : $url,
@@ -49,7 +49,7 @@ AjaxService.prototype = {
                     {
                         window.location = $json_response.redirect;
                     }
-
+                    
                 },
                 error: function( $error ) {
                     $self.handleErrorResponse( $error );
@@ -57,10 +57,10 @@ AjaxService.prototype = {
             }
         );
     },
-
+    
     postHtml : function( $url, callback, preload ) {
         var $self = this;
-
+        
         jQuery.ajax(
             {
                 url    : $url,
@@ -79,7 +79,7 @@ AjaxService.prototype = {
                     {
                         window.location = $json_response.redirect;
                     }
-
+                    
                 },
                 error: function( $error ) {
                     $self.handleErrorResponse( $error );
@@ -111,7 +111,7 @@ AjaxService.prototype = {
                 success: function( $json_response ) {
                     if( callback )
                     {
-                        callback( $json_response );
+                        callback( $json_response );    
                     }
 
                     if( $response.redirect )
@@ -149,42 +149,7 @@ AjaxService.prototype = {
                     {
                         window.location = $json_response.redirect;
                     }
-
-                },
-                error: function( $error ) {
-                    if( errorCallback )
-                        errorCallback( $error );
-                    else
-                        $self.handleErrorResponse( $error );
-                }
-            }
-        );
-    },
-
-    getHtml : function( $url, $data, callback, preload, errorCallback ) {
-        var $self = this;
-
-        jQuery.ajax(
-            {
-                url    : $url,
-                type: 'GET',
-                dataType: 'html',
-                data: $data,
-                beforeSend: function() {
-                    if( preload ) {
-                        preload();
-                    }
-                },
-                success: function( $json_response ) {
-                    if( callback ) {
-                        callback( $json_response );
-                    }
-
-                    if( $json_response.redirect )
-                    {
-                        window.location = $json_response.redirect;
-                    }
-
+                    
                 },
                 error: function( $error ) {
                     if( errorCallback )
@@ -199,7 +164,7 @@ AjaxService.prototype = {
     formSubmit : function( formElement, $parameters, callback ) {
         var $self = this;
 
-        jQuery( formElement ).submit(
+        jQuery( formElement ).submit( 
             function( $event )
             {
                 $event.preventDefault();
@@ -213,7 +178,7 @@ AjaxService.prototype = {
                 if( $parameters )
                 {
                     var $andKey = '';
-                    jQuery.each( $parameters,
+                    jQuery.each( $parameters, 
                         function( $key, $val )
                         {
                             if( $key != '' )
