@@ -2,13 +2,18 @@
 $url = $myHost . $_SERVER['SERVER_NAME'];
 $_menuPage = $url . '/report/menu?ebindr2=y';
 ?>
-<iframe id="reportIframe" class="mochaIframe" src="<?=$_menuPage?>" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+<iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+
+<script>jQuery.noConflict();</script>
+<script src="/m/assets/js/mootools/core-1.2.4.js"></script>
+<script src="/m/assets/js/mootools/more-1.2.4.2.js"></script>
+
+<script src="/m/assets/js/ebindr.js.php?flex"></script>
 
 <script type="text/javascript">
-// A $( document ).ready() block.
-jQuery( document ).ready(function() {
-    var reportIframeHeight = ( window.screen.height - 100 );
-    jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
-    console.log( reportIframeHeight );
-});
+    jQuery( document ).ready(function() {
+
+        ebindr.initialize();
+        ebindr.initIFrame( 'reportIframe', '<?=$_menuPage?>' );
+    });
 </script>

@@ -1,48 +1,10 @@
-<?php
-session_start();
-$myHost = 'http://';
-if( $_SERVER['SERVER_NAME'] == 'seatac.ebindr.com' ) $_SERVER["SERVER_NAME"] = 'localhost';
-if (strpos($_SERVER['SERVER_NAME'],'vancouver') !== false) $myHost = 'https://';
-if (strpos($_SERVER['SERVER_NAME'],'mbc') !== false) $myHost = 'https://';
-include "/home/serv/public_html/m/_autoload/_autoload.php"; 
-include "/home/serv/library/json.php";
+<?php include "/home/serv/public_html/m/templates/header.php"; ?>
 
-function securityCheck($accessRequired, $regular_expression = false) {
-    $granted = false;
-    $security_keys = explode(",", $_SESSION['user']['reportr_keys']);
-    if ($regular_expression) {
-        foreach($security_keys as $security_key) {
-            if (preg_match ( $accessRequired, $security_key )) $granted = true;
-        }    
-    } else {
-        foreach($security_keys as $security_key) {
-            if ($accessRequired == $security_key) $granted = true;
-        }
-    }
-    return $granted;
-}
-//$test = array();
-//echo securityCheck('b*');
-
-if ( !isset($_SESSION['user']) ) {
-  if (strpos($_SERVER['SERVER_NAME'],'vancouver') !== false) header("Location: https://" . $_SERVER['SERVER_NAME'] . "/m/sign-in.html");
-  if (strpos($_SERVER['SERVER_NAME'],'mbc') !== false) header("Location: https://" . $_SERVER['SERVER_NAME'] . "/m/sign-in.html");
-    header("Location: http://".$_SERVER['SERVER_NAME']."/m/sign-in.html");
-}
-
-/*if ( !isset($_SESSION['bid']) ) {
-    $_SESSION['bid'] = 2000099;
-}
-if ( !isset($_SESSION['user']->name) ) {
-    $_SESSION['user']->name = "hurdmantest";
-}*/
-//print_r($_SESSION['user']);
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>eBINDr2go</title>
+    <title>eBINDr2go<?=$__page_title?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
