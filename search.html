@@ -18,7 +18,7 @@ function remove_phone_format($number) {
 }
 
 if (sizeof($_POST) > 0) {
-$api_url = $myHost . $_SERVER['SERVER_NAME'].'/m/api/search/'. $_POST[ 'type' ].'/'.$_POST['search'];
+$api_url = $myHost . $_SERVER['SERVER_NAME'].'/m/api/search/find/'. $_POST[ 'type' ].'?search='.$_POST['search'].'%';
 $businesses = json_decode($bbapi->get( $api_url ));
 $businesses = $businesses->results;
 }
