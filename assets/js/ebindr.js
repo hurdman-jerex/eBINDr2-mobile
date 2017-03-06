@@ -199,10 +199,6 @@ var ebindr = new Hash({
         // set the bbbid
         ebindr.bbbid = Cookie.read("bbbidreal");
 
-        function dopage( request )
-        {
-            window.location = '/m/searchlink.html?bid='.ebindr.current.bid;
-        }
 	},
 
 	ipaddress: function( url ) {
