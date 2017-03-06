@@ -3,6 +3,7 @@
 $files = array(
 	'ebindr.js',
 	'library/functions.js',
+	'library/legacy.js',
 );
 $leaveout = array(12);
 // merge all javascript code together

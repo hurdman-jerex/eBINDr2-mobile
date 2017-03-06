@@ -39,7 +39,7 @@ ebindr.extend({
 			this.onOpenBID=function(){return;};
 		}
 
-        window.location = '/m/searchlink.html?bid='+ebindr.current.bid;
+        //window.location = '/m/searchlink.html?bid='+ebindr.current.bid;
 	},
 	
 	onOpenBID: function( ) {
