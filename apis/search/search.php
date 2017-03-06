@@ -48,6 +48,11 @@ class search_API extends hapi {
         return $this->read("[e2mobile/api/search/consumername]", 0);
     }
 
+    public function index(){
+        $this->bind('find', $this->segments[1]);
+        return $this->read("[e2mobile/api/search/". $this->segments[0] ."]", 0);
+    }
+
 }
 
 ?>

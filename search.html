@@ -1,0 +1,114 @@
+<?
+if( ! isset( $_GET['type'] ) )
+    $_GET['type'] = 'business-name';
+
+$page = 'search';
+include "templates/header.html";
+include "templates/nav-bar.html";
+include "templates/search/_container-start.html";
+
+$nav = $_GET['type'];
+
+//print_r($_SESSION['user']);
+function remove_phone_format($number) {
+    $number=trim($number);
+    $number=  str_replace('-', '', $number);
+    $number= str_replace(' ','',$number);
+    return $number;
+}
+
+if (sizeof($_POST) > 0) {
+$api_url = $myHost . $_SERVER['SERVER_NAME'].'/m/api/search/'. $_POST[ 'type' ].'/'.$_POST['search'];
+$businesses = json_decode($bbapi->get( $api_url ));
+$businesses = $businesses->results;
+}
+
+?>
+
+<?
+include "/home/serv/public_html/ebindr/includes/functions.php";
+if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) {
+        include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php"; // global definitions
+}
+if(file_exists("../../definitions.php")) {
+        include "../../definitions.php"; // global definitions
+}
+if(file_exists("/home/definitions.php")) {
+        include "/home/definitions.php"; // global definitions
+}
+if(file_exists("../definitions.php")) {
+        include "../definitions.php"; // global definitions
+}
+include "/home/serv/includes/definitions.php"; // global definitions
+include '/home/serv/library/mybindr.php';
+$mybindr=new mybindr;
+$mybindr->database = LOCAL_DB;
+mysql_select_db( $mybindr->database, $mybindr->db );
+$mybindr->addparm( 'type', 'f' );
+$mybindr->addparm( 'staff', $_COOKIE["reportr_username"] );
+list($q)=$mybindr->getquery("e2m button sort" );
+$q=$mybindr->ResolvePipes($q);
+$result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
+?>
+
+<style type="text/css">
+    .rating {
+        border: 2px solid #0099cc;
+        color: #0099cc;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        padding: 0 5px;
+        display: inline-block;
+        text-align: center;
+        min-width: 20px;
+        background-color: #e6e6e6;
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+        background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+        background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+        background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+        background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+        background-repeat: repeat-x;
+    }
+
+    .ab {
+        margin: 10px 0;
+    }
+</style>
+<div class="subnav">
+    <ul class="nav nav-pills">
+        <? while( $row = mysql_fetch_assoc($result) ) : ?>
+        <? if( $nav == $row['class'] ){
+            $label = $row['name'];
+            $searchId = $row['id'];
+        } ?>
+        <li class="<?=$row['class']?><?= ($nav == $row['class'] ? ' active' : '') ?>"><a href="search.html?type=<?=$row['class']?>"><?=$row['name']?></a></li>
+        <? endwhile; ?>
+    </ul>
+</div>
+
+<form class="well form-search" method="post" action="" id="searchform" style="margin-top: 10px;" onsubmit="show_loader();">
+    <input type="hidden" name="type" value="<?= $searchId ?>" />
+    <div class="input-append">
+        <input id="searchbox" class="input-xlarge" type="text" placeholder="<?= $label ?>" name="search" value="<?= (isset($_POST['search']) ? $_POST['search'] : '') ?>"><button type="submit" class="btn"><i class="icon-search"></i> Search</button>
+        <span id="loader">&nbsp;&nbsp;<img src="/m/assets/img/159.gif" alt="searching..." height="25"/></span>
+    </div>
+</form>
+
+<div class="" id="search-result">
+
+    <? if (sizeof($_POST) > 0): ?>
+    <? include "templates/search/results.php"; ?>
+    <? endif; ?>
+</div>
+<script type="text/javascript">
+    jQuery.noConflict();
+    jQuery('#loader').fadeOut(100);
+    jQuery('#search-result').hide().fadeIn(1000);
+    function show_loader(){
+        jQuery('#loader').fadeIn(300);
+    }
+
+</script>
+<? include "templates/search/_container-end.html"; ?>
+<? include "templates/footer.html"; ?>
