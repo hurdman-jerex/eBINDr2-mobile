@@ -18,7 +18,7 @@
 
           <div class="nav-collapse">
             <ul class="nav">
-              <li <? if( $page == 'search' ) { ?> class="active" <? } ?>><a alt="Search" href="/m/index.html">Search</a></li>
+              <li <? if( $page == 'search' ) { ?> class="active" <? } ?>><a alt="Search" href="/m/search.html">Search</a></li>
 							
               <li <? if( $page == 'info' ) { ?> class="active" <? } ?> class="dropdown">
                                 
@@ -36,6 +36,9 @@
                                     <? } ?>
                                     <? if (securityCheck('bs') || securityCheck('b*')) { ?>
                       <li><a alt="Sales" href="/m/business/sales.html">Sales</a></li>
+                                    <? } ?>
+                                    <? if (securityCheck('bg') || securityCheck('b*')) { ?>
+                      <li><a alt="General" href="/m/business/general.html">General</a></li>
                                     <? } ?>
                                     <? if (securityCheck('is') || securityCheck('i*')) { ?>
                       <li><a alt="Snapshot" href="/m/business/snapshot.html">Snapshot</a></li>
