@@ -7,10 +7,15 @@ if(!class_exists('mobileDisplay'))
     {
         public $template_uri = '/home/serv/templates/';
 
-        function __construct( $templates, $path = '/home/serv/templates/' )
+        function __construct( $templates = array(), $path = '/home/serv/templates/' )
         {
+            if( isset( $templates[ 'template_path' ] ) )
+                $path = $templates[ 'template_path' ];
+
             $this->template_uri = $path;
-            $this->display( $templates );
+            $this->display();
+
+            $this->init( $templates );
         }
 
         /**
@@ -18,7 +23,7 @@ if(!class_exists('mobileDisplay'))
          * @param templates array
          * @desc class constructor. accepts what templates to initialize
          */
-        function display( $templates )
+        function display()
         {
             //$this->template_uri = dirname( dirname( dirname( dirname(__FILE__) ) ) ) . '/templates/';
 
@@ -62,7 +67,10 @@ if(!class_exists('mobileDisplay'))
                 "auth_couponedit" => "auth_couponedit.php",
 
                 // New Mobile Layouts
-                "layout_editr" => "layout_editr.php"
+                "layout_editr" => "layout_editr.php",
+                "mobile_header" => "header.html",
+                "mobile_nav" => "nav-bar.html",
+                "mobile_footer" => "footer.html"
             );
             if(file_exists( $this->template_uri . "auth_".APPLICATION_FILENAME.".php"))
                 $this->templates["auth"]=$auth_template="auth_".APPLICATION_FILENAME.".php";
@@ -70,7 +78,6 @@ if(!class_exists('mobileDisplay'))
                 $this->templates["layout_".APPLICATION_FILENAME]=$auth_template="layout_".APPLICATION_FILENAME.".php";
             if(file_exists( $this->template_uri .  "layout_".APPLICATION_FILENAME."_branded.php"))
                 $this->templates["layout_".APPLICATION_FILENAME."_branded"]=$auth_template="layout_".APPLICATION_FILENAME."_branded".(isset($_GET["ebindr2"])?"2":"").".php";
-            $this->init($templates);
         }
 
         /**
