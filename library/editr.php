@@ -3,18 +3,12 @@
 include _MYBINDR;
 include _EDITR;
 
-
 if(!class_exists('mobileEditr')) {
     class mobileEditr extends editr
     {
-        public function __construct()
-        {
-            // Silent is Golden....
-        }
 
-        function getform( $query, $reportr = null, $step=0, $heading="") {
-            if( !is_null( $reportr ) )
-                global $reportr;
+        function getform( $query, $step=0, $heading="") {
+            global $reportr;
 
             unset($this->alias);
 //		exit();

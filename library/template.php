@@ -68,9 +68,8 @@ if(!class_exists('mobileDisplay'))
 
                 // New Mobile Layouts
                 "layout_editr" => "layout_editr.php",
-                "mobile_header" => "header.html",
-                "mobile_nav" => "nav-bar.html",
-                "mobile_footer" => "footer.html"
+
+                "mobile_default" => "default.html"
             );
             if(file_exists( $this->template_uri . "auth_".APPLICATION_FILENAME.".php"))
                 $this->templates["auth"]=$auth_template="auth_".APPLICATION_FILENAME.".php";

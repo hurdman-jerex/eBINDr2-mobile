@@ -2,7 +2,6 @@
 
 include "_m.php";
 
-echo '<pre>'.print_r( $variables, true ) . '</pre>';
 
 // Library
 include _DATABASE;
