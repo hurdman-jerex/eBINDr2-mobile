@@ -1,18 +1,20 @@
 <?php
 /**
-* Mobile Config
-*/
+ * Mobile Config
+ */
+define( 'MOBILE_TEMPLATE_URI', '/home/serv/public_html/m/templates/' );
 define( 'MOBILE_APPLICATION_FILENAME', 'mreport' );
 $task = new db($variables["db"], $variables["host"]);
 $branding = (NOT_BRANDED=="1"?"n":"Y");
 // if we are in the print layout setup the template name
 if(@eregi("$bindr",$variables[0])) $_GET[noheader]=" ";
 // set mobile layout
-$layout_template = "layout_mobile";
+$layout_template = "layout_editr";
 // setup avaliable templates
-$device = new mobileDisplay(array($layout_template, "table", "auth", "header"));
+$device = new mobileDisplay( array("table", "auth", "header") );
+$device->templateadd( 'layout_editr_layout', 'layout_editr.php', '/home/serv/public_html/m/templates/' );
 $parse = new parse(); // initialize the parser
-$reportr = new reportr($variables["db"], $variables["host"]);
+$reportr = new mobileReportr($variables["db"], $variables["host"]);
 if($_SERVER[SCRIPT_NAME]=='/sbq') {
     $parse->params[bid]=$parse->params[staff];
     if(eregi("[a-z]", $parse->params[bid])) $parse->params["bid"]=$reportr->background->get_var("select bid from staff where initials='".$_COOKIE["reportr_username"]."' union select bid from common.staff where initials='".$_COOKIE["reportr_username"]."' limit 1");
@@ -65,6 +67,6 @@ if(strpos($_SERVER['SERVER_NAME'], "bureaudata")) {
 }
 
 /**
-* END OF CONFIG
-*/
+ * END OF CONFIG
+ */
 ?>

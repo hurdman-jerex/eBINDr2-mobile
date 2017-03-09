@@ -5,16 +5,23 @@ if(!class_exists('mobileDisplay'))
 {
     class mobileDisplay extends template
     {
-        protected $template_uri;
+        public $template_uri = '/home/serv/templates/';
+
+        function __construct( $templates, $path = '/home/serv/templates/' )
+        {
+            $this->template_uri = $path;
+            $this->display( $templates );
+        }
+
         /**
          * @return void
          * @param templates array
          * @desc class constructor. accepts what templates to initialize
          */
-        function __construct($templates)
+        function display( $templates )
         {
-            $this->template_uri = dirname( dirname( dirname( dirname(__FILE__) ) ) ) . '/templates/';
-            
+            //$this->template_uri = dirname( dirname( dirname( dirname(__FILE__) ) ) ) . '/templates/';
+
             $this->template( $this->template_uri );
             $this->templates = array(
                 "description" => "description".(isset($_GET["ebindr2"])?"2":"").".php",
@@ -52,7 +59,10 @@ if(!class_exists('mobileDisplay'))
                 "auth_mycomplaints" => "auth_mycomplaints.php",
                 "auth_agcomplaints" => "auth_agcomplaints.php",
                 "auth_sbq" => "auth_sbq.php",
-                "auth_couponedit" => "auth_couponedit.php"
+                "auth_couponedit" => "auth_couponedit.php",
+
+                // New Mobile Layouts
+                "layout_editr" => "layout_editr.php"
             );
             if(file_exists( $this->template_uri . "auth_".APPLICATION_FILENAME.".php"))
                 $this->templates["auth"]=$auth_template="auth_".APPLICATION_FILENAME.".php";
@@ -62,8 +72,8 @@ if(!class_exists('mobileDisplay'))
                 $this->templates["layout_".APPLICATION_FILENAME."_branded"]=$auth_template="layout_".APPLICATION_FILENAME."_branded".(isset($_GET["ebindr2"])?"2":"").".php";
             $this->init($templates);
         }
-        
-            /**
+
+        /**
          * @return void
          * @param templates array
          * @desc initializes all of the templates using template->addtemplate
@@ -76,7 +86,7 @@ if(!class_exists('mobileDisplay'))
             else
                 $this->addtemplate($templates . "_layout", $this->templates[$templates]);
         }
-        
+
         /**
          * @return void
          * @param name string
@@ -87,7 +97,7 @@ if(!class_exists('mobileDisplay'))
         {
             $this->define($name, $value);
         }
-        
+
         /**
          * @return string
          * @param name string
@@ -101,7 +111,45 @@ if(!class_exists('mobileDisplay'))
             else
                 return $this->output = $this->output($name);
         }
-        
+
+        function templateadd( $templatename, $templatefile, $path = null )
+        {
+            $path = is_null( $path ) ? $this->template_uri : $path;
+            // check to see if file exists
+            if( file_exists( $path . $templatefile) ) {
+                if( $fp = fopen( $path . $templatefile, "r") ) {
+                    // lock the file
+                    //flock($fp, LOCK_SH);
+                    // read the file
+                    $contents = fread($fp, filesize( $path . $templatefile));
+                    // unlock the file
+                    //flock($fp, LOCK_UN);
+                    // close the file
+                    fclose($fp);
+                    // add to template catalog
+                    $this->templates[strtolower($templatename)] = $contents;
+
+                    return true;
+                } else {
+                    // could not open file
+                    if($this->debug) {
+                        // will have error() handling installed here soon
+                        echo ("could not open file ". $path .$templatefile);
+                    }
+
+                    return false;
+                }
+            } else {
+                // file does not exist
+                if( $this->debug ) {
+                    // will have error() handling installed here soon
+                    echo ("could not find file ". $path .$templatefile);
+                }
+
+                return false;
+            }
+        } // end of templateadd() method
+
     }
 }
 
