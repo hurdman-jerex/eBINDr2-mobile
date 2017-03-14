@@ -26,7 +26,7 @@ $callDate = date('M. d, Y @ g:ia', $timedDate);
 ?>
 <div class="row-fluid" style="margin-top: 10px;">
 	<div class="span12" style="border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 5px;">
-        <? if( $_SESSION['user']->initials == $sale->Staff ): ?>
+        <? if( $_SESSION['username'] == $sale->Staff ): ?>
             <a style="float: right;" href="/m/business/sales/edit.html?sid=<?=$sale->sid?>" class="btn btn-danger btn-mini"><i class="icon-white icon-pencil"></i> Edit</a>
         <? endif; ?>
     

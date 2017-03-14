@@ -57,9 +57,9 @@ jQuery(function(){
           <fieldset>
               <legend>Add Sales Call Log</legend>
               <div class="control-group">
-                  <label class="control-label" for="name">Staff:</label>
-                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']->name;?></div>
-                  <input name="staff" id="staff" class="input-xlarge" type="hidden" value="<?=$_SESSION['user']->initials;?>" readonly/>
+                  <label class="control-label" for="staff">Staff:</label>
+                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['staff_name']?></div>
+                  <input name="staff" id="staff" class="input-xlarge" type="hidden" value="<?=$_SESSION['username']?>" readonly/>
               </div>
               <div class="control-group">
                   <label class="control-label" for="callresult">Call Result:</label>
@@ -122,7 +122,7 @@ jQuery(function(){
 
   <div class="row">
   		<div class="controls"><button class="btn btn-primary" data-toggle="modal" name="Submit" id="Submit">Submit Data</button>
-        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/sales.html"><i class="icon-remove"></i> Cancel</a>
+        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/business/sales.html"><i class="icon-remove"></i> Cancel</a>
         </div>
   </div>
 </form>

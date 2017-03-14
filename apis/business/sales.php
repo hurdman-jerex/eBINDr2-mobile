@@ -49,6 +49,7 @@ class sales_API extends hapi {
         $this->bind('bid', $this->segments[0]);
 		$this->bind('sid', $this->segments[1]);
 		$this->bind('staff', $_POST['staff']);
+		$this->bind('staff_old', $_POST['staff_old']);
 		$this->bind('callresult', $_POST['callresult']);
 		
 		$date_array = explode("-", $_POST['callagain']);
@@ -60,14 +61,14 @@ class sales_API extends hapi {
 		$this->bind('reminder', $_POST['reminder']);
 		$this->bind('comment', $_POST['comment']);
 
-		return $this->write("sales:edit", "[e2mobile/api/business/sales/edit]");
+		$result = $this->write("sales:edit", "[e2mobile/api/business/sales/edit]");
         
-        /*return array(
+        return array(
 			"post_vars" => $_POST,
 			"error" => $result['error'],
 			'query' => $result['sql'],
 			'segments' => $this->segments
-		);*/
+		);
 	}
 
 }
