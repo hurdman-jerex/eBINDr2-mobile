@@ -29,6 +29,7 @@ if(!class_exists('e2mobile')) {
             $this->current_page = $page;
             $this->device = $this->_initClass( 'Template', array() );
             $this->device->templateadd( 'mobile_default_layout', 'default.html', MOBILE_TEMPLATE_URI );
+            $this->device->templateadd( 'mobile_mainmenu_layout', 'nav.php', MOBILE_TEMPLATE_URI );
             $this->setDeviceVariables( array(
                 'page_title' => $this->httpvariables['page_title'],
                 'uri' => $this->httpvariables['uri'],
@@ -38,6 +39,7 @@ if(!class_exists('e2mobile')) {
             ) );
 
             $this->device->variable("menu", $this->getMenu() );
+            $this->device->variable( "main_menu", $this->device->buffer( 'mobile_mainmenu' ) );
 
             $this->device->variable("db", $this->variables["db"]);
             $this->device->variable("application_name", APPLICATION_NAME);
@@ -121,6 +123,16 @@ if(!class_exists('e2mobile')) {
             $page = $this->current_page;
             ob_start();
             include MOBILE_TEMPLATE_URI . 'business/_container-'.$side.'.php';
+            $content = ob_get_contents();
+            ob_end_clean();
+
+            return $content;
+        }
+
+        public function getSearchMenu( $side = 'start' ){
+            $page = $this->current_page;
+            ob_start();
+            include MOBILE_TEMPLATE_URI . 'search/_container-'.$side.'.php';
             $content = ob_get_contents();
             ob_end_clean();
 
