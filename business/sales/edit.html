@@ -43,8 +43,8 @@ if ( sizeof($_POST)>0 ) {
     $bbapi->set('sid', $_POST['salesid']);
 
     $result = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/edit/' . $_SESSION['bid'] . '/' . $_POST['salesid'] );
-    echo '<pre>'.print_r( $result, true ).'</pre>';
-    //echo '<script>window.location = "/m/business/sales.html";</script>';
+    //echo '<pre>'.print_r( $result, true ).'</pre>';
+    echo '<script>window.location = "/m/business/sales.html";</script>';
     exit;
 
 }else {
