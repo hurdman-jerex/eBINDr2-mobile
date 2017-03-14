@@ -36,6 +36,7 @@ setcookie("staff_name", $login["staff_name"], time()+AUTO_LOGOUT_TIME, "/"); // 
 setcookie("staff_email", $login["email"], time()+AUTO_LOGOUT_TIME, "/"); // email field in staff table
 
 $_SESSION['user'] = $login;
+$_SESSION['staff_name'] = str_replace( "+", " ", $login["staff_name"] );
 $_SESSION['username'] = $login["reportr_username"];
 $_SESSION['bbbidreal'] = $login["bbbidreal"];
 $_SESSION['BBBID'] = $login["BBBID"];
