@@ -24,13 +24,13 @@ $people=$people->results;
                 <td>
                     <?=stripslashes($person->prename)?> <?=stripslashes($person->firstname)?> <?=stripslashes($person->lastname)?> <?=stripslashes($person->postname)?> 
                     <? if($person->main=='y') { ?>
-                        <span class="badge">Primary</span>
+                        <span class="badge badge-important">Primary</span>
                     <? } ?>
                 </td>
                 <td>
                   <?=stripslashes($person->title)?>
                   <? if(strlen(trim($person->label)) > 0) { ?>
-                  <span class="badge badge-important"><?=$person->label;?></span>
+                  <span class="badge"><?=$person->label;?></span>
                   <? } ?>
                 </td>
             </tr>

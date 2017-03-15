@@ -19,13 +19,13 @@ $tobs= json_decode($bbapi->get($url))->results;
     </thead>
     <tbody>
         <?php foreach($tobs as $tob): ?>
-            <tr onclick="<? if ( securityCheck('bt') || (securityCheck('b*') && !securityCheck('bt') ) ) { ?>window.location='/m/business/tobs/edit.html?code=<?=$tob->tob?>'; <? } ?>">
+            <tr onclick="<? if ( securityCheck('bt') || (securityCheck('b*') && !securityCheck('bt') ) ) { ?>window.location='/m/business/tobs/edit.php?code=<?=$tob->tob?>'; <? } ?>">
                 <td><?=$tob->tob?></td>
                 <td>
                     <?=stripslashes($tob->tobdesc)?><br/>
                     <i><?=stripslashes($tob->Label)?></i>
                     <? if($tob->main=='y'): ?>
-                        <span class="badge">Primary</span>
+                        <span class="badge badge-important">Primary</span>
                     <? endif; ?>
                 </td>
             </tr>

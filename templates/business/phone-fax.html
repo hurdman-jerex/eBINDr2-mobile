@@ -4,7 +4,7 @@ $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/fax/listing/' . 
 $faxes = json_decode($bbapi->post($url));
 $faxes = $faxes->results;
 
-$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/listing/' . (sizeof($_GET)>0?$_GET['bid']:$_SESSION['bid']);
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/phone/listing/' . $_SESSION['bid'];
 $phones = json_decode($bbapi->post($url));
 $phones = $phones->results;
 
@@ -50,14 +50,14 @@ function remove_phone_format($number) {
         <?php foreach ($phones as $phone) { ?>
         <tr class="phone-clickable" onclick="calledit('<?=$phone->pid?>','phone','<?=remove_phone_format($phone->number)?>');">
             <td>Phone</td>
-            <td><?= $phone->number . " "; ?><?php if ($phone->main == 'y') { ?><span class="badge">Primary</span></td><?php } ?>
+            <td><?= $phone->number . " "; ?><?php if ($phone->main == 'y') { ?><span class="badge badge-important">Primary</span></td><?php } ?>
             <td><?= stripslashes($phone->label); ?></td>
         </tr>
         <?php } ?>
         <?php foreach ($faxes as $fax) { ?>
         <tr class="fax-clickable" onclick="edit('<?=$fax->fid?>','fax');">
             <td>Fax</td>
-            <td><?= $fax->number . " "; ?><?php if ($fax->main == 'y') { ?><span class="badge">Primary</span></td><?php } ?>
+            <td><?= $fax->number . " "; ?><?php if ($fax->main == 'y') { ?><span class="badge badge-important">Primary</span></td><?php } ?>
             <td><?= stripslashes($fax->label); ?></td>
         </tr>
         <?php } ?>
@@ -68,12 +68,13 @@ function remove_phone_format($number) {
     function calledit(id,type,num) {
         jQuery('#call').text(''+num);
         jQuery('#call').attr('href','tel:'+num);
-        jQuery('#edit').attr('href','/m/business/phone-fax/edit.html?id='+id+'&type='+type);
+        //jQuery('#edit').attr('href','/m/business/phone-fax/edit.html?id='+id+'&type='+type);
+        jQuery('#edit').attr('href','/m/business/'+ type +'/edit.php?pid='+id);
         jQuery('#modal').modal('toggle');
     }
-    <? if ( securityCheck('bf') || (securityCheck('b*') && !securityCheck('bf') ) ) : ?>
+    <? if ( securityCheck('bf') || securityCheck('bp') || (securityCheck('b*') && ( !securityCheck('bf') || !securityCheck('bp') ) ) ) : ?>
     function edit(id,type) {
-        window.location='/m/business/phone-fax/edit.html?id='+id+'&type='+type;
+        window.location='/m/business/'+ type +'/edit.php?pid='+id;
     }
     <? else: ?>
     function edit(id,type) {
