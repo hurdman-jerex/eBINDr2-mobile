@@ -82,7 +82,7 @@ $result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
             $label = $row['name'];
             $searchId = $row['id'];
         } ?>
-        <li class="<?=$row['class']?><?= ($nav == $row['class'] ? ' active' : '') ?>"><a href="search.html?type=<?=$row['class']?>"><?=$row['name']?></a></li>
+        <li class="<?=$row['class']?><?= ($nav == $row['class'] ? ' active' : '') ?>"><a alt="<?=$row['name']?>" href="search.html?type=<?=$row['class']?>"><?=$row['name']?></a></li>
         <? endwhile; ?>
     </ul>
 </div>

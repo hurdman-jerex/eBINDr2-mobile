@@ -30,7 +30,7 @@ $people=$people->results;
                 <td>
                   <?=stripslashes($person->title)?>
                   <? if(strlen(trim($person->label)) > 0) { ?>
-                  <span class="badge"><?=$person->label;?></span>
+                  <span class="badge badge-important"><?=$person->label;?></span>
                   <? } ?>
                 </td>
             </tr>
@@ -41,7 +41,7 @@ $people=$people->results;
 <script type="text/javascript">
 <? if (securityCheck('bo') || ( securityCheck('b*') && !securityCheck('bo') ) ) { ?>
     jQuery('.clickable').click(function(){
-        window.location='/m/business/people/edit.html?pid='+this.id;
+        window.location='/m/business/people/edit.php?pid='+this.id;
     });
 <? } ?>
 </script>

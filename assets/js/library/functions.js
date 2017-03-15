@@ -7,9 +7,9 @@ ebindr.extend({
     {
         var $iframe = document.getElementById( iframe );
         $iframe.src = url;
-        $iframe.load( function(){
+        /*$iframe.load( function(){
             this.setHeight( this );
-        });
+        });*/
     },
 
     setHeight: function( e ){

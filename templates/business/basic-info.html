@@ -33,7 +33,7 @@ $business=$business[0];
  <div class="nav">
   <ul class="nav nav-tabs nav-stacked">
                 <li class="ratings-and-accreditation">
-                    <a href="/m/business.html?info=rating-accreditation">
+                    <a alt="Rating" href="/m/business.html?info=rating-accreditation">
                         <? if ($business->member == 'y'): ?>
                             <img src="http://<?= $_SERVER['SERVER_NAME'] ?>/m/assets/img/bbb-ab3.png" alt="Accredited Business" height="31" class="ab"/>
                         <? endif; ?>
@@ -42,19 +42,19 @@ $business=$business[0];
                     </a>
                 </li>
                 <li class="main-address">
-                <a href="/m/business.html?info=address"><i class="icon-map-marker"></i>
+                <a alt="Address" href="/m/business.html?info=address"><i class="icon-map-marker"></i>
                     <?=$business->street1?> <?=$business->street2?> <?=$business->city?>, <?=$business->stateprov?> <?=$business->postalcode?>  
                     </a>
                 </li>
                 
                 <li class="main-person">
-                    <a href="/m/business.html?info=people-contacts"><i class="icon-user"></i>
+                    <a alt="Contact" href="/m/business.html?info=people-contacts"><i class="icon-user"></i>
                         <?=$business->firstname?> <?=$business->lastname?>, <?=$business->title?>
                     </a>
                 </li>
                 
                 <li class="main-phone-fax">
-                    <a href="/m/business.html?info=phone-fax">   
+                    <a alt="Phone Fax" href="/m/business.html?info=phone-fax">
                         <i class="icon-book"></i> 
                         <abbr title="Phone">P:</abbr> <?=$business->number?>, 
                         <abbr title="Fax">F:</abbr> <?=$business->faxnumber?>
@@ -62,7 +62,7 @@ $business=$business[0];
                 </li>
                 
                 <li class="main-contact-email">
-                <a href="/m/business.html?info=email-website"><i class="icon-envelope"></i>
+                <a alt="Email Address" href="/m/business.html?info=email-website"><i class="icon-envelope"></i>
                     <?=$business->email?>
                     </a>
                 </li>
@@ -74,7 +74,7 @@ $business=$business[0];
                 </li>
                 
                 <li class="main-tob">
-                <a href="/m/business.html?info=tobs"><i class="icon-briefcase"></i>
+                <a alt="TOB" href="/m/business.html?info=tobs"><i class="icon-briefcase"></i>
                     <?=$business->TOB?>
                     </a>
                 </li>

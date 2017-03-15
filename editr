@@ -120,12 +120,7 @@ if($_POST[STEP]==1 || $_GET['SUBMIT']=='yes') {
     echo $device->buffer($layout_template);
 }
 
-if($sql=="") {
-    $reportr_url = $editr->ResolvePipes(stripslashes(stripslashes($editr->params[reportr])));
-    // Let's Display success and reload the parent page.
-    $device->define("content", "<div class='alert alert-success'>Changes have been saved</div><script type='text/javascript'>( function() { window.parent.location = '". $reportr_url ."';}).delay(800);</script>");
-    echo $device->buffer($layout_template);
-}
+if($sql=="") { header("Location: ".$editr->params[reportr]); exit();}
 
 for($i=0;$i<sizeof($sql);$i++)
     $sql[$i]=$parse->resolve($sql[$i]);
