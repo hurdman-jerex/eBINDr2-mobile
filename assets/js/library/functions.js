@@ -5,7 +5,15 @@ ebindr.extend({
      */
     initIFrame: function( iframe, url )
     {
-        document.getElementById( iframe ).src = url;
+        var $iframe = document.getElementById( iframe );
+        $iframe.src = url;
+        $iframe.load( function(){
+            this.setHeight( this );
+        });
+    },
+
+    setHeight: function( e ){
+        e.height = e.contentWindow.document.body.scrollHeight;
     },
 
 	/*

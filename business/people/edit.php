@@ -5,8 +5,8 @@
         <div class="row-fluid">
             <div class="span12">
 
-                <h2>Edit People and Contact</h2>
-    <iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+                <h2>Edit Address</h2>
+                <iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
 
             </div>
         </div>
@@ -18,9 +18,10 @@
 
     <script src="/m/assets/js/ebindr.js.php?flex"></script>
 
-    <? $_menuPage='/m/editr/e2m lite button bo/?ebindr2&bid='.$_SESSION['bid'].'&key2='.$_GET['pid']; ?>
+<? $_menuPage='/m/editr/e2m lite button bo/?ebindr2&bid='.$_SESSION['bid'].'&key2='.$_GET['aid']; ?>
     <script type="text/javascript">
         jQuery( document ).ready(function() {
+
             ebindr.initialize();
             ebindr.initIFrame( 'reportIframe', '<?=$_menuPage?>' );
         });

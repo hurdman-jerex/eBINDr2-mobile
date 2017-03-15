@@ -446,12 +446,16 @@ if(!class_exists('mobileEditr')) {
 
             //if(isset($_GET['calendaronlyeditr'])) $buttons = "buttons_calendaronly.tpl";
 
+            global $___ebindr2mobile_http;
+            $this->addparm("mobile_location",  $___ebindr2mobile_http[ 'url' ]);
 
             $this->addparm("buttons", $this->merge($buttons));
 //		$this->addparm("heading", $heading);
             $form.=$this->merge("div.tpl");
             $this->addparm("verifyelements", $verifyform);
             $this->addparm("form", $form);
+
+
             return $this->merge("form.tpl");
 
         }
