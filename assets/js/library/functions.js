@@ -68,6 +68,32 @@ ebindr.extend({
 	
 	isNumber: function(n) {
 		return !isNaN(parseFloat(n)) && isFinite(n);
-	}
+	},
 
+	doWindow: function( $options )
+	{
+		console.log( { 'window' :  $options } );
+	},
+
+    doEditr: function( $options )
+	{
+		console.log( { 'editr' :  $options } );
+	},
+
+	doList: function( $options )
+	{
+		console.log( { 'list' :  $options } );
+	},
+	doNormal: function( $options )
+	{
+		console.log( { 'normal' :  $options } );
+	},
+	doChange: function( $options )
+	{
+		console.log( { 'change' :  $options } );
+	},
+    doCurrentlocation: function( $options )
+	{
+		console.log( { 'current' :  $options } );
+	}
 });

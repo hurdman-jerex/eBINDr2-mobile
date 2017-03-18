@@ -3,13 +3,15 @@
 $files = array(
 	'ebindr.js',
 	'library/functions.js',
-	'library/legacy.js'
+	'library/legacy.js',
+	'library/button.js',
+	'library/data.js'
 );
 $leaveout = array(12);
 // merge all javascript code together
 $code = '';
 foreach ($files as $i => $file) {
-	
+
 	$code .= file_get_contents("/home/serv/public_html/m/assets/js/".$file);
 }
 

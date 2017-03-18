@@ -150,6 +150,8 @@ var ebindr = new Hash({
 	*/
 	initialize: function() {
 
+        this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
 		// make sure we are logged in, if we are not launch the login method
 		/*ebindr.authenticate({
 			onFalse: function() {
@@ -187,6 +189,38 @@ var ebindr = new Hash({
 			console.log( message );
 		}
 	},
+
+    preload: function( done ) {
+        return done();
+        //$('test-load').setStyle( 'opacity', 0.25 );
+        //$('spinner').setStyle( 'display', '' );
+        //done();
+        // set the progress bar
+        //this.preloadprogress = new ebindr.library.progressbar();
+        // preload all images
+        /*var loader = new Asset.images(ebindr.images, {
+            onProgress: function(counter,index) {
+
+                var completed = counter;
+                var total = ebindr.images.length + ebindr.data.preloadSQL.length;
+                var percent = (completed/total)*100;
+//    			var percent = counter*(100/total);Ê
+                //  			var percent = ((counter) * (100 / (ebindr.images.length + ebindr.data.preloadSQL.length)));
+
+
+
+                //ebindr.preloadprogress.set( percent.round() );
+                //$('test-load').set('text', 'GUI' );
+                //$('test-percent').set( 'text', percent.round() + '%' );
+            },
+            // when it's done loading, fire the done function
+            onComplete: function(){
+                console.log( 'ebindr preload done!' );
+                return done;
+            }
+        });*/
+
+    },
 	
 	/*
 		This will show eBINDr after being logged in, and will preload everything that is
@@ -196,9 +230,100 @@ var ebindr = new Hash({
 	*/
 	load: function() {
 		ebindr.authenticated = true;
-        // set the bbbid
-        ebindr.bbbid = Cookie.read("bbbidreal");
 
+        this.preload( function() {
+            // bring in the styles
+            ebindr.include( "/ebindr/styles/button.css" );
+            // bring in the datepicker
+            ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
+            ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
+
+            ebindr.include( "/ebindr/styles/findr.css" );
+            ebindr.include( "/ebindr/styles/findr1.css" );
+
+            // add the events to each frame
+            $$( 'iframe' ).addEvent( 'reload', function(url) {
+                url = url.substitute( ebindr.current ) + ( url.contains('?') ? '&ebindr2=y' : '?ebindr2=y');
+                ebindr.log( url );
+                // set the new url
+                this.src = url;
+            });
+
+            // load the data from SQL
+            ebindr.data.preload(function() {
+                console.log( 'preload data' );
+                // set the bbbid
+                ebindr.bbbid = Cookie.read("bbbidreal");
+                // set the title
+                if( ebindr.isHurdman() ) document.title = ebindr.data.store.bbbname + ' (eBINDr2)';
+                else document.title = 'eBINDr2 ('+ebindr.data.store.bbbname+')';
+
+                ebindr.platform();
+
+                // make double clicking on the ebindr logo dump debug information
+                /*$('a .logo').addEvent('dblclick', function(e) {
+                    new Event(e).stop();
+                    var dump = '';
+                    ebindr.history.each( function(item) {
+                        dump = dump + item + "\n";
+                    });
+
+                    new Request({
+                        'url': '/ebindr/debug.php'
+                    }).post({
+                        'log': escape(dump)
+                    });
+
+                    ebindr.history = [];
+
+                    ebindr.alert( 'We have recorded your debug information successfully.', 'Thanks' );
+
+                });*/
+
+                (function() {
+                    console.log( 'buttons' );
+                    ebindr.getBizButtons();
+                    ebindr.data.get('e button dr', function(data) {
+                        ebindr.data.load( 'e button dr', data );
+                        ebindr.data.get('e recent reports.list');
+                    });
+                    if( ebindr.data.store.traininggraph == 'block' ) ebindr.data.get('training.CourseSummary');
+                    ebindr.data.get('e favorite reports.list');
+                    ebindr.data.get('/ebindr/community.php/features/popular');
+                }).delay(800);
+
+                if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
+                    ebindr.dont_show_scrub_message = true;
+                }
+            });
+
+        });
+	},
+
+    getBizButtons: function( secondTime ) {
+        if( undefined == secondTime ) var secondTime = false;
+        ebindr.data.get('e button sort', function(data) {
+            if( data == 'empty' && !secondTime ) return ebindr.getBizButtons(true);
+
+            data.each(function(btn,i) {
+                var htmlForBtn =btn.name;
+                var $class = (i==0?'left dynamic':'dynamic') + ( ebindr.data.store.buttoncolor_bl == 'red' && btn.id == 'bl' ? ' red' : ( ebindr.data.store['isbuttonshade_'+btn.id] ? ' more' : '' ) ) + ( (btn.id=="scanneddocs" && ebindr.current.doccount==0) ? ' empty' : '' )  + (btn.class!='' && btn.class!=btn.id?' '+btn.class:'');
+                jQuery( '<li><a id="'+btn.id+'" alt="'+(jQuery('<p>'+htmlForBtn+'</p>').text())+'" class="'+$class+'" href="javascript:void(0)">'+ btn.name +'</a></li>' )
+                    .insertBefore( $( "editorderbtn" ) );
+            });
+
+
+            ebindr.button.activate('#quick-launch li a');
+            //console.log( data );
+        }, { type: 'b' });
+
+    },
+
+	notify: function( message ) {
+		console.log( message );
+	},
+    alert: function( message ) {
+		console.log( message );
 	},
 
 	ipaddress: function( url ) {
@@ -237,7 +362,11 @@ var ebindr = new Hash({
 		else if( Browser.Platform.ipod ) var os = 'ipod';
 		else var os = 'other';
 	},
-	
+
+    isHurdman: function() {
+        return this.data.store.securitykeys.match("HURDMAN");
+    },
+
 	/*
 		Include Function
 	*/
