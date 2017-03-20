@@ -451,7 +451,7 @@ ebindr.library.button = new Class({
 					case "bbararrow":
 
 						var displayed = 0;
-						$$('ul#quick-launch li').each( function(btn,i) {
+						/*$$('ul#quick-launch li').each( function(btn,i) {
 							if( i == 0 ) displayed = btn.getCoordinates().top;
 							if( !btn.hasClass('spacer') ) {
 								if( btn.getCoordinates().top != displayed ) {
@@ -469,7 +469,7 @@ ebindr.library.button = new Class({
 								}
 							}
 
-						});
+						});*/
 
 						// $$('li.emaillink')[0].addEvent('mousedown', function(e){
 						// 	// if (e.event.button == 1) {
@@ -1522,8 +1522,8 @@ case "do":
 									ebindr.modal.confirm( 'This complaint record has been historicalized. Do you wish to retrieve this record so you can reopen it, view details, etc?</br></br>NOTE: If you do NOT reopen this complaint, it will automatically be re-historicalized tonight.', function( ret ) {
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
-											$('frame_c').addEvent('load', function(e) { ebindr.button.go( button ); } );
-											$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											ebind.frameEl.addEvent('load', function(e) { ebindr.button.go( button ); } );
+											ebind.frameEl.fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
 										
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
@@ -1567,7 +1567,7 @@ case "do":
 							ebindr.modal.confirm( 'Are you sure you wish to delete complaint #<b>' + ebindr.current.cid + '</b>?', function( ret ) {
 								if( ret ) {
 									// if yes
-									$('frame_c').fireEvent('reload',"/report/lite button c-.editr/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&cmd=delete");
+									ebindr.frameEl.fireEvent('reload',"/report/lite button c-.editr/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&cmd=delete");
 								} else {
 									return;
 								}

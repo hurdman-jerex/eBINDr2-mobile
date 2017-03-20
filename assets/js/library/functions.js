@@ -5,8 +5,10 @@ ebindr.extend({
      */
     initIFrame: function( iframe, url )
     {
-        var $iframe = document.getElementById( iframe );
-        $iframe.src = url;
+        ebindr.frameEl = document.getElementById( iframe );
+        if( ! undefined == url )
+            this.loadIframeSrc( url );
+
         /*$iframe.load( function(){
             this.setHeight( this );
         });*/
@@ -14,6 +16,11 @@ ebindr.extend({
 
     setHeight: function( e ){
         e.height = e.contentWindow.document.body.scrollHeight;
+    },
+
+    loadIframeSrc: function( $option ){
+        ebindr.frameEl.title = $option.title;
+        ebindr.frameEl.src = $option.contentURL;
     },
 
 	/*
@@ -70,30 +77,32 @@ ebindr.extend({
 		return !isNaN(parseFloat(n)) && isFinite(n);
 	},
 
-	doWindow: function( $options )
+	doWindow: function( $button, $options )
 	{
-		console.log( { 'window' :  $options } );
+        console.log( { $button,  $options } );
 	},
 
-    doEditr: function( $options )
+    doEditr: function( $button, $options )
 	{
-		console.log( { 'editr' :  $options } );
+        console.log( { $button, $options } );
+        ebindr.loadIframeSrc( $options );
 	},
 
-	doList: function( $options )
+	doList: function( $button, $options )
 	{
-		console.log( { 'list' :  $options } );
+		console.log( { $button,  $options } );
+        ebindr.loadIframeSrc( $options );
 	},
-	doNormal: function( $options )
+	doNormal: function( $button, $options )
 	{
-		console.log( { 'normal' :  $options } );
+        console.log( { $button,  $options } );
 	},
-	doChange: function( $options )
+	doChange: function( $button, $options )
 	{
-		console.log( { 'change' :  $options } );
+        console.log( { $button,  $options } );
 	},
-    doCurrentlocation: function( $options )
+    doCurrentlocation: function( $button, $options )
 	{
-		console.log( { 'current' :  $options } );
+        console.log( { $button,  $options } );
 	}
 });

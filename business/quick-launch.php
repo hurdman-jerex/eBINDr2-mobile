@@ -23,8 +23,13 @@
         </div><!--/span-->
 
         <div class="span9">
+            <div id="alert-wrapper">
+            </div>
 
+            <div id="notify-wrapper">
+            </div>
             <!-- Content here -->
+            <iframe id="quick-launch-iframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
 
         </div><!--/span-->
     </div><!--/row-->
@@ -38,10 +43,12 @@
 
 <script src="/m/assets/js/ebindr.js.php?flex"></script>
 
-<script>
+<script type="text/javascript">
     jQuery( document ).ready(function() {
-        //ebindr.current.bid = '<?=$_SESSION['bid']?>';
-        ebindr.initialize();
+        ebindr.initialize( function(){
+            ebindr.getBizButtons();
+            ebindr.initIFrame( 'quick-launch-iframe' );
+        } );
     });
 </script>
 

@@ -148,10 +148,24 @@ var ebindr = new Hash({
 		This is called onDomReady to initialize eBINDr and make the object
 		available globally to the program.
 	*/
-	initialize: function() {
+	initialize: function( load ) {
 
         this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
+        this.modal = {
+            confirm: function( text, ret ){
+                var $ret = ret;
+                $Modal.content( text ).open( function(){
+                    // Set event
+                    $Modal.modalElement.find( '.submit' ).on( 'click', function(){
+                        $Modal.close();
+                        if( $ret )
+                            $ret( true );
+                    } );
+                } );
+
+            }
+        };
 		// make sure we are logged in, if we are not launch the login method
 		/*ebindr.authenticate({
 			onFalse: function() {
@@ -161,7 +175,7 @@ var ebindr = new Hash({
 
 		// check to see if we are authenticated
 		//if( ebindr.authenticate() )
-            ebindr.load();
+            ebindr.load( load );
 	},
 	
 	/*
@@ -228,7 +242,7 @@ var ebindr = new Hash({
 		called after they have authenticated, whereas initialize is used to actually start up
 		eBINDr.
 	*/
-	load: function() {
+	load: function( load ) {
 		ebindr.authenticated = true;
 
         this.preload( function() {
@@ -244,14 +258,14 @@ var ebindr = new Hash({
             // add the events to each frame
             $$( 'iframe' ).addEvent( 'reload', function(url) {
                 url = url.substitute( ebindr.current ) + ( url.contains('?') ? '&ebindr2=y' : '?ebindr2=y');
-                ebindr.log( url );
+                //ebindr.log( url );
                 // set the new url
-                this.src = url;
+                ebindr.src = url;
             });
 
             // load the data from SQL
             ebindr.data.preload(function() {
-                console.log( 'preload data' );
+                //console.log( 'preload data' );
                 // set the bbbid
                 ebindr.bbbid = Cookie.read("bbbidreal");
                 // set the title
@@ -281,16 +295,17 @@ var ebindr = new Hash({
                 });*/
 
                 (function() {
-                    console.log( 'buttons' );
-                    ebindr.getBizButtons();
-                    ebindr.data.get('e button dr', function(data) {
+                    load();
+                    //console.log( 'buttons' );
+					//ebindr.getBizButtons();
+                    /*ebindr.data.get('e button dr', function(data) {
                         ebindr.data.load( 'e button dr', data );
                         ebindr.data.get('e recent reports.list');
                     });
                     if( ebindr.data.store.traininggraph == 'block' ) ebindr.data.get('training.CourseSummary');
                     ebindr.data.get('e favorite reports.list');
-                    ebindr.data.get('/ebindr/community.php/features/popular');
-                }).delay(800);
+                    ebindr.data.get('/ebindr/community.php/features/popular');*/
+                }).delay(1);
 
                 if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
                     ebindr.dont_show_scrub_message = true;
@@ -321,9 +336,17 @@ var ebindr = new Hash({
 
 	notify: function( message ) {
 		console.log( message );
+        var notifyHtml = jQuery('<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
+        jQuery( '#notify-wrapper' ).append( notifyHtml );
 	},
     alert: function( message ) {
 		console.log( message );
+        var alertHtml = jQuery('<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
+        jQuery( '#alert-wrapper' ).append( alertHtml );
+
+        /*(function() {
+            jQuery( '#alert-wrapper' ).alert('close');
+        }).delay(5000);*/
 	},
 
 	ipaddress: function( url ) {
