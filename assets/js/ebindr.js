@@ -148,6 +148,26 @@ var ebindr = new Hash({
 		This is called onDomReady to initialize eBINDr and make the object
 		available globally to the program.
 	*/
+    initializeEditr: function( load ){
+        this.modal = {
+            confirm: function( text, ret ){
+                var $ret = ret;
+                $Modal.content( text ).open( function(){
+                    // Set event
+                    $Modal.modalElement.find( '.submit' ).on( 'click', function(){
+                        $Modal.close();
+                        if( $ret )
+                            $ret( true );
+                    } );
+                } );
+
+            }
+        };
+        ebindr.authenticated = true;
+        (function() {
+            load();
+        }).delay(1);
+    },
 	initialize: function( load ) {
 
         this.button = new ebindr.library.button();
@@ -176,6 +196,10 @@ var ebindr = new Hash({
 		// check to see if we are authenticated
 		//if( ebindr.authenticate() )
             ebindr.load( load );
+	},
+
+	init_libraries: function( $name, $library ){
+		this.$name = $library;
 	},
 	
 	/*

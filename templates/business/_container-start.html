@@ -4,17 +4,14 @@
         font-size: 11pt;
     }
 </style>
-
-<?
-$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/business/basic/' . $_SESSION['bid'];
-$dba = json_decode($bbapi->get($url))->results;
-$dba = $dba[0];
-?>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span3" style="padding-bottom: 10px;">
         
-            <h3 style="padding-bottom: 10px;"><a alt="Company Name" href="/m/business.html?info=business-names"><?=$dba->Name?></a> <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/names-dba/edit.php?did=<?=$dba->DID?>"><i class="icon-edit icon-white"></i></a></h3>
+            <h3 style="padding-bottom: 10px;">
+                <a alt="Company Name" href="/m/business.html?info=business-names"><?=$__business_info['button_bn']?></a>
+                <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/names-dba/edit.php?did=<?=$dba->DID?>"><i class="icon-edit icon-white"></i></a>
+            </h3>
 
                 <div class="nav">
                             <ul class="nav nav-tabs nav-stacked biz-collapse">
@@ -26,17 +23,11 @@ $dba = $dba[0];
                                 <li<?= ( $page == 'general' ? ' class="active"' : '' ) ?>><a alt="General" href="/m/business/general/edit.php">General</a></li>
                                 <li<?= ( $page == 'snapshot' ? ' class="active"' : '' ) ?>><a alt="Snapshot" href="/m/business/snapshot.html">Snapshot</a></li>
                                 <li class="divider"></li>
-                                <li class="force_update" <?= ( $page == 'force-update' ? ' class="active"' : '' ) ?>><a href="#">Force Update</a></li>
+                                <li<?= ( $page == 'quick-launch' ? ' class="active"' : '' ) ?>><a alt="Quick Launch" href="/m/business/quick-launch.php">Quick Launch</a></li>
                             </ul>
                         </div>
-            
+
                     
         </div><!--/span-->
         
         <div class="span9">
-
-            <div id="alert-wrapper">
-            </div>
-
-            <div id="notify-wrapper">
-            </div>

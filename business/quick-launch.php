@@ -7,11 +7,27 @@
         font-size: 11pt;
     }
 </style>
+
+<?
+$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/business/basic/' . $_SESSION['bid'];
+$dba = json_decode($bbapi->get($url))->results;
+$dba = $dba[0];
+?>
+
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span3" style="padding-bottom: 10px;">
+            <h3 style="padding-bottom: 10px;"><a alt="Company Name" href="/m/business.html?info=business-names"><?=$dba->Name?></a> <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/names-dba/edit.php?did=<?=$dba->DID?>"><i class="icon-edit icon-white"></i></a></h3>
 
-            <h3 style="padding-bottom: 10px;">Quick Launch</h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a alt="Business Menu" href="/m/business.html">Business</a> <span class="divider">/</span>
+                </li>
+                <li>
+                <li class="active">Quick Launch</li>
+                </li>
+
+            </ul>
 
             <div class="nav">
                 <ul id="quick-launch" class="nav nav-tabs nav-stacked biz-collapse">

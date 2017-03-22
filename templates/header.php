@@ -1,5 +1,21 @@
 <?php
 session_start();
+error_reporting(0);
+include "/home/serv/public_html/ebindr/includes/functions.php";
+if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) {
+    include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php"; // global definitions
+}
+if(file_exists("../../definitions.php")) {
+    include "../../definitions.php"; // global definitions
+}
+if(file_exists("/home/definitions.php")) {
+    include "/home/definitions.php"; // global definitions
+}
+if(file_exists("../definitions.php")) {
+    include "../definitions.php"; // global definitions
+}
+include "/home/serv/includes/definitions.php"; // global definitions
+
 $___ebindr2mobile_http = array(
     'uri' => '',
     'args' => '',
@@ -58,4 +74,24 @@ if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' &&
 
 $__page_title =  implode( " ", $___ebindr2mobile_http[ 'segments' ] );
 $__page_title = ' - ' . ucwords( str_replace( 'index', '', $__page_title ) );
+
+/**
+ * LOCAL DB
+ */
+if( isset( $_SESSION['bid'] ) && is_numeric( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ) {
+    include '/home/serv/library/mybindr.php';
+    $mybindr = new mybindr;
+    $mybindr->database = LOCAL_DB;
+    mysql_select_db($mybindr->database, $mybindr->db);
+    $mybindr->addparm('bid', $_SESSION['bid']);
+    $mybindr->addparm('staff', $_COOKIE["reportr_username"]);
+    list($q) = $mybindr->getquery("e button info");
+    $q = $mybindr->ResolvePipes($q);
+
+    $__business_info = array();
+    foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
+        ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
+
+    //echo '<pre>'.print_r( $__business_info, true ).'</pre>';
+}
 ?>

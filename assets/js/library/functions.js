@@ -6,7 +6,7 @@ ebindr.extend({
     initIFrame: function( iframe, url )
     {
         ebindr.frameEl = document.getElementById( iframe );
-        if( ! undefined == url )
+        if( undefined !== url )
             this.loadIframeSrc( url );
 
         /*$iframe.load( function(){
@@ -19,8 +19,12 @@ ebindr.extend({
     },
 
     loadIframeSrc: function( $option ){
-        ebindr.frameEl.title = $option.title;
-        ebindr.frameEl.src = $option.contentURL;
+        console.log( $option );
+        //ebindr.frameEl.title = $option.title;
+		if( undefined === $option.contentUrl )
+			ebindr.frameEl.src = $option;
+		else
+        	ebindr.frameEl.src = $option.contentURL;
     },
 
 	/*
