@@ -18,6 +18,6 @@
 
     <script src="/m/assets/js/ebindr.js.php?flex"></script>
 
-<? $_menuPage='/m/editr/e2m lite button ba+/?ebindr2&bid='.$_SESSION['bid'].'&key2='.$_GET['aid']; ?>
+<? $_menuPage='/m/editr/e2m lite button ba+/?ebindr2&bid='.$_SESSION['bid']; ?>
 <? include "../../templates/business/js_editr.php"; ?>
 <? include "../../templates/footer.html"; ?>

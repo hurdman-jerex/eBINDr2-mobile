@@ -464,9 +464,10 @@ if(!class_exists('mobileEditr')) {
             if( ereg("[.]tpl$",$title) ) {
                 $_GET["NOCACHE"]="y";
 
-                if( preg_match( "/buttons/", $title, $match ) )
-                    $title="e2m_$title";
-                else
+                if( preg_match( "/buttons/", $title, $match ) ) {
+                    $title = "e2m_$title";
+                    $dtitle = "e2_$title";
+                }else
                     $title="e2_$title";
             }
             if(!$version && isset($this->documents[$title])) return $this->documents[$title];
@@ -494,7 +495,7 @@ if(!class_exists('mobileEditr')) {
                     $result = $this->mybindr_query($sql2);
                 if($row = mysql_fetch_row($result)) {
                     $content = $row[0];
-                    $fp=fopen(DIR_TEMP.$title,"w");
+                    $fp=fopen(DIR_TEMP.$dtitle,"w");
                     fwrite($fp, $content);
                     fclose($fp);
                 } else

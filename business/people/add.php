@@ -5,7 +5,7 @@
         <div class="row-fluid">
             <div class="span12">
 
-                <h2>Edit People and Contact</h2>
+                <h2>Add People and Contact</h2>
                 <iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
 
             </div>
@@ -18,6 +18,6 @@
 
     <script src="/m/assets/js/ebindr.js.php?flex"></script>
 
-<? $_menuPage='/m/editr/e2m lite button bo+/?ebindr2&bid='.$_SESSION['bid'].'&key2='.$_GET['pid']; ?>
+<? $_menuPage='/m/editr/e2m lite button bo+/?ebindr2&bid='.$_SESSION['bid']; ?>
 <? include "../../templates/business/js_editr.php"; ?>
 <? include "../../templates/footer.html"; ?>
