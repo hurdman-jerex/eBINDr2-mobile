@@ -38,6 +38,7 @@ if (strpos($_SERVER['SERVER_NAME'],'mbc') !== false) $___ebindr2mobile_http['pro
 
 // Finally set our Base URL
 $___ebindr2mobile_http[ 'url' ] = $___ebindr2mobile_http[ 'protocol' ] . $___ebindr2mobile_http[ 'servername' ] . '/m/';
+$___ebindr2mobile_http[ 'api_url' ] = $___ebindr2mobile_http[ 'protocol' ] . $___ebindr2mobile_http[ 'servername' ] . '/m/api/';
 $___ebindr2mobile_http[ 'report_url' ] = $___ebindr2mobile_http[ 'protocol' ] . $___ebindr2mobile_http[ 'servername' ] . '/report/';
 
 include "/home/serv/public_html/m/_autoload/_autoload.php";
@@ -94,4 +95,23 @@ if( isset( $_SESSION['bid'] ) && is_numeric( $_SESSION['bid'] ) && $_SESSION['bi
 
     //echo '<pre>'.print_r( $__business_info, true ).'</pre>';
 }
-?>
+
+/**
+ * Get Main Menu
+ */
+
+$__main_menu = array();
+$__main_menu['api'] = json_decode( $bbapi->get( $___ebindr2mobile_http['api_url'] . 'menu/main' ) );
+//echo '<pre>'.print_r( $__main_menu, true ).'</pre>';
+if( $__main_menu['api']->rows > 0 ){
+    $__main_menu['ul'] = array();
+    foreach( $__main_menu['api']->results[0] as $item => $value ){
+        $dm = explode( '.', $item );
+        if( isset( $dm[1] ) )
+            $__main_menu['ul'][$dm[0]][$dm[1]] = $value;
+        else
+            $__main_menu['ul'][$dm[0]] = $value;
+    }
+
+    //echo '<pre>'.print_r( $__main_menu['ul'], true ).'</pre>';
+}

@@ -64,6 +64,26 @@ ebindr.extend({
 	onOpenBID: function( ) {
 		return;
 	},
+
+    backform: function( e ){
+        console.log( e );
+        //e.preventDefault();
+        console.log( ebindr.current.segments[1] );
+        if( ebindr.current.segments[0] == 'business' ){
+            if( ebindr.current.segments[1] == 'email' || ebindr.current.segments[1] == 'website' )
+                window.location.href = '/m/business.html?info=email-website';
+
+            else if( ebindr.current.segments[1] == 'phone' || ebindr.current.segments[1] == 'fax' )
+                window.location.href = '/m/business.html?info=phone-fax';
+
+            else if( ebindr.current.segments[1] == 'names-dba' )
+                window.location.href = '/m/business.html?info=business-names';
+
+            else
+                window.location.href = '/m/business.html?info=' + ebindr.current.segments[1];
+        }
+
+    },
 	
 	dolanguage: function() {
 		switch( ebindr.current.lid ) {
