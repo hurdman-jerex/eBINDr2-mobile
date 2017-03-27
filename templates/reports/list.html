@@ -1,7 +1,3 @@
-<?
-$url = $myHost . $_SERVER['SERVER_NAME'];
-$_menuPage = $url . '/report/menu?ebindr2=y';
-?>
 <iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
 
 <script>jQuery.noConflict();</script>
@@ -10,10 +6,14 @@ $_menuPage = $url . '/report/menu?ebindr2=y';
 
 <script src="/m/assets/js/ebindr.js.php?flex"></script>
 
+<? $url = $myHost . $_SERVER['SERVER_NAME']; ?>
+<? $_menuPage= $url . '/report/menu?ebindr2=y' ?>
 <script type="text/javascript">
     jQuery( document ).ready(function() {
+        var _menupage = '<?=$_menuPage?>';
 
-        ebindr.initialize();
-        ebindr.initIFrame( 'reportIframe', '<?=$_menuPage?>' );
+        ebindr.initializeEditr( function(){
+            ebindr.initIFrame( 'reportIframe', { contentURL : _menupage } );
+        } );
     });
 </script>

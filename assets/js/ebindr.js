@@ -142,7 +142,8 @@ var ebindr = new Hash({
 		FINDrE: "",
 		FINDrW: "",
 		link_search: '',
-        segments: {}
+        segments: {},
+        _report_url: ''
 	}),
 	
 	/*

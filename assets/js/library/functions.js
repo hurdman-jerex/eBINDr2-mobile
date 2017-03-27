@@ -5,6 +5,7 @@ ebindr.extend({
      */
     initIFrame: function( iframe, url )
     {
+
         ebindr.frameEl = document.getElementById( iframe );
         if( undefined !== url )
             this.loadIframeSrc( url );
@@ -21,7 +22,7 @@ ebindr.extend({
     loadIframeSrc: function( $option ){
         console.log( $option );
         //ebindr.frameEl.title = $option.title;
-		if( undefined === $option.contentUrl )
+		if( undefined === $option.contentURL )
 			ebindr.frameEl.src = $option;
 		else
         	ebindr.frameEl.src = $option.contentURL;
@@ -66,23 +67,45 @@ ebindr.extend({
 	},
 
     backform: function( e ){
-        console.log( e );
         //e.preventDefault();
-        console.log( ebindr.current.segments[1] );
-        if( ebindr.current.segments[0] == 'business' ){
-            if( ebindr.current.segments[1] == 'email' || ebindr.current.segments[1] == 'website' )
-                window.location.href = '/m/business.html?info=email-website';
+        var current_page = ebindr.current.segments[2];
+        var $self = this;
 
-            else if( ebindr.current.segments[1] == 'phone' || ebindr.current.segments[1] == 'fax' )
-                window.location.href = '/m/business.html?info=phone-fax';
+        /* Lets fire undo mergecode for Add forms */
+        if( current_page == 'add' ){
+            //console.log( undo2 );
+            //console.log( undo1 );
+            var undo_url = ebindr.current._report_url + ebindr.frameEl.lang + '/?editr&ebindr2=y&noheaderhidden&undo1=' + undo1 + '&undo2=' + undo2;
+            //console.log( undo_url );
+            $http.get( undo_url );
+            /* Give time to undo record, then redirect */
+            (function(){
+                $self._get_cancel_redirection( ebindr.current.segments[0] );
+            }).delay(800);
+        }else if( current_page == 'edit' )
+            $self._get_cancel_redirection( ebindr.current.segments[0] );
+    },
 
-            else if( ebindr.current.segments[1] == 'names-dba' )
-                window.location.href = '/m/business.html?info=business-names';
+    _get_cancel_redirection: function( $page ){
+        if( $page == 'business' ){
+            if( ebindr.current.segments[1] == 'general' )
+                window.location.href = '/m/business.html';
 
-            else
-                window.location.href = '/m/business.html?info=' + ebindr.current.segments[1];
-        }
+            else if( ebindr.current.segments[1] == 'sales' )
+                window.location.href = '/m/business/sales.html';
 
+             else if( ebindr.current.segments[1] == 'email' || ebindr.current.segments[1] == 'website' )
+             window.location.href = '/m/business.html?info=email-website';
+
+             else if( ebindr.current.segments[1] == 'phone' || ebindr.current.segments[1] == 'fax' )
+             window.location.href = '/m/business.html?info=phone-fax';
+
+             else if( ebindr.current.segments[1] == 'names-dba' )
+             window.location.href = '/m/business.html?info=business-names';
+
+             else
+             window.location.href = '/m/business.html?info=' + ebindr.current.segments[1];
+         }
     },
 	
 	dolanguage: function() {

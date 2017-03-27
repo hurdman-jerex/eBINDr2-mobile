@@ -30,6 +30,8 @@ if( strpos($_SERVER['REQUEST_URI'],"?") ) list( $_SERVER['REQUEST_URI'], $___ebi
 $___ebindr2mobile_http['uri'] = $_SERVER['REQUEST_URI'];
 $___ebindr2mobile_http['segments'] = array_slice( explode( "/", $_SERVER['REQUEST_URI'] ), 2 );
 
+//echo '<pre>'.print_r( $___ebindr2mobile_http['segments'], true ).'</pre>';
+
 if( $_SERVER['SERVER_NAME'] == 'seatac.ebindr.com' ) $___ebindr2mobile_http['servername'] = $_SERVER["SERVER_NAME"] = 'localhost';
 
 $myHost = $___ebindr2mobile_http['protocol'];
@@ -67,7 +69,6 @@ $_segment_count = count( $___ebindr2mobile_http[ 'segments' ] );
 $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] = str_replace( '.php', '', str_replace( '.html', '', $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] ) );
 
 // Set Page Title
-
 if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' && isset( $_GET[ 'info' ] ) ) {
     $_business_info = str_replace( '-', ' ', $_GET[ 'info' ] );
     $___ebindr2mobile_http['segments'][$_segment_count - 1] = $___ebindr2mobile_http['segments'][$_segment_count - 1] . ' ' . $_business_info;

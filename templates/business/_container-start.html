@@ -19,7 +19,7 @@
                                 <? foreach( $__main_menu['ul']['Business'] as $_li => $_value ): ?>
                                 <? if( $_li == '_blank' ) continue; ?>
                                     <? list($_v,$_class) = explode( ':', $_value ); ?>
-                                    <li class="<?=$_class?> <?=( $page == strtolower($_li) ? 'active' : '' ) ?>"><a alt="<?=$_li?>" href="<?=$_v?>"><?=$_li?></a></li>
+                                    <li class="<?=$_class?> <?=( $page == strtolower($_li) ? 'active' : '' ) ?>"><a alt="<?=$_li?>" href="<?=$___ebindr2mobile_http[ 'url' ].$_v?>"><?=$_li?></a></li>
                                 <? endforeach; ?>
                             </ul>
                         </div>

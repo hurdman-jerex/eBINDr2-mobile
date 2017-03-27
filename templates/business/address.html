@@ -63,7 +63,7 @@ foreach($addresses as $address) {
 <script type="text/javascript">
     <? if ( securityCheck('ba') || (securityCheck('b*') && !securityCheck('ba') ) ) : ?>
     function transferEdit(aid) {
-        window.location='/m/business/address/edit.html?aid='+aid;
+        window.location='/m/business/address/edit.php?aid='+aid;
     }
     <? else:  ?>
     function transferEdit(aid) {

@@ -115,8 +115,13 @@ if($_POST[STEP]==1 || $_GET['SUBMIT']=='yes') {
     if(ereg("HURDMAN",$editr->params["keys"])) $editr->mybindr_query("insert into reportquerylog (mergecode, day, staff, results) values ('".$reportr->current_query.".editr', now(), '".$_COOKIE["reportr_username"]."', '".addslashes(implode("\r\n",$editr->queriesrun))."')");
 
     $reportr_url = $editr->ResolvePipes(stripslashes(stripslashes($editr->params[reportr])));
+
+    if( isset($_GET['eform']) && $eform = $_GET['eform'] ){
+        $reportr_url = base64_decode( $_GET['eform'] );
+    }
+
     // Let's Display success and reload the parent page.
-    $device->define("content", "<div class='alert alert-success'>Changes have been saved</div><script type='text/javascript'>( function() { window.parent.location = '". $reportr_url ."';}).delay(800);</script>");
+    $device->define("content", "<div class='alert alert-success'>Changes have been saved</div><script type='text/javascript'>( function() { window.parent.scroll(0,0); window.parent.location = '". $reportr_url ."';}).delay(1000);</script>");
     echo $device->buffer($layout_template);
 }
 

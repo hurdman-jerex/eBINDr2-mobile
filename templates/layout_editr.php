@@ -394,7 +394,7 @@
             // add the click to the html
             $$('html')[0].addEvent( 'click', function() {
 
-                if( !['frame_c','frame_m','frame_g'].contains(thisframe.id) ) {
+                /*if( !['frame_c','frame_m','frame_g'].contains(thisframe.id) ) {
                     // focus on that window
                     window.parent.ebindr.window.parent.focusWindow(window.parent.$(windowEl.options.id));
                     return true;
@@ -404,32 +404,7 @@
                         case "frame_m": window.parent.ebindr.keyboard.frame('m'); break;
                         case "frame_g": window.parent.ebindr.keyboard.frame('b'); break;
                     }
-                }
-                // go through each iframe in the parent to find itself
-                /*window.parent.document.getElements('iframe').each( function(frame) {
-                 // find the frames location object
-                 var thislocation = frame.contentWindow.location;
-                 // get it's url to compare
-                 var compareurl = unescape(thislocation.href.replace(thislocation.hostname,"").replace("http://",""))
-                 // if we have the same url then we're done searching for the iframe
-                 if( compareurl == thisurl ) {
-                 // make sure it isn't one of the static frames
-                 if( !['frame_c','frame_m','frame_g'].contains(frame.id) ) {
-                 // get the window element from mochaui
-                 windowEl = window.parent.ebindr.window.parent.Windows.instances.get(frame.id.replace("_iframe",""));
-                 // focus on that window
-                 window.parent.ebindr.window.parent.focusWindow(window.parent.$(windowEl.options.id));
-                 return true;
-                 } else {
-                 // if it is a static frame then make clicking on it select that frame
-                 switch( frame.id ) {
-                 case "frame_c": window.parent.ebindr.keyboard.frame('c'); break;
-                 case "frame_m": window.parent.ebindr.keyboard.frame('m'); break;
-                 case "frame_g": window.parent.ebindr.keyboard.frame('b'); break;
-                 }
-                 }
-                 }
-                 });*/
+                }*/
             });
         });
         trapfunction=function(event) {
@@ -442,7 +417,13 @@
             key_select(event);
             KeyHandle();
         }
-        document.onkeydown=trapfunction;
+        //document.onkeydown=trapfunction;
+
+        function FixNextButton(){
+            $$('input[name="next"]')[0].set('onclick','submitform();' );
+            $$('input[name="next"]')[0].value="Submit";
+            $$('input[name="next"]')[0].disabled=false;
+        }
     </script>
 </head>
 <body bgcolor="#ffffff">
