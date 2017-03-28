@@ -80,14 +80,14 @@ $__page_title = ' - ' . ucwords( str_replace( 'index', '', $__page_title ) );
 /**
  * LOCAL DB
  */
+include '/home/serv/library/mybindr.php';
 if( isset( $_SESSION['bid'] ) && is_numeric( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ) {
-    include '/home/serv/library/mybindr.php';
     $mybindr = new mybindr;
     $mybindr->database = LOCAL_DB;
     mysql_select_db($mybindr->database, $mybindr->db);
     $mybindr->addparm('bid', $_SESSION['bid']);
     $mybindr->addparm('staff', $_COOKIE["reportr_username"]);
-    list($q) = $mybindr->getquery("e button info");
+    list($q) = $mybindr->getquery("e2m e button info");
     $q = $mybindr->ResolvePipes($q);
 
     $__business_info = array();

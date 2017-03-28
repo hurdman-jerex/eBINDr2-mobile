@@ -1,7 +1,11 @@
 <?php
 list(,,,$__mergecode) = explode( '/', $_menuPage );
 
-if( $___ebindr2mobile_http['segments'][0] == 'business' && $___ebindr2mobile_http['segments'][2] == 'add' ) {
+if( $___ebindr2mobile_http['segments'][0] == 'business' &&
+    (
+        $___ebindr2mobile_http['segments'][2] == 'add' ||
+        $___ebindr2mobile_http['segments'][2] == 'edit'
+    ) ) {
     $info = $___ebindr2mobile_http['segments'][1];
 
     if ( $info == 'sales' )
