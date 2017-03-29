@@ -464,7 +464,7 @@ if(!class_exists('mobileEditr')) {
             if( ereg("[.]tpl$",$title) ) {
                 $_GET["NOCACHE"]="y";
 
-                if( preg_match( "/buttons/", $title, $match ) ) {
+                if( preg_match( "/buttons|js_verify/", $title, $match ) ) {
                     $title = "e2m_$title";
                     $dtitle = "e2_$title";
                 }else

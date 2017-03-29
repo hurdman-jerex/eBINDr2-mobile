@@ -156,6 +156,7 @@ var ebindr = new Hash({
                 var $ret = ret;
                 $Modal.content( text ).open( function(){
                     // Set event
+                    $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
                     $Modal.modalElement.find( '.submit' ).on( 'click', function(){
                         $Modal.close();
                         if( $ret )
@@ -163,6 +164,22 @@ var ebindr = new Hash({
                     } );
                 } );
 
+                setTimeout(function(){
+                    $Modal.modalElement.attr('aria-label',text).focus();
+                }, 800);
+
+            },
+
+            alert: function ( text ) {
+                $Modal.content( text ).open( function(){
+                    // Set event
+                    $Modal.modalElement.find( '.modal-title' ).html( 'Alert' );
+                    $Modal.modalElement.find( '.submit' ).hide();
+                } );
+
+                setTimeout(function(){
+                    $Modal.modalElement.attr('aria-label',text).focus();
+                }, 800);
             }
         };
         ebindr.authenticated = true;

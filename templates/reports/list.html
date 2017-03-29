@@ -10,6 +10,8 @@
 <? $_menuPage= $url . '/report/menu?ebindr2=y' ?>
 <script type="text/javascript">
     jQuery( document ).ready(function() {
+        var reportIframeHeight = ( window.screen.height - 150 );
+        jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
         var _menupage = '<?=$_menuPage?>';
 
         ebindr.initializeEditr( function(){

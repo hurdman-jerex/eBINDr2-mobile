@@ -103,6 +103,9 @@ ebindr.extend({
              else if( ebindr.current.segments[1] == 'names-dba' )
              window.location.href = '/m/business.html?info=business-names';
 
+			else if( ebindr.current.segments[1] == 'people' )
+             window.location.href = '/m/business.html?info=people-contacts';
+
              else
              window.location.href = '/m/business.html?info=' + ebindr.current.segments[1];
          }
