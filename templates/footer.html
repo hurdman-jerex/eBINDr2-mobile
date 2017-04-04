@@ -8,7 +8,7 @@
     </div>
     <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary submit">Save changes</a>
+        <a href="#" class="btn btn-primary submit">Submit</a>
     </div>
 </div>
 
@@ -21,23 +21,59 @@
 	<script src="/m/assets/js/m.js"></script>
 	<? } ?>
 	<script>
-		jQuery('.force_update').click( function() {
-			var xmlhttp;
-			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest();
-			} else {// code for IE6, IE5
-				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			xmlhttp.onreadystatechange= function() {
-				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-					alert( jQuery( '<p>' + xmlhttp.responseText.replace( '<br><br>', '' ) + '</p>' ).text() );
-					//jQuery('#force_success').fadeIn('slow', function() {});
-					//jQuery('#force_success').fadeOut(5000, function() {});
-				}
-			}
-			xmlhttp.open("GET","/report/merge/update.htm/?NOASK&ebindr2=y&bid=<?=$_SESSION['bid'];?>",true);
-			xmlhttp.send();
-			return false;
+        var modal_alert = function ( text ) {
+            $Modal.content( text ).open( function(){
+                // Set event
+                $Modal.modalElement.find( '.modal-title' ).html( 'Alert' );
+                $Modal.modalElement.find( '.submit' ).hide();
+            } );
+
+            setTimeout(function(){
+                $Modal.modalElement.attr('aria-label',text).focus();
+            }, 800);
+        };
+
+        var modal_confirm = function( text, ret ){
+            var $ret = ret;
+            $Modal.content( text ).open( function(){
+                // Set event
+                $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
+                $Modal.modalElement.find( '.submit' ).show();
+                $Modal.modalElement.find( '.submit' ).on( 'click', function(){
+                    $Modal.close();
+                    if( $ret )
+                        $ret( true );
+                } );
+            } );
+
+            setTimeout(function(){
+                $Modal.modalElement.attr('aria-label',text).focus();
+            }, 800);
+
+        };
+
+		jQuery('.force_update').click( function(ev) {
+            ev.preventDefault();
+            var text = 'This feature will force an update of all information associated with this business record. Do you wish to proceed?';
+            modal_confirm( text, function(ret){
+                if( ret ){
+                    /* Start Force Update */
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp=new XMLHttpRequest();
+                    } else {// code for IE6, IE5
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange= function() {
+                        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                            modal_alert( jQuery( '<p>' + xmlhttp.responseText.replace( '<br><br>', '' ) + '</p>' ).text() );
+                        }
+                    };
+                    xmlhttp.open("GET","/report/merge/update.htm/?NOASK&ebindr2=y&bid=<?=$_SESSION['bid'];?>",true);
+                    xmlhttp.send();
+                    return false;
+                }
+            } );
 		});
 		jQuery('#force_exit').click( function() {
 			jQuery('#force_success').hide();

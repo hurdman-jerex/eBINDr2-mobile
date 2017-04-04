@@ -1,0 +1,38 @@
+body { background-color: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #333333; }
+
+input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    height: 24px !important;
+}
+
+td a{
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #333333;
+}
+
+.textLabelReqd a, .textLabelReqd {
+    color: indianred !important;
+}
+
+td{
+    padding-right: 15px;
+    font-size: 13px;
+}
+
+td input{
+    height: 18px;
+    padding: 4px;
+    margin-bottom: 9px;
+    font-size: 13px;
+    line-height: 18px;
+    color: #555555;
+    width: 270px;
+}
+
+tr{
+    margin-bottom: 18px;
+}

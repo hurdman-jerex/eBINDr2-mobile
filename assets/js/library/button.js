@@ -76,43 +76,43 @@ ebindr.library.button = new Class({
 //			console.log(iframe);
 			if( ebindr.button.access(ebindr.current.editr.replace("lite button ",""), true) && ebindr.button.showbutton('insert', ebindr.current.editr ) ) {
 				if(iframe.window.currentEditr!="") ebindr.button.setExt( iframe.window );
-				var url = '/report/' + ebindr.current.editrInsert + '+/?noheader&ebindr2=y';
+				var url = '/m/report/' + ebindr.current.editrInsert + '+/?noheader&ebindr2=y';
 				url += '&bid=' + iframe.el.bid + ebindr.current.customeditrextension + '&lid=' + ebindr.current.lid;
 				url += '&cid=' + ebindr.current.cid + '&key1=' + ebindr.current.key1.replace(/[+]/,"%2B");
 				url += '&key2=' + ebindr.current.key2.replace(/[+]/,"%2B") + '&editr&reportr=';
-				url += escape( '/report/' + ebindr.current.editr + '/?noheader&bid=' + iframe.el.bid + '&cid=' );
+				url += escape( '/m/report/' + ebindr.current.editr + '/?noheader&bid=' + iframe.el.bid + '&cid=' );
 				url += escape( ebindr.current.cid + '&ebindr2=y&bbbid=' + Cookie.read('BBBID') ) + ebindr.current.customextension;
 				//console.log('URL = %s', url);
 				//console.dir(iframe);
-				return url;			
+				return url;
 			} else {
 				return false;
 			}
 		},
-		
+
 		'remove': function() {
 			if( ebindr.button.access(ebindr.current.editr.replace("lite button ","")+(ebindr.current.editr=="lite button ca"?"-":""), true) && ebindr.button.showbutton('delete', ebindr.current.editr ) ) {
-				var url = '/report/' + ebindr.current.editr + '-/?noheader&ebindr2=y';
+				var url = '/m/report/' + ebindr.current.editr + '-/?noheader&ebindr2=y';
 				url += '&bid=' + ebindr.current.bid + ebindr.current.customeditrextension + '&lid=' + ebindr.current.lid;
 				url += '&cid=' + ebindr.current.cid + '&key1=' + ebindr.current.key1.replace(/[+]/,"%2B");
 				url += '&key2=' + ebindr.current.key2.replace(/[+]/,"%2B") + '&editr&reportr=';
-				url += escape( '/report/' + ebindr.current.editr + '/?noheader&bid=' + ebindr.current.bid + '&cid=' );
+				url += escape( '/m/report/' + ebindr.current.editr + '/?noheader&bid=' + ebindr.current.bid + '&cid=' );
 				url += escape( ebindr.current.cid + '&ebindr2=y&bbbid=' + Cookie.read('BBBID') ) + ebindr.current.customextension;
 				return url;
 			} else {
 				return false;
 			}
 		},
-		
+
 		'exportr': function( iframeWin ) {
 			if(iframeWin.exportrString>"") {
-				return "/report/exportr," + iframeWin.exportrString + "/?noheader&bid=" + ebindr.current.bid + "&cid=" + ebindr.current.cid;	
+				return "/m/report/exportr," + iframeWin.exportrString + "/?noheader&bid=" + ebindr.current.bid + "&cid=" + ebindr.current.cid;
 			} else
-				return "/report/exportr," + ebindr.current.editr + "/?noheader&bid=" + ebindr.current.bid + "&cid=" + ebindr.current.cid;	
+				return "/m/report/exportr," + ebindr.current.editr + "/?noheader&bid=" + ebindr.current.bid + "&cid=" + ebindr.current.cid;
 		},
-		
+
 		'escape': function( windowEl, iframe, doundo ) {
-			
+
 			if( typeof(doundo)=="undefined" ) var doundo=true;
 			if(iframe.window.currentEditr!="") ebindr.button.setExt( iframe.window );
 			if( $type(windowEl) == 'element' ) windowEl = ebindr.doWindows.instances.get(windowEl.id);
@@ -122,13 +122,13 @@ ebindr.library.button = new Class({
 					ebindr.modal.save( 'Save Changes?', function( retVal ) {
 						if( retVal == 'cancel' ) return;
 						else if( !retVal ) {
-							if( ( ebindr.current.editr.contains("+.editr") || ebindr.current.editr.contains("mp.editr") ) && ebindr.current.undo1 /* && ebindr.isHurdman() */ && doundo ) var undoinsert = new Request.HTML().get( '/report/' + ebindr.current.editr + '.undo/?editr&ebindr2=y&noheaderhidden&undo1=' + ebindr.current.undo1 + '&undo2=' + ebindr.current.undo2 );
+							if( ( ebindr.current.editr.contains("+.editr") || ebindr.current.editr.contains("mp.editr") ) && ebindr.current.undo1 /* && ebindr.isHurdman() */ && doundo ) var undoinsert = new Request.HTML().get( '/m/report/' + ebindr.current.editr + '.undo/?editr&ebindr2=y&noheaderhidden&undo1=' + ebindr.current.undo1 + '&undo2=' + ebindr.current.undo2 );
 							windowEl.close();
 						} else if( retVal ) iframe.window.submitform();
 					});
-				} else { 
+				} else {
 					if ( ebindr.current.editr !== undefined ) {
-						if( ( ebindr.current.editr.contains("+.editr") || ebindr.current.editr.contains("mp.editr") ) && ebindr.current.undo1 /* && ebindr.isHurdman() */ && doundo ) var undoinsert = new Request.HTML().get( '/report/' + ebindr.current.editr + '.undo/?editr&ebindr2=y&noheaderhidden&undo1=' + ebindr.current.undo1 + '&undo2=' + ebindr.current.undo2 );
+						if( ( ebindr.current.editr.contains("+.editr") || ebindr.current.editr.contains("mp.editr") ) && ebindr.current.undo1 /* && ebindr.isHurdman() */ && doundo ) var undoinsert = new Request.HTML().get( '/m/report/' + ebindr.current.editr + '.undo/?editr&ebindr2=y&noheaderhidden&undo1=' + ebindr.current.undo1 + '&undo2=' + ebindr.current.undo2 );
 					}
 					ebindr.current.stopClose = false;
 					windowEl.close();
@@ -141,15 +141,15 @@ ebindr.library.button = new Class({
 				windowEl.close();
 			}
 		}
-	
+
 	},
-	
+
 	/*
 		Shade a button
 	*/
 	shade: function(button, qty) {
 		switch (button) {
-			case 'bn': 
+			case 'bn':
 				if( qty > 1 ) {
 					if( $(button) && $(button + '-more') ) {
 						$(button + '-more').setStyle( 'display', 'block');
@@ -188,14 +188,14 @@ ebindr.library.button = new Class({
 			case 'ml':
 			case 'md':
 			case 'ma':
-			case 'ca': 
+			case 'ca':
 				if( qty > 0 ) {
 					if( $(button) ) {
 						if( !$(button).hasClass('red') ) $(button).addClass('more');
 					}
 					ebindr.data.store['isbuttonshade_'+button] = true;
 				} else {
-					if( $(button) ) $(button).removeClass('more'); 
+					if( $(button) ) $(button).removeClass('more');
 					ebindr.data.store['isbuttonshade_'+button] = false;
 				}
 				break;
@@ -210,7 +210,7 @@ ebindr.library.button = new Class({
 //				if(val>0) document.getElementById("docsimg").src="/css/docs.gif"; else document.getElementById("docsimg").src="/css/docsnone.gif"; break;
 		}
 	},
-	
+
 	activate: function(selectors) {
 		// add the click event
 		//jQuery( selectors ).each( function( button, i ){
@@ -221,11 +221,13 @@ ebindr.library.button = new Class({
 				// add events to the button
 				button.addEvents({
 					'click': function(e) {
+						console.log( this.text );
+                        //document.title =
 						var e = new Event(e);
 						// lets get the target event element
 						var tag = ( $(e.target) ? $(e.target).get('tag') : 'non' );
 						if( tag == 'a' || button.id == 'bamap' ) {
-							if(this.id.match(/-btn/)) 
+							if(this.id.match(/-btn/))
 								var mybutton=this.id.replace(/-btn$/, "");
 							else var mybutton=this.id.replace(/-more$/, "");
 							// log that a button was clicked
@@ -238,12 +240,12 @@ ebindr.library.button = new Class({
 					'contextmenu': function(e) {
 						if( this.id == 'bn' ) {
 							if( ebindr.button.bn ) ebindr.button.bn = false;
-							else {	
+							else {
 								ebindr.button.bn = true;
 								return true;
 							}
 						}
-				
+
 //						if( this.id == 'bn' && !ebindr.button.bn ) return true;
 						var e = new Event(e);
 						e.preventDefault();
@@ -271,7 +273,7 @@ ebindr.library.button = new Class({
 						this.fireEvent('click');
 					},
 					'focus': function(e) {
-						// set the current focus 
+						// set the current focus
 						ebindr.current.focus = this;
 					}
 				});
@@ -282,7 +284,7 @@ ebindr.library.button = new Class({
 			}
 		});
 	},
-	
+
 	/*
 		Checks security to see if the given user has access.
 	*/
@@ -304,7 +306,7 @@ ebindr.library.button = new Class({
 		// add the security logic here later
 		var securitykeys=new String(ebindr.data.store.securitykeys);
 		var allowed=false;
-		
+
 		//A negative substr value does NOT work in IE
 		//if( button.substr(-6) == '.editr' ) {
 		if( button.substr(button.length-6) == '.editr' ) {
@@ -364,19 +366,19 @@ ebindr.library.button = new Class({
 		if( editor && readonly ) {
 			allowed = false;
 		}
-		
+
 		if(!allowed && button.replace('.editr','').length>2) {
 		//alert('here');	//security for other things besides buttons, like scanned folders, etc
 			allowed = true;
 		}
 		//if(button=="masstransfer" && !securitykeys.match("[$]A")) allowed=false;
 		if(button=="masstransfer" && securitykeys.match("bmasstransfer") ) allowed = true;
-		
+
 		// business frame extra buttons
 		var extrabbtns = ['orderentry', 'scanneddocs','emaillink','faxreportlink','advertising','investigations','relatedreports','mycomplaints','customfields','forceupdate','bbbautologin','masstransfer', 'locationoverride', 'paymethod', 'postage'];
 		if( extrabbtns.contains(button) ) {
 			// unless they have given specific access
-			if( ( securitychars.contains("b"+button) && securitychars.contains("b*") && !securitychars.contains("b"+button+'-') ) || 
+			if( ( securitychars.contains("b"+button) && securitychars.contains("b*") && !securitychars.contains("b"+button+'-') ) ||
 			    ( !securitychars.contains("b"+button) && !securitychars.contains("b"+button+'-') && !securitychars.contains("b*") ) ) {
 				allowed = false;
 			}
@@ -394,7 +396,7 @@ ebindr.library.button = new Class({
 		return allowed;
 		//return true;
 	},
-	
+
 	'vaultcharge': function( bid, amount ) {
 		new ebindr.doWindow({
 			id: 'vaultcharge',
@@ -406,7 +408,7 @@ ebindr.library.button = new Class({
 			padding: { top: 10, bottom: 10, left: 10, right: 10 }
 		});
 	},
-	
+
 	go: function( button, callback, ev, contextmenu ) {
 		//console.log("in go");
 		if(contextmenu && button!="ia" && button!="iu" && button!="if" && button!="iv") return;
@@ -427,10 +429,10 @@ ebindr.library.button = new Class({
 						//console.log("inbutton");
 						this.editr( 'lite button f 9' );
 						break;
-					case "bamap":	
+					case "bamap":
 						ebindr.alert( '<a href="http://maps.google.com/maps?q=' + escape($('ba').get('text').replace(/\r\n/g," ")) + '" target="_blank"><img border="0" src="/ebindr/map/' + escape($('ba').get('text').replace(/\r\n/g," ")) + '.png" width="555" height="400" /></a>', $('ba').get('text') );
 					break;
-					
+
 					case "faxreportlink": ebindr.button.editr_edit( 'faxserver.SendFax' ); break;
 					case "orderentry": ebindr.button.editr_edit( 'lite button orderentry' ); break;
 					case "emaillink":
@@ -443,11 +445,11 @@ ebindr.library.button = new Class({
 						emaila.dispose();
 						emaila.destroy();
 					break;
-					
+
 					case "qr":
 						ebindr.data.get( '/ebindr/community.php/features/popular' );
 					break;
-					
+
 					case "bbararrow":
 
 						var displayed = 0;
@@ -487,7 +489,7 @@ ebindr.library.button = new Class({
 						// 	// 	emaila.dispose();
 						// 	// 	emaila.destroy();
 						// 	// }
-						// });						
+						// });
 					/*
 						if( !$('hiddenmenu') ) {
 						var buttons = [], displayed = 0;
@@ -529,27 +531,27 @@ ebindr.library.button = new Class({
 					case "na":
 						ebindr.button.editr( 'e button ebindr messages' );
 						break;
-					
+
 					case "crdashboard":
 						this.logbutton( 'crdashboard' );
-						window.open( $('katana') + '?app=customerreviews?bid=' + ebindr.current.bid );				
+						window.open( $('katana') + '?app=customerreviews?bid=' + ebindr.current.bid );
 						break;
-						
+
 					case "newabapp":
 						this.logbutton( 'newabapp' );
 						window.open( $('katana') + '?app=newab/start/' + ( ebindr.data.store.otherbid>0 ? ebindr.data.store.otherbid : ebindr.current.bid ) );
 						break;
-						
+
 					case "dealsso":
 						this.logbutton( 'dealsso' );
 						window.open( $('deals-sso').value );
 						break;
-						
+
 					case "cloudfiles":
 						this.logbutton( 'cloudfiles' );
 						window.open( $('katana') + '?app=cloudfiles/community' );
 						break;
-					
+
 					case 'googlesearch':
 						this.logbutton( 'googlesearch' );
 						var name = escape(ebindr.data.store.button_bn.replace(/<span.*$/g, "").replace(/&amp;/i,'&'));
@@ -588,7 +590,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-					
+
 					case "nt":
 						this.logbutton( 'hurdmantoolbox' );
 						new ebindr.doWindow({
@@ -601,7 +603,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-					
+
 					case "training-stats":
 						this.logbutton( 'trainingstats' );
 						new ebindr.doWindow({
@@ -614,7 +616,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-						
+
 					case "dg":
 						this.logbutton( 'link-google' );
 						new ebindr.doWindow({
@@ -640,7 +642,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-					
+
 					case "dk":
 						this.logbutton( 'leadmark' );
 						new ebindr.doWindow({
@@ -653,7 +655,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-					
+
 					case "dz":
 						this.logbutton( 'salescrm' );
 						new ebindr.doWindow({
@@ -666,7 +668,7 @@ ebindr.library.button = new Class({
 							padding: { top: 0, bottom: 0, left: 0, right: 0 }
 						});
 					break;
-						
+
 					// url shortener
 					case "dh":
 						this.logbutton( 'urlshort' );
@@ -682,7 +684,7 @@ ebindr.library.button = new Class({
 							toolbarURL: '/ebindr/views/urlshort_tabs.html'
 						});
 						break;
-					
+
 					// chat/connect button
 					case "nc":
 						new ebindr.doWindow({
@@ -708,10 +710,10 @@ ebindr.library.button = new Class({
 							onResize: ebindr.layout.resize.chat,
 							useCanvas: false,
 							addClass: 'no-canvas'
-						});					
+						});
 					break;
-					
-					case "nq": 
+
+					case "nq":
 						new ebindr.doWindow({
 							id: 'queue',
 							title: 'Queue',
@@ -722,7 +724,7 @@ ebindr.library.button = new Class({
 							padding: { top: 10, bottom: 10, left: 10, right: 10 }
 						});
 					break;
-					
+
 					// ticket trackr button
 					case "nt":
 						ebindr.data.get( 'tickettrackr auth', function() {
@@ -735,14 +737,14 @@ ebindr.library.button = new Class({
 								height: 450,
 								padding: { top: 0, bottom: 0, left: 0, right: 0 },
 								toolbar: true,
-								toolbarURL: '/ebindr/views/tickettrackr/tabs.html', 
+								toolbarURL: '/ebindr/views/tickettrackr/tabs.html',
 								onMaximize: ebindr.layout.resize.tickettrackr,
 								onResize: ebindr.layout.resize.tickettrackr
-								
+
 							});
 						});
 					break;
-					
+
 					// join the general chat
 					case "tg":
 						ebindr.chat.open(0, '', 'General');
@@ -750,14 +752,14 @@ ebindr.library.button = new Class({
 					// dashboard button
 					case "dashboardlink":
 						this.logbutton( 'dashboard' );
-						ebindr.dashboard.open();				
+						ebindr.dashboard.open();
 						break;
 					// calendar button
 					case "calendarlink":
 						this.logbutton( 'calendar' );
 						ebindr.doNormal( 'calendarlink', {
 							id: 'calendar',
-							contentURL: '/report/calendar/?ebindr2=y',
+							contentURL: '/m/report/calendar/?ebindr2=y',
 							width: 625,
 							height: 600,
 							resizable: false,
@@ -777,7 +779,7 @@ ebindr.library.button = new Class({
 					case "helplinks":
 						this.logbutton( 'helplinks' );
 						ebindr.doList( 'helplinks', {
-							contentURL: '/report/lite button help links/?noheader&ebindr2=y',
+							contentURL: '/m/report/lite button help links/?noheader&ebindr2=y',
 							title: 'Help Links',
 							id: 'helpinfo'
 						});
@@ -855,7 +857,7 @@ ebindr.library.button = new Class({
 							title: 'UPS Postage',
 							padding: { top: 0, bottom: 0, left: 0, right: 0 },
 							contentURL: '/ebindr/views/ups2.php?bid=' + ebindr.current.bid
-						});					
+						});
 						break;
 					case "paymethod":
 						var tempUrl = 'https://' + ebindr.data.store.appurl + '/ebindrpayments/?clean&staff='+ebindr.data.store.staff_initials+'&bid=' + ebindr.current.bid + '&key=9e11f14ff2a110ec0524df7733294028';
@@ -870,11 +872,11 @@ ebindr.library.button = new Class({
 							title: 'Payment Methods',
 							padding: { top: 0, bottom: 0, left: 0, right: 0 },
 							contentURL: tempUrl
-							
+
 						});
 						break;
-					case "videos":	
-						this.logbutton( 'trainingcenter' );			
+					case "videos":
+						this.logbutton( 'trainingcenter' );
 						//ebindr.growl( 'search videos for', 'frame: ' + ebindr.current.frame.button + '<br />button: ' + ebindr.current.button + '<br />tab: ' + ebindr.current.page );
 						ebindr.doNormal( 'videos', {
 							id: 'video',
@@ -913,7 +915,7 @@ ebindr.library.button = new Class({
 							height: 400,
 							maximizable: false,
 							title: "History",
-							contentURL: "/report/lite button by?noheader&ebindr2=y&&cmd=&newbid=&bid=" + ebindr.current.bid
+							contentURL: "/m/report/lite button by?noheader&ebindr2=y&&cmd=&newbid=&bid=" + ebindr.current.bid
 						});
 						break;
 					case "b+":
@@ -943,40 +945,40 @@ ebindr.library.button = new Class({
 					case "mx":
 					case "cx":
 						// open a new window
-						window.open( '/report/exportr,lite button ' + button + '/?ebindr2=y&bid=' + ebindr.current.bid + '&cid=' + ebindr.current.cid + '&lid=' + ebindr.current.lid );
+						window.open( '/m/report/exportr,lite button ' + button + '/?ebindr2=y&bid=' + ebindr.current.bid + '&cid=' + ebindr.current.cid + '&lid=' + ebindr.current.lid );
 						break;
-					
+
 					case "b!":
 					case "c!":
 					case "m!":
 						this.editr( 'lite button ' + button );
 						break;
-					
+
 					case "f 1":
 						// TODO, define the userguidelink?
 						window.open(userguidelink, "UserGuide");
 						break;
-					
+
 					case "is": //Snapshot inquiry
 						// open the snapshow in a window
 						ebindr.doNormal( button, {
-							contentURL: "/report/menu.Stats.Inquiry by Bid/?ebindr2=y&bid=" + ebindr.current.bid,
+							contentURL: "/m/report/menu.Stats.Inquiry by Bid/?ebindr2=y&bid=" + ebindr.current.bid,
 							width: 650
 						});
 						break;
-						
+
 					case "ir":
 						this.reportlog( "lite button " + button );
-						ebindr.openFINDr( "d", "T" );						
+						ebindr.openFINDr( "d", "T" );
 						break;
-						
+
 					case "in":
 						this.reportlog( "lite button " + button );
 						ebindr.current.lid = ebindr.current.lid+1;
 						if( ebindr.current.lid > 3 ) ebindr.current.lid = 1;
 						ebindr.dolanguage();
 						break;
-						
+
 					case "iu":
 						this.reportlog( "lite button " + button );
 						if(!contextmenu)
@@ -984,7 +986,7 @@ ebindr.library.button = new Class({
 						else if(ebindr.data.store.currententity=='BBB') {
 							ebindr.logstat(ebindr.current.bid, 'B', "bindr");
 							ebindr.growl("Inquiry stat", "Bureau stat has been logged");
-						} else 
+						} else
 							ebindr.alert("This record is not a BBB");
 						break;
 					case "ia":
@@ -996,7 +998,7 @@ ebindr.library.button = new Class({
 							ebindr.growl("Inquiry stat", "Agency stat has been logged");
 						} else {
 							ebindr.doNormal( button, {
-								contentURL: "/report/menu.Admin.Agency List/?ebindr2=y",
+								contentURL: "/m/report/menu.Admin.Agency List/?ebindr2=y",
 								width: 650
 							});
 //							ebindr.alert("This record is not an agency");
@@ -1026,7 +1028,7 @@ ebindr.library.button = new Class({
 							else this.linkreport(ebindr.data.store.fullreportlink);
 						} else ebindr.growl("Inquiry stat", "Stat has been logged");
 						break;
-					
+
 					case "mn":
 						// make sure you want to cancel the membership
 						if(ebindr.current.isAB) {
@@ -1085,7 +1087,7 @@ ebindr.library.button = new Class({
 					case "dr":
 						//****document.getElementById("frame_dr").contentWindow.location.reload();
 						break;
-					case "vn": 
+					case "vn":
 						ebindr.doNormal( 'vn', {
 							contentURL: 'http://192.168.1.29/bbb_coloradosprings3478234.php',
 							title: 'IVR Management Console',
@@ -1109,7 +1111,7 @@ ebindr.library.button = new Class({
 					break;
 					// bbb accounts
 					case "aa":
-							
+
 						//console.log("bbb accounts");
 						new ebindr.doWindow({
 							id: 'bbbacct',
@@ -1122,9 +1124,9 @@ ebindr.library.button = new Class({
 							toolbar: true,
 							toolbarURL: '/ebindr/views/bbbacct/tabs.html'
 						});
-						
-					
-						
+
+
+
 						/*ebindr.doNormal( 'aa', {
 							contentURL: 'http://' + ebindr.data.store['appurl'] + '/account/bbb.html',
 							title: 'BBB Account Management'
@@ -1145,66 +1147,66 @@ ebindr.library.button = new Class({
 							ebindr.doNormal( 'ac', {
 								id: 'customer-reviews-win',
 								tacable: true,
-								contentURL: '/report/Process Customer Reviews/?ebindr2=y'
+								contentURL: '/m/report/Process Customer Reviews/?ebindr2=y'
 							});
 						}
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
 						break;
 					case "dp":
 						ebindr.doNormal( 'dp', {
 							id: 'process-complaints',
 							tacable: true,
-							contentURL: '/report/Process Complaints/?ebindr2=y'
+							contentURL: '/m/report/Process Complaints/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
 						break;
 					case "dd":
 						ebindr.doNormal( 'dd', {
 							id: 'process-ad-reviews',
 							tacable: true,
-							contentURL: '/report/Process Ad Reviews/?ebindr2=y'
+							contentURL: '/m/report/Process Ad Reviews/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
-						break;						
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
+						break;
 					case "dp":
 						ebindr.doNormal( 'dp', {
 							id: 'process-complaints',
 							tacable: true,
-							contentURL: '/report/Process Complaints/?ebindr2=y'
+							contentURL: '/m/report/Process Complaints/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
 						break;
 					case "de":
 						ebindr.doNormal( 'de', {
 							id: 'process-mediation',
 							tacable: true,
-							contentURL: '/report/Process Mediations/?ebindr2=y'
+							contentURL: '/m/report/Process Mediations/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
 						break;
 					case "di":
 						ebindr.doNormal( 'di', {
 							id: 'process-small-claims',
 							tacable: true,
-							contentURL: '/report/Process Small Claims/?ebindr2=y'
+							contentURL: '/m/report/Process Small Claims/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/Process Complaints/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/Process Complaints/?ebindr2";
 						break;
 					case "db":
 						ebindr.doNormal( 'db', {
 							id: 'process-sbqs',
 							tacable: true,
-							contentURL: '/report/ProcessSBQs/?ebindr2=y'
+							contentURL: '/m/report/ProcessSBQs/?ebindr2=y'
 						});
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/ProcessSBQs/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/ProcessSBQs/?ebindr2";
 						break;
 					case "dn":
-						//$( 'commonreports_iframe' ).contentWindow.location="/report/menu/?ebindr2";
+						//$( 'commonreports_iframe' ).contentWindow.location="/m/report/menu/?ebindr2";
 						ebindr.doNormal( 'dn', {
 							id: 'dn_window:' + Math.round((new Date()).getTime() / 1000), // + ebindr.current.bid,
 							title: 'Common Reports',
 							tacable: true,
-							contentURL: '/report/menu/?ebindr2=y', 
+							contentURL: '/m/report/menu/?ebindr2=y',
 							resize: function() {
 								alert('test');
 								$$('form[name=limit]').setStyles({'height':windowEl.canvasEl.getHeight()-110, 'overflow':'scroll'});
@@ -1225,7 +1227,7 @@ case "do":
 						ebindr.doNormal( 'di', {
 							title: 'MIP Tickler',
 							id: 'miptickler',
-							contentURL: '/report/menu.Member.Member Tickler/?ebindr2=y'
+							contentURL: '/m/report/menu.Member.Member Tickler/?ebindr2=y'
 						});
 						break;
 					case "du":
@@ -1233,22 +1235,22 @@ case "do":
 							title: 'Audit Tickler',
 							id: 'audittickler',
 							tacable: true,
-							contentURL: '/report/menu.Audit Tickler/?ebindr2=y'
+							contentURL: '/m/report/menu.Audit Tickler/?ebindr2=y'
 						});
 						break;
 					case "dt":
 						ebindr.doNormal( 'dt', {
 							title: 'Database Stats',
-							contentURL: '/report/lite button dt/?noheader&ebindr2=y'
+							contentURL: '/m/report/lite button dt/?noheader&ebindr2=y'
 						});
 						break;
 					case "vt":
 						ebindr.doNormal( 'vt', {
 							title: 'VRS Stats',
-							contentURL: '/report/lite button vt/?noheader&ebindr2=y'
+							contentURL: '/m/report/lite button vt/?noheader&ebindr2=y'
 						});
 						break;
-						
+
 					case "editorderbtn":
 						this.logbutton( 'editorderbtn' );
 						ebindr.doNormal( 'editorderbtn', {
@@ -1264,7 +1266,7 @@ case "do":
 							contentURL: '/ebindr/views/edit-order-biz.html'
 						});
 					break;
-					
+
 					case "editorderbtnfindr":
 						var msg = 'To re-order your buttons we need to close FINDr so that when re-launched it will pull the new ordering. This means any search currently open will be lost. Do you want to continue?';
 						ebindr.modal.confirm( msg, function( ret ) {
@@ -1288,9 +1290,9 @@ case "do":
 									}
 								});
 							}
-						}, [ 'Yes, close FINDr', 'No, not yet' ]);	
+						}, [ 'Yes, close FINDr', 'No, not yet' ]);
 					break;
-						
+
 					case "as":
 						ebindr.doNormal( 'ds', {
 							'title': 'Settings',
@@ -1323,13 +1325,13 @@ case "do":
 					case "my":
 					case "mg":
 					case "mu":
-					
+
 					case "aq":
 					case "dv":
 					case "au":
 					case "dx":
 					case "ak":
-					
+
 //					case "vo":
 					case "vs":
 					case "vb":
@@ -1353,7 +1355,7 @@ case "do":
 						ebindr.doNormal( button, {
 							id: button + '-' + ebindr.current.bid,
 							title: 'mock',
-							contentURL: "/report/lite button " + button + "/?noheader&ebindr2=y"
+							contentURL: "/m/report/lite button " + button + "/?noheader&ebindr2=y"
 						});
 						break;
 					case "b-":
@@ -1369,12 +1371,12 @@ case "do":
 						ebindr.current.lid=ebindr.current.lid+1;
 						if(ebindr.current.lid>2) ebindr.current.lid=1;
 						//****DoLanguage();
-						break; 
+						break;
 					case "io":
 					case "ih":
 						this.editr( 'lite button ' + button);
 						//****editr_run(mybutton);
-						break;		
+						break;
 					case "cf":
 						if(ebindr.current.frame.name=='complaint') {//run only if in complaint frame also
 							if(ebindr.current.cid==0){
@@ -1390,9 +1392,9 @@ case "do":
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
 											$('frame_c').addEvent('load', function(e) { ebindr.button.go( button ); } );
-											$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											$('frame_c').fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
-										
+
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
 									return;
 								}
@@ -1403,7 +1405,7 @@ case "do":
 							if(confirm("This complaint record has been historicalized. Click OK if you wish to retrieve this record so you can reopen it, view details, etc.\r\n\r\nNOTE: If you do NOT reopen this complaint, it will automatically be re-historicalized tonight.")) {
 								cid=key1;
 								editrTop=0;
-								document.getElementById("frame_c").contentWindow.document.location.replace("/report/lite button c/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid+"&NOPROMPT retrievecid="+cid+"&closecode=555&cmd=transfer");
+								document.getElementById("frame_c").contentWindow.document.location.replace("/m/report/lite button c/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid+"&NOPROMPT retrievecid="+cid+"&closecode=555&cmd=transfer");
 							}
 							return;
 						}
@@ -1414,7 +1416,7 @@ case "do":
 						if(ebindr.current.frame.name=='complaint') {//run only if in complaint frame also
 							if(ebindr.current.cid==0){
 								ebindr.alert("Please select a complaint.");
-								//console.log('case:ca alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name); 
+								//console.log('case:ca alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name);
 								return;
 							}else if(ebindr.current.cid>0){
 								if(ebindr.current.complaintalert>"") { ebindr.alert( ebindr.current.complaintalert ); ebindr.current.complaintalert=""; }
@@ -1425,21 +1427,21 @@ case "do":
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
 											$('frame_c').addEvent('load', function(e) { ebindr.button.go( button ); } );
-											$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											$('frame_c').fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
-										
+
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
 									return;
 								}
 							}
 						}
 
-						
+
 						/***** if(complaintalert>"") { alert(complaintalert); complaintalert=""; }
 						editr_run('lite button ca'); */
 						break;
 					case "ct":
-						
+
 						/***** if(complaintalert>"") { alert(complaintalert); complaintalert=""; }
 						if(cid==0) { alert("Please select a complaint."); return; }
 						if(!confirm("Are you sure you wish to transfer this complaint?")) return;
@@ -1450,22 +1452,22 @@ case "do":
 						if(ebindr.current.frame.name=='complaint') {//run only if in complaint frame also
 							if(ebindr.current.cid==0){
 								ebindr.alert("Please select a complaint.");
-								//console.log('case:ct alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name); 
+								//console.log('case:ct alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name);
 								return;
 							}else if(ebindr.current.cid>0){
 								if(ebindr.current.complaintalert>"") { ebindr.alert( ebindr.current.complaintalert ); ebindr.current.complaintalert=""; }
 								ebindr.openFINDr("n");
 								ebindr.transferComplaint();
-								return;	
+								return;
 							}else{
 								if(ebindr.current.ctype=="historical" && ebindr.current.cid==-1) {
 									ebindr.modal.confirm( 'This complaint record has been historicalized. Do you wish to retrieve this record so you can reopen it, view details, etc?</br></br>NOTE: If you do NOT reopen this complaint, it will automatically be re-historicalized tonight.', function( ret ) {
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
 											$('frame_c').addEvent('load', function(e) { ebindr.button.go( button ); } );
-											$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											$('frame_c').fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
-										
+
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
 									return;
 								}
@@ -1476,7 +1478,7 @@ case "do":
 						if(ebindr.current.frame.name=='complaint') {//run only if in complaint frame also
 							if(ebindr.current.cid==0){
 								ebindr.alert("Please select a complaint.");
-								//console.log('case:cr alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name); 
+								//console.log('case:cr alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name);
 								return;
 							}else if(ebindr.current.cid>0){
 								if(ebindr.current.complaintalert>"") { ebindr.alert( ebindr.current.complaintalert ); ebindr.current.complaintalert=""; }
@@ -1487,9 +1489,9 @@ case "do":
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
 											$('frame_c').addEvent('load', function(e) { ebindr.button.go( button ); } );
-											$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											$('frame_c').fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
-										
+
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
 									return;
 								}
@@ -1501,7 +1503,7 @@ case "do":
 							if(confirm("This complaint record has been historicalized. Click OK if you wish to retrieve this record so you can reopen it, view details, etc.\r\n\r\nNOTE: If you do NOT reopen this complaint, it will automatically be re-historicalized tonight.")) {
 								cid=key1;
 								editrTop=0;
-								document.getElementById("frame_c").contentWindow.document.location.replace("/report/lite button c/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid+"&NOPROMPT retrievecid="+cid+"&closecode=555&cmd=transfer");
+								document.getElementById("frame_c").contentWindow.document.location.replace("/m/report/lite button c/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid+"&NOPROMPT retrievecid="+cid+"&closecode=555&cmd=transfer");
 							}
 							return;
 						}
@@ -1512,7 +1514,7 @@ case "do":
 						if(ebindr.current.frame.name=='complaint') {//run only if in complaint frame also
 							if(ebindr.current.cid==0){
 								ebindr.alert("Please select a complaint.");
-								//console.log('case:co alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name); 
+								//console.log('case:co alert: '+ebindr.current.frame.button+', '+ebindr.current.frame.name);
 								return;
 							}else if(ebindr.current.cid>0){
 								if(ebindr.current.complaintalert>"") { ebindr.alert( ebindr.current.complaintalert ); ebindr.current.complaintalert=""; }
@@ -1523,9 +1525,9 @@ case "do":
 										if( ret ) {
 											ebindr.current.cid=ebindr.current.key1;
 											ebind.frameEl.addEvent('load', function(e) { ebindr.button.go( button ); } );
-											ebind.frameEl.fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
+											ebind.frameEl.fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=transfer");
 										}
-										
+
 									}, [ 'Yes, retrieve record', 'No, do not retrieve record' ]);
 									return;
 								}
@@ -1533,7 +1535,7 @@ case "do":
 						}
 
 						/***** if(complaintalert>"") { alert(complaintalert); complaintalert=""; } */
-						
+
 						break;
 					case "cn":
 					case "c+":
@@ -1567,7 +1569,7 @@ case "do":
 							ebindr.modal.confirm( 'Are you sure you wish to delete complaint #<b>' + ebindr.current.cid + '</b>?', function( ret ) {
 								if( ret ) {
 									// if yes
-									ebindr.frameEl.fireEvent('reload',"/report/lite button c-.editr/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&cmd=delete");
+									ebindr.frameEl.fireEvent('reload',"/m/report/lite button c-.editr/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&cmd=delete");
 								} else {
 									return;
 								}
@@ -1605,14 +1607,14 @@ case "do":
 					case "bbbautologin":
 						this.logbutton( 'bbbacct' );
 						if( this.access( button ) ) window.open( ebindr.data.store['bbbautologin'] );
-						
+
 						break;
 					case "forceupdate":
 						ebindr.modal.confirm( 'This feature will force an update of all information associated with this business record. Do you wish to proceed?', function( ret ) {
 							if( ret ) {
 								new Request.HTML({
-									url: '/report/merge/update.htm/?NOASK&ebindr2=y&bid='+ebindr.current.bid, 
-									method: 'get', 
+									url: '/m/report/merge/update.htm/?NOASK&ebindr2=y&bid='+ebindr.current.bid,
+									method: 'get',
 									onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript) {
 										ebindr.alert( responseHTML, 'Update' );
 									},
@@ -1646,7 +1648,7 @@ case "do":
 						break;
 					case "bk":
 						this.logbutton( 'reportlink' );
-						ebindr.alert( '<a target="_blank" href="http://' + ebindr.data.store.reporturl + '">' + ebindr.data.store.reporturl + '</a><br><br><a target="_blank" href="/report/merge/pdfurl.pdf?url='+escape('http://'+ebindr.data.store.reporturl+'?hidesides=Y')+'&ATTACHMENT_NAME='+escape('Business Review for '+$('bn').get('text').replace(/[^A-Za-z ]+/g, ""))+'.pdf"><img src="/ebindr/images/icons16x/pdf.gif"> Generate PDF of Business Review</a><br><br><a href="/report/merge/Business Summary.br.rtf/?bid='+ebindr.current.bid+'&alpdf=yes" target="_blank"><img src="/ebindr/images/icons16x/pdf.gif"> Generate PDF of Business Summary</a><br><br><a target="_blank" href="http://'+ebindr.data.store.reporturl.replace('business-reviews','mobile-business-reviews')+'">Mobile Business Review</a><br><br><a target="_blank" href="http://' + ebindr.data.store.reporturl.replace('business-reviews','old-business-reviews') + '">Old Reliability Report</a><br><br><a target="_blank" href="https://bbbreviews.we-print.it/'+ebindr.data.store.bbbid+'/'+ebindr.current.bid+'">Customer Review Invitation Order Form</a>', 'Report Link' );
+						ebindr.alert( '<a target="_blank" href="http://' + ebindr.data.store.reporturl + '">' + ebindr.data.store.reporturl + '</a><br><br><a target="_blank" href="/m/report/merge/pdfurl.pdf?url='+escape('http://'+ebindr.data.store.reporturl+'?hidesides=Y')+'&ATTACHMENT_NAME='+escape('Business Review for '+$('bn').get('text').replace(/[^A-Za-z ]+/g, ""))+'.pdf"><img src="/ebindr/images/icons16x/pdf.gif"> Generate PDF of Business Review</a><br><br><a href="/m/report/merge/Business Summary.br.rtf/?bid='+ebindr.current.bid+'&alpdf=yes" target="_blank"><img src="/ebindr/images/icons16x/pdf.gif"> Generate PDF of Business Summary</a><br><br><a target="_blank" href="http://'+ebindr.data.store.reporturl.replace('business-reviews','mobile-business-reviews')+'">Mobile Business Review</a><br><br><a target="_blank" href="http://' + ebindr.data.store.reporturl.replace('business-reviews','old-business-reviews') + '">Old Reliability Report</a><br><br><a target="_blank" href="https://bbbreviews.we-print.it/'+ebindr.data.store.bbbid+'/'+ebindr.current.bid+'">Customer Review Invitation Order Form</a>', 'Report Link' );
 						break;
 					case "bn":
 					case "bz-btn":
@@ -1669,7 +1671,7 @@ case "do":
 						} else if( button == 'bn' && !ebindr.button.bn ) {
 							return;
 						} else {
-						
+
 						ebindr.button.editr( "lite button " + button );
 						}
 						//****editr_run(mybutton);
@@ -1680,7 +1682,7 @@ case "do":
 						//****editr_run_edit(mybutton);
 						ebindr.button.editr( "lite button " + button + '.editr' );
 						break;
-					
+
 					case "nf":
 					case "ctrl-fo":
 						ebindr.doNormal( 'ctrl-fo', {
@@ -1688,7 +1690,7 @@ case "do":
 							title: 'Forum'
 						});
 						break;
-						
+
 					case "scanneddocs":
 						this.fileBrowser( 'bid', ebindr.current.bid );
 						break;
@@ -1705,7 +1707,7 @@ case "do":
 			}
 		}
 	},
-	
+
 	list: function( button ) {
 		var listid = 'list-' + button;// + '-' + ebindr.current.bid;
 		var liststore = true;
@@ -1721,63 +1723,63 @@ case "do":
 				}
 			break;
 		}
-		
+
 		var title = 'List';
 		switch( button ) {
 			case "mr": title = "Accreditation Reports"; break;
 		}
-		
+
 		ebindr.doList( button, {
 			id: listid,
 			title: title,
 			storeOnClose: liststore,
-			contentURL: "/report/lite button " + button + "/?noheader&ebindr2=y&cid={cid}&bid={bid}&bbbid={bbbid}&lid={lid}".substitute(ebindr.current)
+			contentURL: "/m/report/lite button " + button + "/?noheader&ebindr2=y&cid={cid}&bid={bid}&bbbid={bbbid}&lid={lid}".substitute(ebindr.current)
 		});
-	
+
 	},
-	
+
 	linkreport: function( link ) {
 		if( link.contains("http") || link.match( "^/" ) )
 			window.open( String( link.replace(/\[bid\]/gi,"{bid}") + ( link.match( "[?]" ) ? "&" : "?" ) + "language={lid}" ).substitute(ebindr.current) );
 		else
-			window.open( "/report/merge/"+link+"?lid={lid}&gen={key1}&tob={key1}&cid={cid}&bid={bid}&bbbid={bbbid}".substitute(ebindr.current) );
+			window.open( "/m/report/merge/"+link+"?lid={lid}&gen={key1}&tob={key1}&cid={cid}&bid={bid}&bbbid={bbbid}".substitute(ebindr.current) );
 	},
-	
+
 	fileBrowser: function( type, value ) {
 		switch( type ) {
 			case "cid":
 				ebindr.doNormal( 'filebrowser', {
-					contentURL: '/report/filebrowser/' + type + '/' + value + '?sortby=date&ebindr2=y',
+					contentURL: '/m/report/filebrowser/' + type + '/' + value + '?sortby=date&ebindr2=y',
 					title: 'File Browser',
 					padding: { top: 0, bottom: 0, left: 5, right: 0 },
 					width: 600,
 					height: 400
 				});
 				break;
-			
+
 			case "other":
 				ebindr.doNormal( 'filebrowser', {
-					contentURL: '/report/filebrowsers/' + type + '?ebindr2=y',
+					contentURL: '/m/report/filebrowsers/' + type + '?ebindr2=y',
 					title: 'File Browser',
 					padding: { top: 0, bottom: 0, left: 5, right: 0 },
 					width: 600,
 					height: 400
 				});
 				break;
-				
+
 			default:
 				ebindr.doNormal( 'filebrowser', {
-					contentURL: '/report/filebrowser/' + type + '/' + value + '?ebindr2=y',
+					contentURL: '/m/report/filebrowser/' + type + '/' + value + '?ebindr2=y',
 					title: 'File Browser',
 					padding: { top: 0, bottom: 0, left: 5, right: 0 },
 					width: 600,
-					height: 400, 
+					height: 400,
 					onClose: function() { ebindr.data.get( 'e button info.scanned docs' ); }
 				});
 				break;
-		}	
+		}
 	},
-	
+
 	editr: function( button, extraquerystring ) {
 		if(typeof(extraquerystring) == 'undefined') extraquerystring="";
 		// if we are working with complaint actions check to make sure we have a cid
@@ -1788,7 +1790,7 @@ case "do":
 			if( $(button) ) {
 				if( button.substr( 0, 4 ) == 'qvq ' && $(button).getParent().id != 'recent-registers' ) {
 					var get = new Request({
-						url: '/report/e recent reports.insert',
+						url: '/m/report/e recent reports.insert',
 						nocache: true
 					}).post({
 						'mergecode': button
@@ -1799,10 +1801,10 @@ case "do":
 					});
 				}
 			}
-			
+
 			// log that we are running an editr
 			ebindr.log( 'Run editr ' + button );
-			// TODO: set the export link to "/report/exportr,"+button+"/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid;
+			// TODO: set the export link to "/m/report/exportr,"+button+"/?noheader&bid="+bid+"&lid="+lid+"&cid="+cid;
 			// set the current editr
 			ebindr.current.editr = button;
 			ebindr.current.editrExt = button;
@@ -1818,8 +1820,8 @@ case "do":
 			// launch the editor
 			ebindr.doEditr( button, {
 				id: button.replace( /[.]editr$/, "" ).replace( / /g, "-" ) + "-" + ebindr.current.bid,
-				title: "EDITr", 
-				contentURL: '/report/' + button.replace( /[.]editr$/, "" ) + '/?' + ( button.match( /[.]editr$/ ) ? 'editr&' : '' ) + 'ebindr2=y&noheader&bid=' + ebindr.current.bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid + findrValues + extraquerystring,
+				title: "EDITr",
+				contentURL: '/m/report/' + button.replace( /[.]editr$/, "" ) + '/?' + ( button.match( /[.]editr$/ ) ? 'editr&' : '' ) + 'ebindr2=y&noheader&bid=' + ebindr.current.bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid + findrValues + extraquerystring,
 				onFocus: function(windowEl) {
 					ebindr.current.windowEl=windowEl;
 					ebindr.current.frameEl=windowEl.getElements('iframe')[0];
@@ -1861,16 +1863,16 @@ case "do":
 				//	alert( iframe.location.href);
 					ebindr.refreshdata();
 					ebindr.current.windowEl=null;
-					ebindr.current.frameEl=null; 
+					ebindr.current.frameEl=null;
 					if(ebindr.current.cid<0) ebindr.current.cid=abs(ebindr.current.cid);
 					if( ebindr.current.editr ) {
 						var thisframe=ebindr.current.editr.replace( /^.+button ([a-z]).+$/, "$1");
 						if(thisframe=="c") {
-							//$('frame_c').fireEvent('reload',"/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=");
+							//$('frame_c').fireEvent('reload',"/m/report/e button c/?noheader&bid={bid}&lid={lid}&cid={cid}&closecode=555&NOPROMPT retrievecid={cid}&cmd=");
 						} else if( $('frame_' + thisframe ) ) $( 'frame_' + thisframe ).contentWindow.location.reload();
 					}
 				}
-	
+
 			});
 			//ebindr.current.windowEl = $( button.replace( / /g, "-" ) + "-" + ebindr.current.bid );
 			// TODO: focus on the first field in the editr	(added in scripts/library/window.js [search "inputfocus"])
@@ -1883,11 +1885,11 @@ case "do":
 		ebindr.current.editrExt=editrwindow.currentEditrExt;
 		ebindr.current.editrInsert=editrwindow.currentInsertEditr;
 		ebindr.current.customextension=editrwindow.customextension;
-		ebindr.current.customeditrextension=editrwindow.customeditrextension;					
+		ebindr.current.customeditrextension=editrwindow.customeditrextension;
 		if(typeof(editrwindow.editrundo1)!="undefined") ebindr.current.undo1=editrwindow.editrundo1;
 		if(typeof(editrwindow.editrundo2)!="undefined") ebindr.current.undo2=editrwindow.editrundo2;
 	},
-	
+
 	unSetExt: function() {
 		ebindr.current.editr='';
 		ebindr.current.editrExt='';
@@ -1897,7 +1899,7 @@ case "do":
 		ebindr.current.undo1=false;
 		ebindr.current.undo2=false;
 	},
-	
+
 	editr_edit: function( button, bid, dontsetExt ) {
 		if( ebindr.button.access( button.replace("lite button ","") ) ) {
 			if(ebindr.current.frameEl != null) this.setExt( ebindr.current.frameEl.contentWindow );
@@ -1919,12 +1921,12 @@ case "do":
 			}
 			//ebindr.growl( 'ids', ebindr.current.windowEl.id + ' - ' + button );
 			//window.parent.ebindr.window.focusWindow(ebindr.current.windowEl.id);
-			ebindr.doChange( ebindr.current.windowEl.id, '/report/' + button.replace( /[.]editr$/, "" ) + '/?' + ( button.match( /[.]editr$/ ) ? 'editr&' : '' ) + 'ebindr2=y&noheader' + ebindr.current.customeditrextension + '&bid=' + bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid + '&key1=' + ebindr.current.key1 + '&key2=' + ebindr.current.key2 + '&reportr=' + escape( '/report/' + ebindr.current.editrExt + '/?noheader&ebindr2=y&bid=' + bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid ) + ebindr.current.customextension );		
+			ebindr.doChange( ebindr.current.windowEl.id, '/m/report/' + button.replace( /[.]editr$/, "" ) + '/?' + ( button.match( /[.]editr$/ ) ? 'editr&' : '' ) + 'ebindr2=y&noheader' + ebindr.current.customeditrextension + '&bid=' + bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid + '&key1=' + ebindr.current.key1 + '&key2=' + ebindr.current.key2 + '&reportr=' + escape( '/m/report/' + ebindr.current.editrExt + '/?noheader&ebindr2=y&bid=' + bid + '&lid=' + ebindr.current.lid + '&cid=' + ebindr.current.cid + '&bbbid=' + ebindr.bbbid ) + ebindr.current.customextension );
 		} else {
 			//ebindr.notify('Sorry you do not have access to edit.');
 		}
 	},
-	
+
 	report: function( button, link ) {
 		if( !ebindr.access( button ) ) {
 			ebindr.notify( 'You do not have access!' );
@@ -1934,14 +1936,14 @@ case "do":
 	},
 	reportlog: function( mergecode ) {
 		new Request.HTML({
-			url: '/report/'+mergecode+'?ebindr2=y&bid='+ebindr.current.bid, 
+			url: '/m/report/'+mergecode+'?ebindr2=y&bid='+ebindr.current.bid,
 			method: 'get'
 		}).send();
 	},
-	
+
 	logbutton: function( buttonname ) {
 		new Request.HTML({
-			url: '/report/logbutton/?name='+buttonname+'&ebindr2=y&bid='+ebindr.current.bid, 
+			url: '/m/report/logbutton/?name='+buttonname+'&ebindr2=y&bid='+ebindr.current.bid,
 			method: 'get'
 		}).send();
 	},

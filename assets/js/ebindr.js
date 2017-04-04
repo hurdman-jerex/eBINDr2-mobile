@@ -151,12 +151,32 @@ var ebindr = new Hash({
 		available globally to the program.
 	*/
     initializeEditr: function( load ){
-        this.modal = {
+        /*this.modal = */
+        ebindr.authenticated = true;
+        (function() {
+            load();
+        }).delay(1);
+    },
+	initialize: function( load ) {
+        this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		// check to see if we are authenticated
+		//if( ebindr.authenticate() )
+            ebindr.load( load );
+	},
+
+	init_libraries: function( $name, $library ){
+		this.$name = $library;
+	},
+
+    /* Modal */
+    modal: {
             confirm: function( text, ret ){
                 var $ret = ret;
                 $Modal.content( text ).open( function(){
                     // Set event
                     $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
+                    $Modal.modalElement.find( '.submit' ).show();
                     $Modal.modalElement.find( '.submit' ).on( 'click', function(){
                         $Modal.close();
                         if( $ret )
@@ -181,46 +201,7 @@ var ebindr = new Hash({
                     $Modal.modalElement.attr('aria-label',text).focus();
                 }, 800);
             }
-        };
-        ebindr.authenticated = true;
-        (function() {
-            load();
-        }).delay(1);
     },
-	initialize: function( load ) {
-
-        this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-        this.modal = {
-            confirm: function( text, ret ){
-                var $ret = ret;
-                $Modal.content( text ).open( function(){
-                    // Set event
-                    $Modal.modalElement.find( '.submit' ).on( 'click', function(){
-                        $Modal.close();
-                        if( $ret )
-                            $ret( true );
-                    } );
-                } );
-
-            }
-        };
-		// make sure we are logged in, if we are not launch the login method
-		/*ebindr.authenticate({
-			onFalse: function() {
-				ebindr.login();
-			}
-		});*/
-
-		// check to see if we are authenticated
-		//if( ebindr.authenticate() )
-            ebindr.load( load );
-	},
-
-	init_libraries: function( $name, $library ){
-		this.$name = $library;
-	},
-	
 	/*
 		This global method can be used to log all the actions of a user. This will
 		only be used if they need/want to dump the actions if they are submitting a
@@ -312,8 +293,8 @@ var ebindr = new Hash({
                 // set the bbbid
                 ebindr.bbbid = Cookie.read("bbbidreal");
                 // set the title
-                if( ebindr.isHurdman() ) document.title = ebindr.data.store.bbbname + ' (eBINDr2)';
-                else document.title = 'eBINDr2 ('+ebindr.data.store.bbbname+')';
+                /*if( ebindr.isHurdman() ) document.title = ebindr.data.store.bbbname + ' (eBINDr2)';
+                else document.title = 'eBINDr2 ('+ebindr.data.store.bbbname+')';*/
 
                 ebindr.platform();
 
@@ -378,14 +359,16 @@ var ebindr = new Hash({
     },
 
 	notify: function( message ) {
-		console.log( message );
+		ebindr.modal.alert( message );
+		/*console.log( message );
         var notifyHtml = jQuery('<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
-        jQuery( '#notify-wrapper' ).append( notifyHtml );
+        jQuery( '#notify-wrapper' ).append( notifyHtml );*/
 	},
     alert: function( message ) {
-		console.log( message );
+        ebindr.modal.alert( message );
+		/*console.log( message );
         var alertHtml = jQuery('<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
-        jQuery( '#alert-wrapper' ).append( alertHtml );
+        jQuery( '#alert-wrapper' ).append( alertHtml );*/
 
         /*(function() {
             jQuery( '#alert-wrapper' ).alert('close');

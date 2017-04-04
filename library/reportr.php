@@ -6,8 +6,11 @@ if(!class_exists('mobileReportr'))
 {
     class mobileReportr extends reportr {
 
+        protected $__views = array();
+
         function __construct( $dbname, $dbhost )
         {
+            $this->__views = include MOBILE_INCLUDE_URI . 'views.php';
             $this->reportr( $dbname, $dbhost );
         }
 
@@ -24,7 +27,9 @@ if(!class_exists('mobileReportr'))
             $this->db($dbname, $dbhost);
             if(isset($_POST["THREADID"])) $this->threadid=$_POST["THREADID"];
             $parse->params["THREADID"] = $this->threadid;
-            $this->display = new mobileDisplay(array("description", "table", "back", "back_active", "next", "next_active", "table_prefix"));
+
+            $this->initMobileDisplay( array("description", "table", "back", "back_active", "next", "next_active", "table_prefix") );
+
             $this->related_queries = $this->related();
             $this->variable_set();
             $this->networkfolder=$this->background->get_var("select setup(733)");
@@ -40,6 +45,25 @@ if(!class_exists('mobileReportr'))
                     $this->background->query("REPLACE INTO exceptionlist select ifnull(mergecode,\"".$this->current_query."\"), ifnull(concat(list,\",".$_POST["EXCEPTIONLIST"]."\"),\"".$_POST["EXCEPTIONLIST"]."\") from exceptionlist where mergecode=\"".$this->current_query."\" having count(*) in (0,1)");
             }
             set_time_limit(1800);
+        }
+
+        function initMobileDisplay( $templates ){
+            $this->display = new mobileDisplay( $templates );
+            /* Layouts */
+            foreach( $this->__views['layouts']['views'] as $view ){
+                $__layout_path = $this->__views['layouts']['path'];
+                $this->display->templateadd( $view . '_layout',
+                    $view . '.php',
+                    $__layout_path );
+            }
+
+            /* Components */
+            foreach( $this->__views['components']['views'] as $view ){
+                $__layout_path = $this->__views['components']['path'];
+                $this->display->templateadd( $view . '_layout',
+                    $view . '.php',
+                    $__layout_path );
+            }
         }
     }
 }

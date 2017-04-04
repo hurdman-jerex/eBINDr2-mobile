@@ -67,7 +67,7 @@ if(!class_exists('mobileDisplay'))
                 "auth_couponedit" => "auth_couponedit.php",
 
                 // New Mobile Layouts
-                "layout_editr" => "layout_editr.php",
+                //"layout_editr" => "layout_editr.php",
 
                 "mobile_default" => "default.html"
             );

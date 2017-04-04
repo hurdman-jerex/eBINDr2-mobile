@@ -61,6 +61,11 @@ $dba = $dba[0];
 
 <script type="text/javascript">
     jQuery( document ).ready(function() {
+        var _iframe = jQuery('#quick-launch-iframe');
+
+        var reportIframeHeight = ( window.screen.height - 150 );
+        _iframe.css( 'height', reportIframeHeight + 'px' );
+
         ebindr.initialize( function(){
             ebindr.getBizButtons();
             ebindr.initIFrame( 'quick-launch-iframe' );

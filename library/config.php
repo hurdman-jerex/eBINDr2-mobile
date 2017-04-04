@@ -2,17 +2,62 @@
 /**
  * Mobile Config
  */
-define( 'MOBILE_TEMPLATE_URI', '/home/serv/public_html/m/templates/' );
-define( 'MOBILE_APPLICATION_FILENAME', 'mreport' );
+
+/* Views */
+$__views = include MOBILE_INCLUDE_URI . 'views.php';
+
+/* Templates */
+$e2m = isset( $_GET['ebindr2'] ) ? '2' : '';
+$branding = (NOT_BRANDED=="1"?"n":"Y");
+// if we are in the print layout setup the template name
+if(@eregi("$bindr",$variables[0])) $_GET[noheader]=" ";
+if($_GET["print"] == 'true') $layout_template = "printr";
+// if we want no default header (bindr lite)
+elseif(isset($_GET["noheader"])) $layout_template = "noheader".$e2m;
+elseif(isset($_GET["noheaderhidden"])) $layout_template = "noheader_hidden";
+// otherwise setup the normal template
+else $layout_template ="default";
+
+eregi('([^.]*)',$variables[0],$regs);
+if(file_exists("../templates/layout_".$regs[1].".php")) {
+    $layout_template="layout_".$regs[1];
+}
+if(file_exists("../templates/layout_".APPLICATION_FILENAME.".php")) {
+    $layout_template="layout_".APPLICATION_FILENAME;
+}
+if($branding == 'Y' and file_exists("../templates/layout_".APPLICATION_FILENAME."_branded.php")) {
+    $layout_template="layout_".APPLICATION_FILENAME.'_branded';
+}
+if(isset($_GET["calendar"])) $layout_template="calendar";
+
+/* End of Templates */
+
+
 $task = new db($variables["db"], $variables["host"]);
 $branding = (NOT_BRANDED=="1"?"n":"Y");
 // if we are in the print layout setup the template name
 if(@eregi("$bindr",$variables[0])) $_GET[noheader]=" ";
-// set mobile layout
-$layout_template = "layout_editr";
 // setup avaliable templates
 $device = new mobileDisplay( array("table", "auth", "header") );
-$device->templateadd( 'layout_editr_layout', 'layout_editr.php', '/home/serv/public_html/m/templates/' );
+
+/* Layouts */
+foreach( $__views['layouts']['views'] as $view ){
+    $__layout_path = $__views['layouts']['path'];
+    /* Let's add available layouts for Mobile Device */
+    $device->templateadd( $view . '_layout',
+        $view . '.php',
+        $__layout_path );
+}
+
+/* Components */
+foreach( $__views['components']['views'] as $view ){
+    $__layout_path = $__views['components']['path'];
+    /* Let's add available layouts for Mobile Device */
+    $device->templateadd( $view . '_layout',
+        $view . '.php',
+        $__layout_path );
+}
+
 $parse = new parse(); // initialize the parser
 $reportr = new mobileReportr($variables["db"], $variables["host"]);
 if($_SERVER[SCRIPT_NAME]=='/sbq') {

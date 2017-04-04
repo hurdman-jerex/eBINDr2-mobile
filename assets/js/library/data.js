@@ -705,7 +705,7 @@ ebindr.library.data = new Class({
     						click: function(e) {
     							ebindr.window.normal( this.id, {
     								id: 'favorite-' + this.id,
-    								contentURL: '/report/' + this.id + '/?ebindr2=y',
+    								contentURL: '/m/report/' + this.id + '/?ebindr2=y',
     								tacable: true
     							});
     						}
