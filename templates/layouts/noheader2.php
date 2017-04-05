@@ -48,6 +48,7 @@ function initchart() {
     <SCRIPT LANGUAGE="JavaScript">
 	if("<[current_query]>"!="lite button myalerts") {
 		window.parent.ebindr.current.editr="<[current_query]>";
+		window.parent.ebindr.current.editr_desc="<[current_query_desc]>";
 	}
 	var currentInsertEditr="<[current_query]>";
 	var currentEditr="<[current_query]>";
@@ -219,6 +220,24 @@ document.onkeypress=trapfunction;
 }*/
 var tmp2="";
 window.addEvent( 'load', function() {
+
+            $$('a').each(function(el) {
+
+                if( el.hasClass( 'toplink' ) )
+                    el.addClass( 'btn pull-right').setStyle('margin', '5px');
+
+                el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
+                if( typeof el.get('alt') !== "undefined" ){
+                    el.set('alt', el.get('text') );
+                }
+            });
+
+            $$( 'input[type=button]').each( function(el){
+                el.addClass( 'btn' );
+                if( el.name == 'next' || el.name == 'submit' )
+                el.addClass( 'btn-primary' );
+            } );
+
 	if (typeof initchart === "function") { 
 	  initchart();
 	}
@@ -251,7 +270,11 @@ window.addEvent( 'domready', function(e) {
 			el.href=el.href.replace( /[?]/i, "?ebindr2=y&" );
 			el.href=el.href.replace( /(reportr=.+noheader)/i, "$1%26ebindr2%3dy" );
 		}
-		/*if( el.href.contains('/report/merge/') && el.href.contains('ebindr2=y') ) {
+
+	$$('input,textarea').addEvent('onfocus', function (el){
+	    console.log( $('helptext') );
+	});
+				/*if( el.href.contains('/report/merge/') && el.href.contains('ebindr2=y') ) {
 			el.addEvent( 'click', function(e) {
 				new Event(e).stop();
 				e.preventDefault();
@@ -345,7 +368,7 @@ window.addEvent( 'domready', function(e) {
 		}
 	}).delay(200);
 	// add the click to the html
-	$$('html')[0].addEvent( 'click', function() {
+	$$('html')[0].addEvent( 'click', function(el) {
 		// check out what our current url is
 		var thisurl = unescape(window.location.href.replace(window.location.hostname,"").replace("http://",""));
 		// go through each iframe in the parent to find itself
@@ -359,7 +382,7 @@ window.addEvent( 'domready', function(e) {
     			// make sure it isn't one of the static frames
     			if( !['frame_c','frame_m','frame_g'].contains(frame.id) ) {
     				// get the window element from mochaui
-    				var windowEl = window.parent.ebindr.window.parent.Windows.instances.get(frame.id.replace("_iframe",""));
+    				//var windowEl = window.parent.ebindr.window.parent.Windows.instances.get(frame.id.replace("_iframe",""));
     				// focus on that window
 
     			// 	if (windowEl == null) {
@@ -370,8 +393,7 @@ window.addEvent( 'domready', function(e) {
 							// 	}
 							// });    					
     			// 	}
-    				if (windowEl != null)	window.parent.ebindr.window.parent.focusWindow(window.parent.$(windowEl.options.id));
-    				return true;
+    				//console.log( el );
     			} else {
     				// if it is a static frame then make clicking on it select that frame
     				switch( frame.id ) {

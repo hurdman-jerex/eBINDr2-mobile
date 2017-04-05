@@ -44,8 +44,10 @@ $dba = $dba[0];
 
             <div id="notify-wrapper">
             </div>
+            <h3>Quick Launch</h3>
+            <input type="hidden" id="report-name" >
             <!-- Content here -->
-            <iframe id="quick-launch-iframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 98%;" frameborder="0"></iframe>
+            <iframe id="quick-launch-iframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0"></iframe>
 
         </div><!--/span-->
     </div><!--/row-->

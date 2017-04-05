@@ -7,6 +7,24 @@ ebindr.extend({
     {
 
         ebindr.frameEl = document.getElementById( iframe );
+
+        ebindr.frameEl.onload = function() {
+
+            /*var label = jQuery( '<p>' + ebindr.current.editr_desc + '</p>' ).text();
+            var reportname = jQuery('#report-name');
+            //console.log( label );
+            reportname.val( label )
+                .attr( 'aria-label', label );
+            reportname.focus();*/
+
+            ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
+            ebindr.frameEl.focus();
+
+            /*console.log( window.screen.height );
+            console.log( jQuery( window ).height() );
+            console.log( ebindr.frameEl.height = jQuery( window ).height() )*/
+        };
+
         if( undefined !== url )
             this.loadIframeSrc( url );
 
@@ -16,11 +34,12 @@ ebindr.extend({
     },
 
     setHeight: function( e ){
+        console.log( e.contentWindow.document.body.scrollHeight );
         e.height = e.contentWindow.document.body.scrollHeight;
     },
 
     loadIframeSrc: function( $option ){
-        console.log( $option );
+        //console.log( $option );
 
         if( typeof $option === "undefined" )
             return false;
@@ -28,11 +47,13 @@ ebindr.extend({
         //ebindr.frameEl.title = $option.title;
 		if( typeof $option.contentURL === "undefined" ) {
             ebindr.frameEl.src = $option;
-            console.log( 'undefined Content URL' );
+            //console.log( 'undefined Content URL' );
         }else{
             ebindr.frameEl.src = $option.contentURL;
-            console.log( 'Content URL' );
+            //console.log( 'Content URL' );
         }
+
+        //ebindr.frameEl.setHeight( ebindr.frameEl );
     },
 
 	/*

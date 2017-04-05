@@ -217,11 +217,12 @@ ebindr.library.button = new Class({
 		$$( selectors ).each( function( button, i ) {
 
 			if( !button.hasClass( 'end' ) && !button.hasClass('noclick') ) {
-                console.log( button );
+                //console.log( button );
 				// add events to the button
 				button.addEvents({
 					'click': function(e) {
-						console.log( this.text );
+						/*jQuery('#report-name').text( this.text );
+						console.log( this.text );*/
                         //document.title =
 						var e = new Event(e);
 						// lets get the target event element

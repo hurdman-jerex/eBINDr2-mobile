@@ -22,6 +22,10 @@
     <script type="text/javascript" src="/ebindr/scripts/plugins/spellchecker.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
+
+        window.parent.ebindr.current.editr="<[current_query]>";
+        window.parent.ebindr.current.editr_desc="<[current_query_desc]>";
+
         //callback function
         function createChart() {
             $$('div.reportchart').each(function(el) {
@@ -239,6 +243,17 @@
         }
         window.addEvent( 'load', function() {
             $$('a').each(function(el) {
+
+                if( el.hasClass( 'toplink' ) )
+                    el.addClass( 'btn pull-right').setStyle('margin', '5px');
+
+                el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
+
+                el.href=el.href.replace( /\/m\/m\//i, "\/m\/" );
+
+                if( typeof el.get('alt') !== "undefined" ){
+                    el.set('alt', el.get('text') );
+                }
                 if(el.href.replace( /^(https*:\/\/[^\/]+).*$/g, "$1" )==window.location.href.replace( /^(https*:\/\/[^\/]+).*$/g, "$1" ) && el.href!="" && !el.href.match("[?].*ebindr2=") && el.href!="#") {
                     el.href=el.href.replace( /[?]/i, "?ebindr2=y&" );
                     el.href=el.href.replace( /(reportr=.+noheader)/i, "$1%26ebindr2%3dy" );
@@ -248,6 +263,12 @@
                     el.set('onclick', el.get('onclick').replace( /[?]/i, "?ebindr2=y&" ));
                 }
             });
+
+            $$( 'input[type=button]').each( function(el){
+                el.addClass( 'btn' );
+                if( el.name == 'next' || el.name == 'submit' )
+                    el.addClass( 'btn-primary' );
+            } );
 
             // get the parent frames and find ourselves
             // check out what our current url is

@@ -1,4 +1,4 @@
-<?
+<!--<?
 $url = $myHost . $_SERVER['SERVER_NAME'];
 $bid = $_SESSION['bid'];
 $staff = $_SESSION['username'];
@@ -14,4 +14,30 @@ jQuery( document ).ready(function() {
     jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
     console.log( reportIframeHeight );
 });
+</script>-->
+
+<h3><a href="/m/business/snapshot.html">SnapShot</a></h3>
+<iframe id="reportIframe" class="mochaIframe" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0"></iframe>
+
+<script>jQuery.noConflict();</script>
+<script src="/m/assets/js/mootools/core-1.2.4.js"></script>
+<script src="/m/assets/js/mootools/more-1.2.4.2.js"></script>
+
+<script src="/m/assets/js/ebindr.js.php?flex"></script>
+<?
+$url = $myHost . $_SERVER['SERVER_NAME'];
+$bid = $_SESSION['bid'];
+$staff = $_SESSION['username'];
+$_menuPage = $url . '/report/menu.Stats.Inquiry%20by%20Bid?ebindr2=y&BYPASS=gure8wh3&bid='.$bid.'&BYPASS2=9vfjesu3hgi&staff='.$staff;
+?>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        var reportIframeHeight = ( window.screen.height - 150 );
+        jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );
+        var _menupage = '<?=$_menuPage?>';
+
+        ebindr.initializeEditr( function(){
+            ebindr.initIFrame( 'reportIframe', { contentURL : _menupage } );
+        } );
+    });
 </script>
