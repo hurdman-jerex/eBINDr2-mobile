@@ -26,9 +26,9 @@ $businesses = $businesses->results;
 ?>
 
 <?
-$mybindr=new mybindr;
+/* $mybindr=new mybindr;
 $mybindr->database = LOCAL_DB;
-mysql_select_db( $mybindr->database, $mybindr->db );
+mysql_select_db( $mybindr->database, $mybindr->db ); */
 $mybindr->addparm( 'type', 'f' );
 $mybindr->addparm( 'staff', $_COOKIE["reportr_username"] );
 list($q)=$mybindr->getquery("e2m button sort" );

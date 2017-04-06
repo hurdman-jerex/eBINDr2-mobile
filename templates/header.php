@@ -16,6 +16,26 @@ if(file_exists("../definitions.php")) {
 }
 include "/home/serv/includes/definitions.php"; // global definitions
 
+if( ! function_exists( 'dd' ) ){
+    function dd( $str, $file = __FILE__, $line = __LINE__ ){
+        echo 'FILE: ' . $file . "<br />";
+        echo 'LINE: ' . $line . '  <pre>'.print_r( $str, true ).'</pre>';
+    }
+}
+
+if( ! function_exists( 'mobile_title' ) ){
+    function mobile_title( $pagetitle, $bizinfo ){
+        $custom_title = isset( $bizinfo['mobilecustomtitle'] ) ?  ( $bizinfo['mobilecustomtitle'] . " " ) : "" ;
+
+        $pagetitle = (String) "eBINDr2go " . $custom_title . $pagetitle;
+
+        if( isset( $bizinfo['bbbname'] ) )
+            $pagetitle = (String) $bizinfo['bbbname'] . " " . $pagetitle;
+
+        return $pagetitle;
+    }
+}
+
 $___ebindr2mobile_http = array(
     'uri' => '',
     'args' => '',
@@ -68,6 +88,7 @@ if ( !isset($_SESSION['user']) ) {
 $_segment_count = count( $___ebindr2mobile_http[ 'segments' ] );
 $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] = str_replace( '.php', '', str_replace( '.html', '', $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] ) );
 
+
 // Set Page Title
 if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' && isset( $_GET[ 'info' ] ) ) {
     $_business_info = str_replace( '-', ' ', $_GET[ 'info' ] );
@@ -75,27 +96,48 @@ if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' &&
 }
 
 $__page_title =  implode( " ", $___ebindr2mobile_http[ 'segments' ] );
-$__page_title = ' - ' . ucwords( str_replace( 'index', '', $__page_title ) );
+$__page_title = '- ' . ucwords( str_replace( 'index', '', $__page_title ) );
 
 /**
  * LOCAL DB
  */
 include '/home/serv/library/mybindr.php';
-if( isset( $_SESSION['bid'] ) && is_numeric( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ) {
-    $mybindr = new mybindr;
-    $mybindr->database = LOCAL_DB;
-    mysql_select_db($mybindr->database, $mybindr->db);
+$mybindr = new mybindr;
+$mybindr->database = LOCAL_DB;
+mysql_select_db($mybindr->database, $mybindr->db);
+$__business_info = array();
+if( isset( $_SESSION['bid'] ) && is_numeric( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 )
     $mybindr->addparm('bid', $_SESSION['bid']);
-    $mybindr->addparm('staff', $_COOKIE["reportr_username"]);
-    list($q) = $mybindr->getquery("e2m e button info");
-    $q = $mybindr->ResolvePipes($q);
+else
+    $mybindr->addparm('bid', 0 );
 
-    $__business_info = array();
-    foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
-        ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
+$mybindr->addparm('staff', $_COOKIE["reportr_username"]);
+list($q) = $mybindr->getquery("e2m e button info");
+$q = $mybindr->ResolvePipes($q);
 
-    //echo '<pre>'.print_r( $__business_info, true ).'</pre>';
-}
+foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
+    ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
+
+
+list($q) = $mybindr->getquery("e2m e button info2");
+$q = $mybindr->ResolvePipes($q);
+
+$__business_info2 = array();
+foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
+    ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info2 = array_merge( $__business_info2, $result ) : null;
+
+$__business_info = array_merge( $__business_info, $__business_info2 );
+
+/* Custom Title */
+list($q) = $mybindr->getquery("e2m app title");
+$q = $mybindr->ResolvePipes($q);
+$result = mysql_fetch_assoc( mysql_db_query( LOCAL_DB, $q, $mybindr->db ) );
+
+if( $result )
+    $__business_info = array_merge( $__business_info, $result );
+
+/* Finalize Page Title */
+$__page_title = mobile_title( $__page_title, $__business_info );
 
 /**
  * Get Main Menu
@@ -114,5 +156,4 @@ if( $__main_menu['api']->rows > 0 ){
             $__main_menu['ul'][$dm[0]] = $value;
     }
 
-    //echo '<pre>'.print_r( $__main_menu['ul'], true ).'</pre>';
 }

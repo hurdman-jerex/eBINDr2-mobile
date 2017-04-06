@@ -21,7 +21,10 @@
 	<script src="/m/assets/js/m.js"></script>
 	<? } ?>
 	<script>
-        var modal_alert = function ( text ) {
+        var modal_alert = function ( text, title ) {
+            if( !title )
+                title = 'Alert';
+
             $Modal.content( text ).open( function(){
                 // Set event
                 $Modal.modalElement.find( '.modal-title' ).html( 'Alert' );
@@ -79,6 +82,21 @@
 			jQuery('#force_success').hide();
 		});
 	</script>
+
+<!-- LOGIN ALERT -->
+<? if( in_array( $___ebindr2mobile_http[ 'segments' ][0], array('search','business') ) && isset( $_SESSION['e2m_auth'] ) && isset( $__business_info['loginalert'] ) && count( $__business_info['loginalert'] ) > 0 ): ?>
+<? //dd( $_SESSION['e2m_auth'] ); ?>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        // login alert
+        var login_alert_text = '<?=$__business_info["loginalert"]?>';
+        console.log(login_alert_text);
+        modal_alert(login_alert_text, 'Remember');
+    });
+</script>
+<? unset( $_SESSION['e2m_auth'] ); ?>
+<? endif; ?>
+
 
 <script src="/m/assets/js/custom-scripts.js.php?flex"></script>
   </body>

@@ -359,12 +359,13 @@ ebindr.library.data = new Class({
 						edittitlecase = this.store.edittitlecase;
 					}
 								
-					// login alert
+					/*// login alert
+                    if( ebindr.segments )
 					if( this.store.loginalert.length > 0 && !ebindr.shownloginalert ) {
 						ebindr.alert( this.store.loginalert, 'Remember' );
 						//ebindr.growl( 'Remember', this.store.loginalert, true, 'black' );
 						ebindr.shownloginalert = true;
-					}
+					}*/
 					break;
 				case "e button info":
 					if( ebindr.data.store['forcepasscodechange'] == 'y' ) {
