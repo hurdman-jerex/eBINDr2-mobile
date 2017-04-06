@@ -1,6 +1,4 @@
 <?php
-include "/home/serv/includes/readme.php";
-include DIR_PUBLIC . "m/_autoload/bbapi.php";
 
 abstract class e2mobileAbstract {
 
@@ -21,15 +19,9 @@ abstract class e2mobileAbstract {
 
     protected $httpvariables;
 
-    public function __construct(){
-        global $variables, $params, $poststr, $postinputs;
-
-        $this->variables = $variables;
-        $this->params = $params;
-        $this->poststr = $poststr;
-        $this->postinputs = $postinputs;
-
-        define( 'MOBILE_ROOT', DIR_PUBLIC . 'm/' );
+    public function __construct()
+    {
+        define( 'MOBILE_ROOT', '/home/serv/public_html/m/' );
         define( 'MOBILE_TEMPLATE_URI', MOBILE_ROOT . 'templates/' );
         define( 'MOBILE_LIBRARY_URI', MOBILE_ROOT . 'library/' );
 
@@ -37,8 +29,17 @@ abstract class e2mobileAbstract {
         define( '_MOBILEREPORTR', MOBILE_LIBRARY_URI . 'reportr.php' );
         define( '_MOBILEEDITR', MOBILE_LIBRARY_URI . 'editr.php' );
         define( '_MOBILECONFIG', MOBILE_LIBRARY_URI . 'config.php' );
+    }
 
-        $this->_include();
+    public function init(){
+        global $variables, $params, $poststr, $postinputs;
+
+        $this->variables = $variables;
+        $this->params = $params;
+        $this->poststr = $poststr;
+        $this->postinputs = $postinputs;
+
+        //$this->_include();
 
         // POST & GET
         foreach($_POST as $key => $value) {
@@ -57,6 +58,8 @@ abstract class e2mobileAbstract {
     }
 
     public function _include(){
+        include "/home/serv/includes/readme.php";
+        include "/home/serv/public_html/m/_autoload/bbapi.php";
         include _DATABASE;
         include _PARSER;
 

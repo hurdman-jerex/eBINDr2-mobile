@@ -2,7 +2,7 @@
     <ul class="nav">
         <? foreach( $__main_menu['ul'] as $li => $value ): ?>
         <? list(,$class) = explode( ':', $value ); ?>
-            <li class="<?=$class?><?=( ( $page == strtolower( $li ) ) ? ' active' : '' )?>">
+            <li class="<?=$class?><?=( ( $page == strtolower( $li ) ) ? ' active' : '' )?><?=(is_array( $value )?' dropdown': '')?>">
 
                 <? if( is_array( $value ) ): ?>
                     <a alt="<?=$li?>" class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown"><?=$li?> <b class="caret"></b></a>

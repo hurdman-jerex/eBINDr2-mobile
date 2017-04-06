@@ -1,10 +1,18 @@
 <?php
 
-if( isset( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 )
+if( isset( $_GET['bid'] ) && $_GET['bid'] > 0 ){
+    $redirect = "/m/searchlink.html?bid=". $_GET['bid'];
+    header( "Location: " . $redirect );
+    exit();
+}
+elseif( isset( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ){
     $redirect = "/m/searchlink.html?bid=". $_SESSION['bid'];
-else
+    header( "Location: " . $redirect );
+    exit();
+}
+else{
     $redirect = "/m/search.html";
-
-header( "Location: " . $redirect );
-exit();
+    header( "Location: " . $redirect );
+    exit();
+}
 ?>

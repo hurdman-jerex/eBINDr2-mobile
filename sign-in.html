@@ -44,18 +44,19 @@ $_SESSION['BBBID'] = $login["BBBID"];
 $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/log/' . $login["reportr_username"]);
 
 $_login = json_decode( $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/login/' . $login["reportr_username"] ) )->results;
-//echo '<pre>'.print_r( $_login, true ).'</pre>';
+//echo '<pre>'.print_r( $_login[0]->person_bid, true ).'</pre>';
 
 
-if( ! isset( $_SESSION['bid'] ) )
+//if( ! isset( $_SESSION['bid'] ) )
     $_SESSION['bid'] = $_login[0]->person_bid;
 
 if( isset( $_SESSION['bid'] ) && $_SESSION['bid'] < 1 )
     unset( $_SESSION['bid'] );
 
+//echo '<pre>'.print_r( $_SESSION['bid'], true ).'</pre>';
 //header("Location: /m/searchlink.html?bid=" . $_login[0]->person_bid );
 $_SESSION['e2m_auth'] = 1;
-header("Location: /m/index.html" );
+header("Location: /m/index.html?bid=".$_SESSION['bid'] );
 exit();
 }else
 $_SESSION['warning'] = "Incorrect username and/or password.";

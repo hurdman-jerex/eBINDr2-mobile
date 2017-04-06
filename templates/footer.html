@@ -27,7 +27,7 @@
 
             $Modal.content( text ).open( function(){
                 // Set event
-                $Modal.modalElement.find( '.modal-title' ).html( 'Alert' );
+                $Modal.modalElement.find( '.modal-title' ).html( title );
                 $Modal.modalElement.find( '.submit' ).hide();
             } );
 
@@ -90,7 +90,7 @@
     jQuery( document ).ready(function() {
         // login alert
         var login_alert_text = '<?=$__business_info["loginalert"]?>';
-        console.log(login_alert_text);
+        //console.log(login_alert_text);
         modal_alert(login_alert_text, 'Remember');
     });
 </script>
