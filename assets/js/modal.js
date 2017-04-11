@@ -76,5 +76,6 @@ jQuery( document ).ready(
     function()
     {
         $Modal = new Modal( '#modal-element' );
+        $ModalAlert = new Modal( '#modal-alert-element' );
     }
 );

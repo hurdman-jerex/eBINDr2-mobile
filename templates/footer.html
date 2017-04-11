@@ -12,6 +12,20 @@
     </div>
 </div>
 
+<div class="modal hide" id="modal-alert-element" tabindex="-1" aria-label="Modal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3 class="modal-title">Modal header</h3>
+    </div>
+    <div class="modal-body">
+        <div class="modal-content" aria-label="Content" ></div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="btn btn-primary submit">Submit</a>
+    </div>
+</div>
+
 <script src="/m/assets/js/bootstrap.js"></script>
 <script src="/m/assets/js/bootstrap-tab.js"></script>
 <script src="/m/assets/js/bootstrap-alert.js"></script>
@@ -25,24 +39,24 @@
             if( !title )
                 title = 'Alert';
 
-            $Modal.content( text ).open( function(){
+            $ModalAlert.content( text ).open( function(){
                 // Set event
-                $Modal.modalElement.find( '.modal-title' ).html( title );
-                $Modal.modalElement.find( '.submit' ).hide();
+                $ModalAlert.modalElement.find( '.modal-title' ).html( title );
+                $ModalAlert.modalElement.find( '.submit' ).hide();
             } );
 
             setTimeout(function(){
-                $Modal.modalElement.attr('aria-label',text).focus();
+                $ModalAlert.modalElement.attr('aria-label',text).focus();
             }, 800);
         };
 
         var modal_confirm = function( text, ret ){
             var $ret = ret;
-            $Modal.content( text ).open( function(){
+            $ModalAlert.content( text ).open( function(){
                 // Set event
-                $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
-                $Modal.modalElement.find( '.submit' ).show();
-                $Modal.modalElement.find( '.submit' ).on( 'click', function(){
+                $ModalAlert.modalElement.find( '.modal-title' ).html( 'Confirm' );
+                $ModalAlert.modalElement.find( '.submit' ).show();
+                $ModalAlert.modalElement.find( '.submit' ).on( 'click', function(){
                     $Modal.close();
                     if( $ret )
                         $ret( true );
@@ -50,7 +64,7 @@
             } );
 
             setTimeout(function(){
-                $Modal.modalElement.attr('aria-label',text).focus();
+                $ModalAlert.modalElement.attr('aria-label',text).focus();
             }, 800);
 
         };
@@ -83,21 +97,46 @@
 		});
 	</script>
 
+<!-- ALERT -->
+<? if( in_array( $___ebindr2mobile_http[ 'segments' ][0], array('search','business') ) && isset( $_SESSION['e2m_auth'] ) ): ?>
+
 <!-- LOGIN ALERT -->
-<? if( in_array( $___ebindr2mobile_http[ 'segments' ][0], array('search','business') ) && isset( $_SESSION['e2m_auth'] ) && isset( $__business_info['loginalert'] ) && count( $__business_info['loginalert'] ) > 0 ): ?>
-<? //dd( $_SESSION['e2m_auth'] ); ?>
+<? if( isset( $__business_info['loginalert'] ) && ! empty( $__business_info['loginalert'] ) ): ?>
 <script type="text/javascript">
+    // login alert
+    var _login_alert_text = '<?=$__business_info["loginalert"]?>';
     jQuery( document ).ready(function() {
-        // login alert
-        var login_alert_text = '<?=$__business_info["loginalert"]?>';
+
         //console.log(login_alert_text);
-        modal_alert(login_alert_text, 'Remember');
+        modal_alert( _login_alert_text, 'Remember');
     });
 </script>
+<? endif; ?>
+
+<!-- My Alerts -->
+<? if( $__business_info['myalerts'] > 0 && isset( $_SESSION['bid'] ) ): ?>
+<iframe id="ialert" style="display: none"></iframe>
+<script type="text/javascript">
+    var _myalert = "<?=($___ebindr2mobile_http['report_url'] . 'e2m e button info.myalerts/?ebindr2=y&noheaderhidden&bid=' . $_SESSION['bid']);?>";
+    jQuery( document).ready( function(){
+        if( typeof _login_alert_text === "undefined" )
+            ebindr.initIFrame( 'ialert', _myalert );
+        else {
+            $ModalAlert.modalElement.on('hidden', function () {
+                ebindr.initIFrame( 'ialert', _myalert );
+            });
+        }
+    } );
+</script>
+<? endif; ?>
+
 <? unset( $_SESSION['e2m_auth'] ); ?>
 <? endif; ?>
 
-
+<script>jQuery.noConflict();</script>
+<script src="/m/assets/js/mootools/core-1.2.4.js"></script>
+<script src="/m/assets/js/mootools/more-1.2.4.2.js"></script>
+<script src="/m/assets/js/ebindr.js.php?flex"></script>
 <script src="/m/assets/js/custom-scripts.js.php?flex"></script>
   </body>
 </html>

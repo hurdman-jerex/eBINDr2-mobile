@@ -435,7 +435,7 @@ ebindr.library.button = new Class({
 					break;
 
 					case "faxreportlink": ebindr.button.editr_edit( 'faxserver.SendFax' ); break;
-					case "orderentry": ebindr.button.editr_edit( 'lite button orderentry' ); break;
+					case "orderentry": ebindr.button.editr_edit( 'lite button orderentry', ebindr.current.bid ); break;
 					case "emaillink":
 						this.logbutton( 'emaillink' );
 						var emaila=new Element('a', {target: '_blank', href:'mailto:?subject=' + escape (ebindr.data.store.sendemailsubject.replace('{dba}', ebindr.data.store.button_bn.replace( '&amp;', '&' ).replace(/<span.*/g,'')).replace('{bid}', ebindr.current.bid))});

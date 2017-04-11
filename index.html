@@ -1,18 +1,53 @@
 <?php
+error_reporting(0);
+include "/home/serv/public_html/ebindr/includes/functions.php";
+if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) {
+    include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php"; // global definitions
+}
+if(file_exists("../../definitions.php")) {
+    include "../../definitions.php"; // global definitions
+}
+if(file_exists("/home/definitions.php")) {
+    include "/home/definitions.php"; // global definitions
+}
+if(file_exists("../definitions.php")) {
+    include "../definitions.php"; // global definitions
+}
+include "/home/serv/includes/definitions.php"; // global definitions
 
-if( isset( $_GET['bid'] ) && $_GET['bid'] > 0 ){
-    $redirect = "/m/searchlink.html?bid=". $_GET['bid'];
-    header( "Location: " . $redirect );
-    exit();
+/**
+ * LOCAL DB
+ */
+include '/home/serv/library/mybindr.php';
+$mybindr = new mybindr;
+$mybindr->database = LOCAL_DB;
+mysql_select_db($mybindr->database, $mybindr->db);
+$__business_info = array();
+$mybindr->addparm('t', $_COOKIE["reportr_conf"]);
+list($q) = $mybindr->getquery("e2m e button info2");
+$q = $mybindr->ResolvePipes($q);
+
+foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
+( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
+
+//echo '<pre>'. print_r( $__business_info, true )  .'</pre>';
+if(session_id() == '') {
+session_start();
 }
-elseif( isset( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ){
-    $redirect = "/m/searchlink.html?bid=". $_SESSION['bid'];
-    header( "Location: " . $redirect );
-    exit();
+
+if( isset( $__business_info['bid'] ) && $__business_info['bid'] > 0 ){
+$redirect = "/m/searchlink.html?bid=". $__business_info['bid'];
+header( "Location: " . $redirect );
+exit();
 }
+/*elseif( isset( $_SESSION['bid'] ) && $_SESSION['bid'] > 0 ){
+$redirect = "/m/searchlink.html?bid=". $_SESSION['bid'];
+header( "Location: " . $redirect );
+exit();
+}*/
 else{
-    $redirect = "/m/search.html";
-    header( "Location: " . $redirect );
-    exit();
+$redirect = "/m/search.html";
+header( "Location: " . $redirect );
+exit();
 }
 ?>

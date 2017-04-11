@@ -1,4 +1,5 @@
 <?php 
+
 if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php";
 include "/home/definitions.php";
 
@@ -17,7 +18,6 @@ $bbapi->set('form_submit', 'y');
 $login = $bbapi->auth();
 
 if( $login['reportr_username'] != 'deleted' ){
-
 session_start();
 
 $login["reportr_keys"] = urldecode( $login["reportr_keys"] );
@@ -45,7 +45,6 @@ $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/log/' . $login["reportr_userna
 
 $_login = json_decode( $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/login/' . $login["reportr_username"] ) )->results;
 //echo '<pre>'.print_r( $_login[0]->person_bid, true ).'</pre>';
-
 
 //if( ! isset( $_SESSION['bid'] ) )
     $_SESSION['bid'] = $_login[0]->person_bid;
