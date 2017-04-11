@@ -2,7 +2,9 @@
 // list of files to include and put in the javascript file
 $files = array(
 	'ebindr.js',
+	'library/security.js',
 	'library/functions.js',
+	'library/user.js',
 	'library/legacy.js',
 	'library/button.js',
 	'library/data.js'

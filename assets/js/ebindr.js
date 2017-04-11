@@ -157,7 +157,14 @@ var ebindr = new Hash({
             load();
         }).delay(1);
     },
-	initialize: function( load ) {
+	initializeUser: function( load ) {
+        this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+            ebindr.load( load );
+	},
+    initialize: function( load ) {
         this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
 		// check to see if we are authenticated
@@ -190,10 +197,13 @@ var ebindr = new Hash({
 
             },
 
-            alert: function ( text ) {
+            alert: function ( text, title ) {
                 $Modal.content( text ).open( function(){
                     // Set event
-                    $Modal.modalElement.find( '.modal-title' ).html( 'Alert' );
+                    if( ! title )
+                        title = 'Alert';
+
+                    $Modal.modalElement.find( '.modal-title' ).html( title );
                     $Modal.modalElement.find( '.submit' ).hide();
                 } );
 
@@ -230,34 +240,6 @@ var ebindr = new Hash({
 
     preload: function( done ) {
         return done();
-        //$('test-load').setStyle( 'opacity', 0.25 );
-        //$('spinner').setStyle( 'display', '' );
-        //done();
-        // set the progress bar
-        //this.preloadprogress = new ebindr.library.progressbar();
-        // preload all images
-        /*var loader = new Asset.images(ebindr.images, {
-            onProgress: function(counter,index) {
-
-                var completed = counter;
-                var total = ebindr.images.length + ebindr.data.preloadSQL.length;
-                var percent = (completed/total)*100;
-//    			var percent = counter*(100/total);Ê
-                //  			var percent = ((counter) * (100 / (ebindr.images.length + ebindr.data.preloadSQL.length)));
-
-
-
-                //ebindr.preloadprogress.set( percent.round() );
-                //$('test-load').set('text', 'GUI' );
-                //$('test-percent').set( 'text', percent.round() + '%' );
-            },
-            // when it's done loading, fire the done function
-            onComplete: function(){
-                console.log( 'ebindr preload done!' );
-                return done;
-            }
-        });*/
-
     },
 	
 	/*
@@ -282,53 +264,16 @@ var ebindr = new Hash({
             // add the events to each frame
             $$( 'iframe' ).addEvent( 'reload', function(url) {
                 url = url.substitute( ebindr.current ) + ( url.contains('?') ? '&ebindr2=y' : '?ebindr2=y');
-                //ebindr.log( url );
-                // set the new url
                 ebindr.src = url;
             });
 
             // load the data from SQL
             ebindr.data.preload(function() {
-                //console.log( 'preload data' );
-                // set the bbbid
                 ebindr.bbbid = Cookie.read("bbbidreal");
-                // set the title
-                /*if( ebindr.isHurdman() ) document.title = ebindr.data.store.bbbname + ' (eBINDr2)';
-                else document.title = 'eBINDr2 ('+ebindr.data.store.bbbname+')';*/
-
                 ebindr.platform();
-
-                // make double clicking on the ebindr logo dump debug information
-                /*$('a .logo').addEvent('dblclick', function(e) {
-                    new Event(e).stop();
-                    var dump = '';
-                    ebindr.history.each( function(item) {
-                        dump = dump + item + "\n";
-                    });
-
-                    new Request({
-                        'url': '/ebindr/debug.php'
-                    }).post({
-                        'log': escape(dump)
-                    });
-
-                    ebindr.history = [];
-
-                    ebindr.alert( 'We have recorded your debug information successfully.', 'Thanks' );
-
-                });*/
 
                 (function() {
                     load();
-                    //console.log( 'buttons' );
-					//ebindr.getBizButtons();
-                    /*ebindr.data.get('e button dr', function(data) {
-                        ebindr.data.load( 'e button dr', data );
-                        ebindr.data.get('e recent reports.list');
-                    });
-                    if( ebindr.data.store.traininggraph == 'block' ) ebindr.data.get('training.CourseSummary');
-                    ebindr.data.get('e favorite reports.list');
-                    ebindr.data.get('/ebindr/community.php/features/popular');*/
                 }).delay(1);
 
                 if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
@@ -358,22 +303,14 @@ var ebindr = new Hash({
 
     },
 
-	notify: function( message ) {
-		ebindr.modal.alert( message );
-		/*console.log( message );
-        var notifyHtml = jQuery('<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
-        jQuery( '#notify-wrapper' ).append( notifyHtml );*/
+	notify: function( message, title ) {
+		ebindr.modal.alert( message, title );
 	},
-    alert: function( message ) {
-        ebindr.modal.alert( message );
-		/*console.log( message );
-        var alertHtml = jQuery('<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">×</a><h4 class="alert-heading">Remember!</h4><div class="alert-content">'+message+'</div></div>');
-        jQuery( '#alert-wrapper' ).append( alertHtml );*/
+    alert: function( message, title ) {
+        ebindr.modal.alert( message, title );
+	},
 
-        /*(function() {
-            jQuery( '#alert-wrapper' ).alert('close');
-        }).delay(5000);*/
-	},
+
 
 	ipaddress: function( url ) {
 		new Element( 'script', {
@@ -412,8 +349,62 @@ var ebindr = new Hash({
 		else var os = 'other';
 	},
 
+    /*
+     alerts function runs e button alerts every minute
+     */
+    alerts: function() {
+        if( this.user.isActive() ) {
+            if(this.windowtrack.length>0) var mytracks="('"+this.windowtrack.join("),('").replace(/,([0-9])/g,"',$1")+")"; else var mytracks="()";
+            this.windowtrack=[];
+            var thisalert = new Request.HTML().get( '/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
+        }
+        if(this.myalerts_timeout) window.clearTimeout(this.myalerts_timeout);
+        this.myalerts_timeout=window.setTimeout( "ebindr.alerts();", 30000);
+    },
+
+    timeTrack: function() {
+        if( this.user.isActive() ) {
+            if($$('div.mocha.isFocused').length>0) var focusedwindow=escape($$('div.mocha.isFocused')[0].get('id')); else var focusedwindow=this.lastwindowtrack;//'none';
+            if(focusedwindow=='alert-box') focusedwindow=this.lastwindowtrack;
+            this.lastwindowtrack=focusedwindow;
+            focusedwindow=focusedwindow.replace(/%3A[0-9]+$/g, '').replace(/[-:][0-9]+$/g, '').replace(/^favorite-/g,'').replace(/^menu[.]/g, '');
+            for(var i=0;i < this.windowtrack.length;i++) if(this.windowtrack[i][0]==focusedwindow) { this.windowtrack[i][1]+=5; var added=true; break; }
+            if(!added) this.windowtrack.push([focusedwindow,5]);
+        } else this.lastwindowtrack='none';
+
+        if(this.timetrack_timeout) window.clearTimeout(this.timetrack_timeout);
+        this.timetrack_timeout=window.setTimeout( "ebindr.timeTrack();", 5000);
+    },
+    sysstatus: function(doalert) {
+        if( this.user.isActive() ) {
+            /*$('ns').removeClass('sysstatus-green').removeClass('sysstatus-red').removeClass('sysstatus-yellow').removeClass('sysstatus-unknown');
+            $('ns').addClass('sysstatus-loading' );*/
+            new Request({
+                'method': 'get',
+                'timeout': 15000,
+                'url': '/ebindr/systemstatus.php',
+                'onComplete': function(data) {
+                    /*$('ns').removeClass('sysstatus-loading');
+                    $('ns').addClass('sysstatus-' + data );*/
+                    if(doalert) ebindr.alert('Thank you for checking on our system status. We have updated your button to reflect the latest status, which is: '+( data == 'red' ? 'some systems down' : ( data == 'yellow' ? 'limited issues' : ( data == 'unknown' ? 'unknown' : 'everything is ok' ) ) )+'. If you wish for a more detailed report please click <a href="http://status.hurdman.com" target="_blank">here</a>.' );
+                },
+                'onTimeout': function(data) {
+                    /*$('ns').removeClass('sysstatus-loading');
+                    $('ns').addClass('sysstatus-unknown' );*/
+                    if(doalert) ebindr.alert('Thank you for checking on our system status. We currently are unable to determine system status, possible due to internet connectivity issues.' );
+                }
+            }).send();
+        }
+        if(this.sysstatus_timeout) window.clearTimeout(this.sysstatus_timeout);
+        this.sysstatus_timeout=window.setTimeout( "ebindr.sysstatus(false);", 600000);
+    },
+
     isHurdman: function() {
         return this.data.store.securitykeys.match("HURDMAN");
+    },
+
+    isHurdmantest: function() {
+        return ( Cookie.read("reportr_db") == 'hurdmantest' ? true : false );
     },
 
 	/*

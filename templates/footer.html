@@ -52,11 +52,11 @@
 
         var modal_confirm = function( text, ret ){
             var $ret = ret;
-            $ModalAlert.content( text ).open( function(){
+            $Modal.content( text ).open( function(){
                 // Set event
-                $ModalAlert.modalElement.find( '.modal-title' ).html( 'Confirm' );
-                $ModalAlert.modalElement.find( '.submit' ).show();
-                $ModalAlert.modalElement.find( '.submit' ).on( 'click', function(){
+                $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
+                $Modal.modalElement.find( '.submit' ).show();
+                $Modal.modalElement.find( '.submit' ).on( 'click', function(){
                     $Modal.close();
                     if( $ret )
                         $ret( true );
@@ -64,7 +64,7 @@
             } );
 
             setTimeout(function(){
-                $ModalAlert.modalElement.attr('aria-label',text).focus();
+                $Modal.modalElement.attr('aria-label',text).focus();
             }, 800);
 
         };
@@ -137,6 +137,29 @@
 <script src="/m/assets/js/mootools/core-1.2.4.js"></script>
 <script src="/m/assets/js/mootools/more-1.2.4.2.js"></script>
 <script src="/m/assets/js/ebindr.js.php?flex"></script>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+
+        ebindr.initializeUser( function(){
+
+            ebindr.alerts();
+            ebindr.timeTrack();
+            ebindr.sysstatus(false);
+
+            (function() {
+                ebindr.getBizButtons();
+                ebindr.data.get('e button dr', function(data) {
+                    ebindr.data.load( 'e button dr', data );
+                    ebindr.data.get('e recent reports.list');
+                });
+                if( ebindr.data.store.traininggraph == 'block' ) ebindr.data.get('training.CourseSummary');
+                ebindr.data.get('e favorite reports.list');
+                ebindr.data.get('/ebindr/community.php/features/popular');
+            }).delay(1000);
+
+        });
+    });
+</script>
 <script src="/m/assets/js/custom-scripts.js.php?flex"></script>
   </body>
 </html>
