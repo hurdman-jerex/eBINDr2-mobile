@@ -1,6 +1,5 @@
 <?php
 /* REPORT REPORT */
-
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {
     $task->num_rows = 1;
     $temp = read_tmp_file('query');

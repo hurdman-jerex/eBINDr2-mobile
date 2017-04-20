@@ -12,6 +12,7 @@ return array(
             'merge2',
             'noheader',
             'noheader2',
+            'noheader_hidden',
             'open',
             'printr'
         )

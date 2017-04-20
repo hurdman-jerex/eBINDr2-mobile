@@ -1,3 +1,4 @@
+<div id="recent-registers" class="hide"></div>
 <div class="modal hide" id="modal-element" tabindex="-1" aria-label="Modal">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -98,10 +99,10 @@
 	</script>
 
 <!-- ALERT -->
-<? if( in_array( $___ebindr2mobile_http[ 'segments' ][0], array('search','business') ) && isset( $_SESSION['e2m_auth'] ) ): ?>
+<? if( in_array( $___ebindr2mobile_http[ 'segments' ][0], array('business') ) && ( isset( $_SESSION['e2m_auth'] ) || isset( $_SESSION['e2m_bid_loaded'] ) ) ): ?>
 
 <!-- LOGIN ALERT -->
-<? if( isset( $__business_info['loginalert'] ) && ! empty( $__business_info['loginalert'] ) ): ?>
+<? if( isset( $__business_info['loginalert'] ) && ! empty( $__business_info['loginalert'] ) && isset( $_SESSION['e2m_auth'] ) ): ?>
 <script type="text/javascript">
     // login alert
     var _login_alert_text = '<?=$__business_info["loginalert"]?>';
@@ -131,6 +132,7 @@
 <? endif; ?>
 
 <? unset( $_SESSION['e2m_auth'] ); ?>
+<? unset( $_SESSION['e2m_bid_loaded'] ); ?>
 <? endif; ?>
 
 <script>jQuery.noConflict();</script>
@@ -147,7 +149,6 @@
             ebindr.sysstatus(false);
 
             (function() {
-                ebindr.getBizButtons();
                 ebindr.data.get('e button dr', function(data) {
                     ebindr.data.load( 'e button dr', data );
                     ebindr.data.get('e recent reports.list');

@@ -8,8 +8,9 @@ $bbapi->post($url);
 
 if(isset($_GET['bid'])) {
     $_SESSION['bid']=$_GET['bid'];
+    $_SESSION['e2m_bid_loaded']=$_GET['bid'];
 
-    $myHost = 'http://';
+    $myHost = ( ( $_SERVER[HTTPS]=='on' ) ? 'https://' : 'http://' );
 
 		if ( strpos($_SERVER['SERVER_NAME'], 'mbc-web') > -1 || strpos($_SERVER['SERVER_NAME'], 'vancouver') > -1 ) {
 			$myHost = 'https://';
