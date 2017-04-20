@@ -24,6 +24,7 @@ ebindr.library.button = new Class({
 	// editr = ebindr.doNormal( button )
 
 	options: {
+		//selectors: 'h2.name, .rating div, #b .details td, #b .details th, #b .details th span, .button32, .button32-span2, .line-buttons div, .controls li, .btnbar li, div.datafields span.button, .utility img, a#bamap, #ms', // which buttons to include
 		selectors: 'h2.name, .rating div, #b .details td, #b .details th, #b .details th span, .button32, .button32-span2, .line-buttons div, .controls li, .btnbar li, div.datafields span.button, .utility img, a#bamap, #ms', // which buttons to include
 		noinsert: [ 'lite button b!', 'lite button m!' ],
 		nodelete: [ 'lite button b!', 'lite button m!' ]
@@ -46,7 +47,7 @@ ebindr.library.button = new Class({
 		$extend(this.options,options);
 		
 		// log that this class has been loaded
-		ebindr.console( 'ebindr.button loaded' );
+		console.log( 'ebindr.button loaded' );
 		// activate the buttons
 		//this.activate(this.options.selectors);
 	
@@ -217,12 +218,12 @@ ebindr.library.button = new Class({
 		$$( selectors ).each( function( button, i ) {
 
 			if( !button.hasClass( 'end' ) && !button.hasClass('noclick') ) {
-                //console.log( button );
+                console.log( button );
 				// add events to the button
 				button.addEvents({
 					'click': function(e) {
-						/*jQuery('#report-name').text( this.text );
-						console.log( this.text );*/
+						/*jQuery('#report-name').text( this.text );*/
+						//console.log( this.text );
                         //document.title =
 						var e = new Event(e);
 						// lets get the target event element
@@ -236,7 +237,16 @@ ebindr.library.button = new Class({
 							// only if we have an id
 							if( $chk(this.id) )
 								ebindr.button.go( mybutton, null, e );
-						}
+						}else if( tag != 'a' ){
+                            if(this.id.match(/-btn/))
+                                var mybutton=this.id.replace(/-btn$/, "");
+                            else var mybutton=this.id.replace(/-more$/, "");
+                            // log that a button was clicked
+                            ebindr.log( 'Button clicked: ' + mybutton );
+                            // only if we have an id
+                            if( $chk(this.id) )
+                                ebindr.button.go( mybutton, null, e );
+                        }
 					},
 					'contextmenu': function(e) {
 						if( this.id == 'bn' ) {

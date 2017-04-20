@@ -36,6 +36,7 @@ ebindr.library.data = new Class({
 	*/
 	update: function( button, value ) {
 		// find out which button it is
+		console.log( value );
 		switch( button ) {
 			case "ms": 
 			

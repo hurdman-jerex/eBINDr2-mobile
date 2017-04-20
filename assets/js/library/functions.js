@@ -253,6 +253,7 @@ ebindr.extend({
 	doWindow: function( $button, $options )
 	{
         console.log( { do:'window', $button,  $options } );
+        ebindr.loadIframeSrc( $options );
 	},
 
     doEditr: function( $button, $options )
@@ -269,6 +270,7 @@ ebindr.extend({
 	doNormal: function( $button, $options )
 	{
         console.log( { do:'normal', $button,  $options } );
+        ebindr.loadIframeSrc( $options );
 	},
 	doChange: function( $button, $options )
 	{

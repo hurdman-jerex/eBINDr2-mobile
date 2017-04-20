@@ -162,7 +162,7 @@ $___ebindr2mobile_views['template_folder'] = 'default';
 
 //}
 
-//dd( $___ebindr2mobile_views );
+/*dd( $__business_info );*/
 
 
 

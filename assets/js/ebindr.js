@@ -253,7 +253,7 @@ var ebindr = new Hash({
 
         this.preload( function() {
             // bring in the styles
-            ebindr.include( "/ebindr/styles/button.css" );
+            //ebindr.include( "/m/assets/css/button.css" );
             // bring in the datepicker
             ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
             ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
