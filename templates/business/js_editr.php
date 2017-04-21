@@ -18,6 +18,8 @@ if( $___ebindr2mobile_http['segments'][0] == 'business' &&
         $redirect_to = $___ebindr2mobile_http['url'] . 'business.html?info=business-names';
     elseif ($info == 'people')
         $redirect_to = $___ebindr2mobile_http['url'] . 'business.html?info=people-contacts';
+    elseif ($info == 'general')
+        $redirect_to = $___ebindr2mobile_http['url'] . 'business/general.php';
     else
         $redirect_to = $___ebindr2mobile_http['url'] . 'business.html?info=' . $info;
 

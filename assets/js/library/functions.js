@@ -212,7 +212,7 @@ ebindr.extend({
     _get_cancel_redirection: function( $page ){
         if( $page == 'business' ){
             if( ebindr.current.segments[1] == 'general' )
-                window.location.href = '/m/business.html';
+                window.location.href = '/m/business/general.php';
 
             else if( ebindr.current.segments[1] == 'sales' )
                 window.location.href = '/m/business/sales.html';

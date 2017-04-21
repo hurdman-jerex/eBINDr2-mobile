@@ -1,8 +1,12 @@
 <? include "../templates/header.html"; ?>
 <? include "../templates/nav-bar.html"; ?>
-<? $page = 'accreditation'; include "../templates/business/_container-start.html"; ?>
+<? $page = 'general'; include "../templates/business/_container-start.html"; ?>
 
-<? include "../templates/business/accreditation.html"; ?>
+    <div class="row-fluid">
+        <div class="span12">
+            <? include "../templates/business/general.php"; ?>
+        </div>
+    </div>
 
 <? include "../templates/business/_container-end.html"; ?>
 
@@ -11,13 +15,12 @@
     <script src="/m/assets/js/mootools/more-1.2.4.2.js"></script>
 
     <script src="/m/assets/js/ebindr.js.php?flex"></script>
-<? $_menuPage = '/m/report/e2m e button m/?noheader&bid='.$_SESSION['bid'].'&lid=1&ebindr2=y' ?>
+<? $_menuPage = '/m/report/e2m lite button bg/?noheader&bid='.$_SESSION['bid'].'&lid=1&ebindr2=y' ?>
     <script type="text/javascript">
         jQuery( document ).ready(function() {
             var _menupage = '<?=$_menuPage?>';
             ebindr.initialize( function(){
-                ebindr.button.activate('.button32, #ms');
-                ebindr.initIFrame( 'frame_m', { contentURL : _menupage } );
+                ebindr.initIFrame( 'frame_g', { contentURL : _menupage } );
             } );
         });
     </script>
