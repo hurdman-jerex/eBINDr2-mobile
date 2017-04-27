@@ -3,55 +3,23 @@ $page = 'search';
 $_SERVER['css'][] = '/m/assets/css/findr1.css';
 include "templates/header.html";
 include "templates/nav-bar.html";
-//include "templates/search/_container-start.html";
+include "templates/search/sub_nav.php";
 ?>
+<div class="container-fluid" style="padding-top: 40px;">
+    <div class="row-fluid">
+        <div class="span12">
+            <div id="findr2-search-container">
+                <div class="" id="search-result" style="padding-top: 10px;">
+                    <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
 
-<?
-$mybindr->addparm( 'type', 'f' );
-$mybindr->addparm( 'staff', $_COOKIE["reportr_username"] );
-list($q)=$mybindr->getquery("e button sort" );
-$q=$mybindr->ResolvePipes($q);
-$result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
-?>
-<div id="findr2_contentWrapper" class="subnav subnav-fixed">
-<div id="findr2-body">
-    <ul class="findr-btns grad-lite-blue" style="background: #fff;">
-        <li class="more" id="more-search" style="float: right;"><img src="/ebindr/images/arrowdown.gif" /></li>
-        <li class="spacer" style="float: right;"></li>
-        <? $i=0; while( $row = mysql_fetch_assoc($result) ) : ?>
-            <li class="<?=$row['class']?><?=($i==0? ' left' : '' )?>"><?=$row['name']?></li>
-            <li class="spacer"></li>
-            <? $i++; endwhile; ?>
-        <li class="editorderbtn">Edit Order</li>
-
-        <?php
-        if (eregi("atlanta|hurdmantest", $_SERVER['SERVER_NAME'])) //change server name to atlanta.ebindr.com
-        {
-            echo '<li class="spacer"></li>';
-            echo '<li class="arb">ARB Num</li>';
-        }
-        ?></ul>
-    <div style="clear: both;"></div>
-    <div class="search-bar">
-        <div id="search-by-type">Begins With *</div>
-        <div class="search-type" id="search-type">Business Name</div>
-        <div style="float: left; margin-top: 4px;"><input type="text" id="search-q" /></div>
-    </div>
-    <div id="more-list" class="hide-more">
-        <div class="top"></div>
-        <div class="list">
-            <ul></ul>
-            <div style="clear: both;"></div>
+                    </iframe>
+                </div>
+            </div>
+            <div id="findr2-loading" style="display: none; text-align: center;">
+                <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
+            </div>
         </div>
-        <div class="bottom"></div>
     </div>
-    <div style="clear: both;"></div>
-</div>
-</div>
-<div style="clear: both;"></div>
-<div id="findr2-search-container"></div>
-<div id="findr2-loading" style="display: none; text-align: center;">
-    <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
 </div>
 <script type="text/javascript">
     window.addEvent( 'domready', function(e) {
@@ -59,6 +27,16 @@ $result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
             ebindr.findr2.what = "ab-address";
     });
 </script>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        ebindr.initializeFindr( function(){
+            ebindr.findr2.start();
+            ebindr.findr2.initIFrame( 'findr2-search-frame' );
+        } );
+    });
+</script>
+<? include "templates/footer.html"; ?>
+
 <!--<div class="subnav">
     <ul class="nav nav-pills">
         <?/* while( $row = mysql_fetch_assoc($result) ) : */?>
@@ -93,18 +71,3 @@ $result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
     }
 
 </script>-->
-    <div class="" id="search-result" style="padding-top: 10px;">
-        <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
-
-        </iframe>
-    </div>
-<script type="text/javascript">
-    jQuery( document ).ready(function() {
-        ebindr.initializeFindr( function(){
-            ebindr.findr2.start();
-            ebindr.initIFrame( 'findr2-search-frame' );
-        } );
-    });
-</script>
-<? //include "templates/search/_container-end.html"; ?>
-<? include "templates/footer.html"; ?>

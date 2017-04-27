@@ -495,7 +495,7 @@ window.addEvent( 'load', function() {
 
 <script type="text/javascript">
    jQuery(document).ready(function() {
-       jQuery('#1').DataTable({
+       jQuery('.dataset').DataTable({
             responsive: {
                 details: {
                     display: jQuery.fn.dataTable.Responsive.display.childRow

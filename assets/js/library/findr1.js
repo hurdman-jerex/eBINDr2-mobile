@@ -301,14 +301,17 @@ ebindr.library.findr2 = new Class({
 		});
 
 		$('more-search').addEvent( 'click', function(e) {//when the >> button is hovered/clicked
+            e.preventDefault();
 			var $moreList = jQuery('#more-list');
             if( $moreList.hasClass( 'hide-more' ) ){
                 $self._initMore();
                 $moreList.removeClass('hide-more');
                 $moreList.addClass('show-more');
+                $moreList.setStyle('display', '');
             }else{
                 $moreList.removeClass('show-more');
                 $moreList.addClass('hide-more');
+                $moreList.setStyle('display', 'none');
             }
 
             /*$('more-list').setStyle( 'display', '' ).addEvent( 'mouseleave', function(e) {
@@ -386,7 +389,7 @@ ebindr.library.findr2 = new Class({
                 if( btn.getCoordinates().top != displayed ) {
                     btn.clone().inject($('more-list').getElements('ul')[0]).addEvents({
                         'click': function(e) {
-                            $('more-list').setStyle( 'display', 'none' );
+                            //$('more-list').setStyle( 'display', 'none' );
                             if( this.get('class').split(" ")[0] == 'editorderbtn' )
                                 return ebindr.button.go('editorderbtnfindr');
                             else ebindr.findr2.buttonByClass( this.get('class').split(" ")[0] );
@@ -497,8 +500,8 @@ ebindr.library.findr2 = new Class({
 		/*(function() {
 			if( ebindr.isHurdman() ) ebindr.growl( 'search url', searchurl );
 		}).delay(300);*/
-
-		ebindr.loadIframeSrc( {contentURL:searchurl} );
+		ebindr.findr2.loadIFrame( searchurl );
+        ebindr.lastfindr = what;
 		/*new IFrame({
 		 	id: 'findr2-search-frame',
 		    src: searchurl,
@@ -515,6 +518,8 @@ ebindr.library.findr2 = new Class({
 		}).inject($('findr2-search-container'));*/
 	},
 
+
+
 	showLoading: function() {
 		$('findr2-loading').setStyles( ebindr.findr2.frameSize() ).setStyle( 'display', '' );
 	},
@@ -522,6 +527,28 @@ ebindr.library.findr2 = new Class({
 	hideLoading: function() {
 		$('findr2-loading').setStyle( 'display', 'none' );
 	},
+
+    initIFrame: function( iframe )
+    {
+        ebindr.frameEl = document.getElementById( iframe );
+        this._initIFrameEvent();
+    },
+
+    _initIFrameEvent: function(){
+        var $self = this;
+        ebindr.frameEl.onload = function(){
+            ebindr.findr2.hideLoading();
+            ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
+            ebindr.frameEl.setStyle( 'display', '' );
+            ebindr.frameEl.focus();
+        };
+    },
+
+    loadIFrame: function( src ){
+        ebindr.frameEl.setStyle( 'display', 'none' );
+        ebindr.findr2.showLoading();
+        ebindr.frameEl.src = src;
+    },
 
 	frameSize: function() {
 		var full = $('findr2_contentWrapper').getCoordinates();
@@ -532,8 +559,7 @@ ebindr.library.findr2 = new Class({
 			'height': full.height-used.height,
 			'padding': 0,
 			'margin': 0,
-			'border': 'none',
-			'display': 'none'
+			'border': 'none'
 		};
 	},
 

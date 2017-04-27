@@ -9,27 +9,12 @@ ebindr.extend({
         ebindr.frameEl = document.getElementById( iframe );
 
         ebindr.frameEl.onload = function() {
-
-            /*var label = jQuery( '<p>' + ebindr.current.editr_desc + '</p>' ).text();
-            var reportname = jQuery('#report-name');
-            //console.log( label );
-            reportname.val( label )
-                .attr( 'aria-label', label );
-            reportname.focus();*/
-
             ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
             ebindr.frameEl.focus();
-            /*console.log( window.screen.height );
-            console.log( jQuery( window ).height() );
-            console.log( ebindr.frameEl.height = jQuery( window ).height() )*/
         };
 
         if( undefined !== url )
             this.loadIframeSrc( url );
-
-        /*$iframe.load( function(){
-            this.setHeight( this );
-        });*/
     },
 
     setHeight: function( e ){
