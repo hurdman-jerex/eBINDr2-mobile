@@ -15,6 +15,7 @@ if($_GET["print"] == 'true') $layout_template = "printr";
 // if we want no default header (bindr lite)
 elseif(isset($_GET["noheader"])) $layout_template = "noheader".$e2m;
 elseif(isset($_GET["noheaderhidden"])) $layout_template = "noheader_hidden";
+elseif(isset($_GET["noheaderfindr"])) $layout_template = "noheader_findr";
 // otherwise setup the normal template
 else $layout_template ="default";
 

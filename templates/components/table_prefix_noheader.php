@@ -5,8 +5,8 @@
 			<tr>
 				<td align="left" id="prev" colspan=3><[back]> | <span class="show_of"><b><[ident]> to <[last_row]> of <[calc_rows]></b></span> | <span class="show_of"><[page_list]></span><[next]></td>
 			</tr>
-		</td>
 		</table>
+		</td>
 	</tr>
-	<[description]>
+	    <[description]>
 	<tr>

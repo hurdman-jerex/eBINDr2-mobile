@@ -1,5 +1,7 @@
 <?php
 /* REPORT REPORT */
+//echo $layout_template;
+//dd( $reportr );$this->col_info
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {
     $task->num_rows = 1;
     $temp = read_tmp_file('query');
@@ -38,6 +40,7 @@ if($task->num_rows == 1) { // we find a query with that name
     else // prompt for parameters
         $parse->adopt(); // we need some parameters
 
+    //dd( $reportr->_columns );
     echo $device->buffer($layout_template);
 }
 ?>

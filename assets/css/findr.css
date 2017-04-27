@@ -1,0 +1,4 @@
+table.dataTable > tbody > tr.child span.dtr-title {
+    font-weight: normal;
+    font-size: inherit;
+}

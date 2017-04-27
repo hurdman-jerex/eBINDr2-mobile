@@ -164,6 +164,14 @@ var ebindr = new Hash({
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
+	initializeFindr: function( load ) {
+		this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		this.findr2 = new ebindr.library.findr2();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+			ebindr.load( load );
+	},
     initialize: function( load ) {
         this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
@@ -258,8 +266,8 @@ var ebindr = new Hash({
             ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
             ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
 
-            ebindr.include( "/ebindr/styles/findr.css" );
-            ebindr.include( "/ebindr/styles/findr1.css" );
+            //ebindr.include( "/ebindr/styles/findr.css" );
+            //ebindr.include( "/ebindr/styles/findr1.css" );
 
             // add the events to each frame
             $$( 'iframe' ).addEvent( 'reload', function(url) {

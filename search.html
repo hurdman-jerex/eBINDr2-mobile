@@ -61,7 +61,7 @@ $result = mysql_db_query( LOCAL_DB, $q, $mybindr->db );
     }
 </style>
 <div class="subnav">
-    <ul class="nav nav-pills">
+    <ul class="findr-btns nav nav-pills">
         <? while( $row = mysql_fetch_assoc($result) ) : ?>
         <? if( $nav == $row['class'] ){
             $label = $row['name'];

@@ -2,6 +2,7 @@
 include "../../includes/readme.php";
 
 // Library
+define( '_MOBILEHELPERS', 'library/helpers.php' );
 define( '_MOBILETEMPLATE', 'library/template.php' );
 define( '_MOBILEREPORTR', 'library/reportr.php' );
 define( '_MOBILEEDITR', 'library/editr.php' );

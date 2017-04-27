@@ -13,6 +13,7 @@ return array(
             'noheader',
             'noheader2',
             'noheader_hidden',
+            'noheader_findr',
             'open',
             'printr'
         )
@@ -34,6 +35,7 @@ return array(
             'table',
             'table_prefix',
             'table_prefix_noheader',
+            'table_prefix_findr',
             'table_prefix_old'
         )
     )

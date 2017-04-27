@@ -19,7 +19,6 @@ ebindr.extend({
 
             ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
             ebindr.frameEl.focus();
-
             /*console.log( window.screen.height );
             console.log( jQuery( window ).height() );
             console.log( ebindr.frameEl.height = jQuery( window ).height() )*/

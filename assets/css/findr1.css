@@ -1,0 +1,243 @@
+#findr2-body {
+	background-color: #757575;
+}
+#findr2-body .search-bar {
+	background-image: url( '/ebindr/images/findr1/findrsearchbar.png' );
+	height: 28px;
+	line-height: 28px;
+	color: #fff;
+	padding-left: 5px;
+}
+#findr2-body .search-bar input {
+
+}
+#findr2-body .findr-btns {
+	overflow: hidden;
+	height: 26px;
+	padding: 0px;
+	margin: 0px;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #999;
+}
+#findr2-body .findr-btns li {
+	float: left;
+	list-style: none;
+	padding-left: 20px;
+	margin-right: 3px;
+	font-size: 10px;
+	line-height: 26px;
+	height: 26px;
+	background-position: left;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+#findr2-body .findr-btns li.more {
+	padding-left: 0px;
+	padding-right: 3px;
+}
+#findr2-body .findr-btns li.left {
+	margin-left: 5px;
+}
+#findr2-body li.spacer {
+	width: 8px;
+	background-image: url( '/ebindr/images/e2/btnbar-spacer.png' );
+	background-repeat: no-repeat;
+	background-position: center;
+	padding: 0px;
+	height: 26px;
+}
+#findr2-body li.n {
+	background-image: url( '/ebindr/images/findr1/dba.png' );
+}
+#findr2-body li.i {
+	background-image: url( '/ebindr/images/findr1/bid.png' );
+}
+#findr2-body li.e {
+	background-image: url( '/ebindr/images/findr1/bizemployee.png' );
+}
+#findr2-body li.p, #findr2-body li.h {
+	background-image: url( '/ebindr/images/findr1/phone.png' );
+}
+#findr2-body li.a, #findr2-body li.address {
+	background-image: url( '/ebindr/images/findr1/address.png' );
+}
+#findr2-body li.u, #findr2-body li.complaint {
+	background-image: url( '/ebindr/images/findr1/cid.png' );
+}
+#findr2-body li.c, #findr2-body li.consumer {
+	background-image: url( '/ebindr/images/findr1/consumername.png' );
+}
+#findr2-body li.k {
+	background-image: url( '/ebindr/images/findr1/agency.png' );
+}
+#findr2-body li.l {
+	background-image: url( '/ebindr/images/findr1/bbblocation.png' );
+}
+#findr2-body li.z, #findr2-body li.zip-postal {
+	background-image: url( '/ebindr/images/findr1/bbbzip.png' );
+}
+#findr2-body li.t {
+	background-image: url( '/ebindr/images/findr1/tobcode.png' );
+}
+#findr2-body li.d {
+	background-image: url( '/ebindr/images/findr1/tobdesc.png' );
+}
+#findr2-body li.g {
+	background-image: url( '/ebindr/images/findr1/genadv.png' );
+}
+#findr2-body li.x {
+	background-image: url( '/ebindr/images/findr/lightning.png' );
+}
+#findr2-body li.w {
+	background-image: url( '/ebindr/images/findr/link.png' );
+}
+#findr2-body li.genadv {
+	background-image: url( '/ebindr/images/findr/comment.png' );
+}
+#findr2-body li.email, #findr2-body li.email-c {
+	background-image: url( '/ebindr/images/icons16x/email.png' );
+}
+#findr2-body li.charity {
+	background-image: url( '/ebindr/images/findr/rosette.png' );
+}
+#findr2-body li.check {
+	background-image: url( '/ebindr/images/findr/check-number.png' );
+}
+#findr2-body li.text {
+	background-image: url( '/ebindr/images/icons16x/text.png' );
+}
+#findr2-body li.journal {
+	background-image: url( '/ebindr/images/icons16x/journal.png' );
+}
+#findr2-body li.license {
+	background-image: url( '/ebindr/images/icons16x/license.png' );
+}
+#findr2-body li.location {
+	background-image: url( '/ebindr/images/icons16x/map.png' );
+}
+#findr2-body li.mediation {
+	background-image: url( '/ebindr/images/findr/briefcase.png' );
+}
+#findr2-body li.newname {
+	background-image: url( '/ebindr/images/findr/asterisk.png' );
+}
+#findr2-body li.reportstatus {
+	background-image: url( '/ebindr/images/findr/gold_star_medal.png' );
+}
+#findr2-body li.reportcode {
+	background-image: url( '/ebindr/images/findr/book_open.png' );
+}
+#findr2-body li.naturedispute {
+	background-image: url( '/ebindr/images/findr/box.png' );
+}
+#findr2-body li.salescomment {
+	background-image: url( '/ebindr/images/findr/money.png' );
+}
+#findr2-body li.smallclaims {
+	background-image: url( '/ebindr/images/findr/bell.png' );
+}
+#findr2-body li.currentbid {
+	background-image: url( '/ebindr/images/findr/layout.png' );
+}
+#findr2-body li.editorderbtn {
+	background-image: url( '/ebindr/images/icons16x/edit.png' );
+}
+
+/*#findr2-body li.cust-reviews,*/
+#findr2-body li.r {
+	background-image: url( '/ebindr/images/icons16x/customer-review.png' );
+}
+
+#findr2-body div#more-list, #bizmore-list {
+	width: 300px;
+	position: absolute;
+	z-index: 100000;
+}
+#findr2-body div#more-list div.top, #bizmore-list div.top {
+	height: 25px;
+	width: 300px;
+	background-image: url( '/ebindr/images/findr1/findrmore-top.png' );
+	background-repeat: no-repeat;
+}
+#findr2-body div#more-list div.bottom, #bizmore-list div.bottom {
+	height: 12px;
+	width: 300px;
+	background-image: url( '/ebindr/images/findr1/findrmore-bottom.png' );
+	background-repeat: no-repeat;
+}
+#findr2-body div#more-list div.list, #bizmore-list div.list {
+	width: 280px;
+	background-image: url( '/ebindr/images/findr1/findrmore-bg.png' );
+	color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#findr2-body div#more-list div.list ul, #bizmore-list div.list ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+#findr2-body div#more-list div.list ul li, #bizmore-list div.list ul li {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	width: 115px;
+	height: 26px;
+	line-height: 26px;
+	font-size: 10px;
+	background-repeat: no-repeat;
+	background-position: 5px 4px;
+	padding-left: 25px;
+	color: #fff;
+	cursor: pointer;
+}
+#findr2-body div#more-list div.list ul li.hover, #bizmore-list div.list ul li.hover {
+	background-color: #fff;
+	color: #666;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+#findr2-body #search-q {
+	width: 100%;
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
+	border: none;
+	height: 20px;
+	line-height: 20px;
+	background-color: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;	
+	background-image: url( '/ebindr/images/findr1/findr-search-bg.png' );
+	background-position: 4px 3px;
+	background-repeat: no-repeat;
+	/*border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	color: #ffffcc;*/
+	font-size: 12px;
+	padding-left: 20px;
+	padding-right: 10px;
+	outline: none;
+}
+#findr2-body div.search-type {
+	border-left: 1px solid #999;
+	/*border-right: 1px solid #333;*/
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-weight: bold;
+}
+#findr2-body div#search-by-type {
+	border-right: 1px solid #333;
+	float: left;
+	color: #ccc;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.hide-more{
+    display: none;
+}
+.show-more{
+    display: inline-block;
+}
