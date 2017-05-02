@@ -103,6 +103,7 @@ var ebindr = new Hash({
 		undo2: false,
 		windowEl: new Object(),
 		frameEl: new Object(),
+		alertFrameEl: new Object(),
 		// the button currently running
 		button: '', 
 		// element that has focus

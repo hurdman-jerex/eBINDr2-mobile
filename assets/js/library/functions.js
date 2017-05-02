@@ -6,17 +6,26 @@ ebindr.extend({
     initIFrame: function( iframe, url )
     {
 
-        ebindr.frameEl = document.getElementById( iframe );
-        this.insertLoadingAfterIframe();
-        this._initIFrameEvent();
+        if( iframe == 'ialert' ) {
+            ebindr.alertFrameEl = document.getElementById(iframe);
+            if( undefined !== url ){
+                if( typeof url === "undefined" )
+                    return false;
 
-        /*ebindr.frameEl.onload = function() {
-            ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
-            ebindr.frameEl.focus();
-        };*/
+                if( typeof url.contentURL === "undefined" ) {
+                    ebindr.alertFrameEl.src = url;
+                }else{
+                    ebindr.alertFrameEl.src = url.contentURL;
+                }
+            }
+        } else{
+            ebindr.frameEl = document.getElementById( iframe );
+            this.insertLoadingAfterIframe();
+            this._initIFrameEvent();
+            if( undefined !== url )
+                this.loadIframeSrc( url );
+        }
 
-        if( undefined !== url )
-            this.loadIframeSrc( url );
     },
 
     _initIFrameEvent: function(){

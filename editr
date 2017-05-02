@@ -5,7 +5,7 @@ include "_m.php";
 // Library
 include _DATABASE;
 include _MOBILETEMPLATE;
-include _PARSER;
+include _MOBILEPARSE;
 include _MOBILEREPORTR;
 include _MOBILECONFIG;
 

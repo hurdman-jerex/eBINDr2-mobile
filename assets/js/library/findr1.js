@@ -270,6 +270,8 @@ ebindr.library.findr2 = new Class({
 		Add the click events to the buttons
 	*/
 	buttonEvents: function() {
+        var $self = this;
+        var $moreList = $('more-list');
 		$$( '#more-list li, .findr-btns li' ).each( function(btn) {
 			if( !btn.hasClass('spacer') ) {
 				btn.addEvent('click', function(e) {
@@ -283,6 +285,10 @@ ebindr.library.findr2 = new Class({
 							ebindr.findr2.search( ebindr.findr2.what );
 						}
 					}
+
+                    $moreList.removeClass('show-more');
+                    $moreList.addClass('hide-more');
+                    $moreList.setStyle('display', 'none');
 				});
 			}
 		});
@@ -302,17 +308,7 @@ ebindr.library.findr2 = new Class({
 
 		$('more-search').addEvent( 'click', function(e) {//when the >> button is hovered/clicked
             e.preventDefault();
-			var $moreList = jQuery('#more-list');
-            if( $moreList.hasClass( 'hide-more' ) ){
-                $self._initMore();
-                $moreList.removeClass('hide-more');
-                $moreList.addClass('show-more');
-                $moreList.setStyle('display', '');
-            }else{
-                $moreList.removeClass('show-more');
-                $moreList.addClass('hide-more');
-                $moreList.setStyle('display', 'none');
-            }
+            $self._setMoreVisibility();
 
             /*$('more-list').setStyle( 'display', '' ).addEvent( 'mouseleave', function(e) {
 				this.setStyle( 'display', 'none' );
@@ -321,6 +317,21 @@ ebindr.library.findr2 = new Class({
 
         $self._initButtons();
 	},
+
+	_setMoreVisibility: function () {
+        var $self = this;
+        var $moreList = $('more-list');
+        if( $moreList.hasClass( 'hide-more' ) ){
+            $self._initMore();
+            $moreList.removeClass('hide-more');
+            $moreList.addClass('show-more');
+            $moreList.setStyle('display', '');
+        }else{
+            $moreList.removeClass('show-more');
+            $moreList.addClass('hide-more');
+            $moreList.setStyle('display', 'none');
+        }
+    },
 
     _initMore: function(){
         var findr2_details = $('findr2_contentWrapper').getCoordinates();
