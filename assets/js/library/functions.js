@@ -7,14 +7,42 @@ ebindr.extend({
     {
 
         ebindr.frameEl = document.getElementById( iframe );
+        this.insertLoadingAfterIframe();
+        this._initIFrameEvent();
 
-        ebindr.frameEl.onload = function() {
+        /*ebindr.frameEl.onload = function() {
             ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
             ebindr.frameEl.focus();
-        };
+        };*/
 
         if( undefined !== url )
             this.loadIframeSrc( url );
+    },
+
+    _initIFrameEvent: function(){
+        var $self = this;
+        ebindr.frameEl.onload = function(){
+            ebindr.hideLoading();
+            ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
+            ebindr.frameEl.setStyle( 'display', '' );
+            ebindr.frameEl.focus();
+        };
+    },
+
+    insertLoadingAfterIframe: function(){
+        var $iframeLoading = jQuery('#iframe-loading');
+        if( $iframeLoading.length > 0 )
+            $iframeLoading.destroy();
+
+        jQuery('<div id="iframe-loading" style="display: none; text-align: center;"><img src="/ebindr/images/findr1/loading2.gif" alt="Loading ..." style="padding-top: 100px;" /><br /><br />Loading </div>').insertAfter( ebindr.frameEl );
+    },
+
+    showLoading: function() {
+        jQuery('#iframe-loading').css( 'display', '' );
+    },
+
+    hideLoading: function() {
+        jQuery('#iframe-loading').css( 'display', 'none' );
     },
 
     setHeight: function( e ){
@@ -24,20 +52,17 @@ ebindr.extend({
 
     loadIframeSrc: function( $option ){
         //console.log( $option );
+        ebindr.frameEl.setStyle( 'display', 'none' );
+        ebindr.showLoading();
 
         if( typeof $option === "undefined" )
             return false;
 
-        //ebindr.frameEl.title = $option.title;
 		if( typeof $option.contentURL === "undefined" ) {
             ebindr.frameEl.src = $option;
-            //console.log( 'undefined Content URL' );
         }else{
             ebindr.frameEl.src = $option.contentURL;
-            //console.log( 'Content URL' );
         }
-
-        //ebindr.frameEl.setHeight( ebindr.frameEl );
     },
 
 	/*
@@ -46,8 +71,7 @@ ebindr.extend({
 	*/
 	openBID: function( bid, start, cid, minimize ) {
 		// log the action
-		ebindr.log( 'Attempting to open BID ' + bid );
-		ebindr.console( 'Attempting to open BID ' + bid );
+        console.log( 'Attempting to open BID ' + bid );
 
 		// check to see if eBINDr is just starting
 		if( typeof(start) == 'undefined' ) var start = false;
@@ -57,8 +81,7 @@ ebindr.extend({
 		// check and make sure we have a valid bid
 		if( $chk(bid) ) {
 			// log the last bid
-			ebindr.log( 'Previous BID ' + ebindr.current.bid );
-			ebindr.console( 'Previous BID ' + ebindr.current.bid );
+            console.log( 'Previous BID ' + ebindr.current.bid );
 			// set the last bid and dba
 			ebindr.current.lastbid = ebindr.current.bid;
 			//ebindr.current.lastdba = $('bn').get('text');

@@ -176,7 +176,7 @@ var ebindr = new Hash({
         this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
 		// check to see if we are authenticated
-		//if( ebindr.authenticate() )
+		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
 
@@ -258,6 +258,7 @@ var ebindr = new Hash({
 	*/
 	load: function( load ) {
 		ebindr.authenticated = true;
+		ebindr.windowEl = window;
 
         this.preload( function() {
             // bring in the styles

@@ -48,6 +48,7 @@ if(!class_exists('mobileReportr'))
         }
 
         function initMobileDisplay( $templates ){
+            global $device;
             $this->display = new mobileDisplay( $templates );
             /* Layouts */
             foreach( $this->__views['layouts']['views'] as $view ){
@@ -55,17 +56,27 @@ if(!class_exists('mobileReportr'))
                 $this->display->templateadd( $view . '_layout',
                     $view . '.php',
                     $__layout_path );
+
+                if( $device instanceof template )
+                    $device->templateadd( $view . '_layout',
+                        $view . '.php',
+                        $__layout_path );
+
             }
 
             /* Components */
             foreach( $this->__views['components']['views'] as $view ){
                 $__layout_path = $this->__views['components']['path'];
                 
-                    $this->display->templateadd( $view . '_layout',
-                        $view . '.php',
+                $this->display->templateadd( $view . '_layout',
+                    $view . '.php',
                         $__layout_path );
 
 
+                if( $device instanceof template )
+                    $device->templateadd( $view . '_layout',
+                        $view . '.php',
+                        $__layout_path );
             }
         }
 
@@ -164,6 +175,9 @@ if(!class_exists('mobileReportr'))
                         $this->skipped_fields++;
                         $this->field[$i] = $this->col_info[$i]->name;
                         $this->skip[$i] = $this->col_info[$i]->name;
+
+                        /*if( $this->col_info[$i]->name == 'DTABLE' )
+                            $this->display->variable("DTABLE", "datatable");*/
                     }
                     // all other possibles are handled here. That includes normal data and matrix table setups
                     else
@@ -368,7 +382,12 @@ if(!class_exists('mobileReportr'))
 
                     if( isset($_GET["e2mvert"]) )
                         $this->row_data_mobile( $one_row, 0, 'none' );
-                    elseif(isset($_GET["ebindr2"])) $this->row_data2($one_row, 0, $background); else $this->row_data($one_row, 0, $background);
+                    elseif(isset($_GET["e2mfindr"]))
+                        $this->row_data_findr($one_row, 0, $background);
+                    elseif(isset($_GET["ebindr2"]))
+                        $this->row_data2($one_row, 0, $background);
+                    else
+                        $this->row_data($one_row, 0, $background);
 
                     $this->ident++;
                 }
@@ -413,15 +432,33 @@ if(!class_exists('mobileReportr'))
                 }
 
                 if(eregi("^[(]*bid[)]*$", $this->col_info[$location]->name)) {
-                    $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.openBID(\"$item\");'";
-                    $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.openBID(\"$item\", null, null, false);'";
-                    $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.openBID(\"$item\"); window.parent.dopage(\"records\");'";
+                    /*if( isset( $_GET['e2mfindr'] ) ){
+                        $onclick = "onclick='window.parent.ebindr.openBID(\"$item\");'";
+                        $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\"";
+                        $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\"";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;'";
+                    }else{*/
+                        $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"$item\");'";
+                        $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"$item\", null, null, false);'";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"$item\"); window.parent.dopage(\"records\");'";
+
+                    //}
                     $this->currentbid=$item;
+                    $item = "<a href=\"javascript:void(0);\" onclick=\"findrOpenBID('".$item."');\">".$item."</a>";
                 } elseif(eregi("^[(]*cid[)]*$", $this->col_info[$location]->name)) {
                     if($this->currentbid=="") $this->currentbid=$one_row[0];
-                    $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.openBID(\"".$this->currentbid."\",false,\"$item\");'";
-                    $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.openBID(\"".$this->currentbid."\",false,\"$item\",false);'";
-                    $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.openBID(\"".$this->currentbid."\",false,\"$item\"); window.parent.dopage(\"records\");'";
+                    /*if( isset( $_GET['e2mfindr'] ) ){
+                        $onclick = "onclick='window.parent.ebindr.openBID(\"$item\");'";
+                        $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\"";
+                        $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\"";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;'";
+                    }else{*/
+
+                        $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\");'";
+                        $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\",false);'";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\"); window.parent.dopage(\"records\");'";
+                        $item = "<div onclick=\"window.parent.ebindr.openBID('".$this->currentbid."',false,'".$item."');\">".$item."</div>";
+                    //}
                 } else {
                     $dblclick="";
                     $jumpback="";
@@ -442,15 +479,19 @@ if(!class_exists('mobileReportr'))
                     {
                         $editr_link = $this->filename . '/' . $this->current_query . "," . $this->query_run . "," . str_replace(".editr", "", $this->linked[$location]) . "," . (str_replace('/','',$value_first)) . "," . (str_replace('"','%22',str_replace('#','%23',str_replace('/','',$item)))) . $this->extension ."&editr";
 //						$dblclick="ondblclick='window.parent.key1=\"\";' ";
-                        if ( strpos($editr_link, 'lite button by') > -1 ) {
+                        /*if( isset($_GET['e2mfindr']) && isset( $onclick ) ){
+                            $this->output .= "<td $dblclickeditr ondblclick='window.parent.key1=\"\";' id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . "><a href='javascript:void(0)' ". $onclick .">" . $item . "</a></td>\n";
+                        } else*/if ( strpos($editr_link, 'lite button by') > -1 ) {
                             $this->output .= "<td $dblclickeditr ondblclick='window.parent.key1=\"\";' id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . ">" . $item . "</td>\n";
                         } else {
                             $this->output .= "<td $dblclickeditr ondblclick='window.parent.key1=\"\";' id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . "><a ondblclick='window.parent.key1=\"\";' title=\"".$atitle."\" href=\"/" . $editr_link . "\">" . $item . "</a></td>\n";
                         }
                     }
                     // normal related query linking
-                    else
+                    else{
                         $this->output .= "<td $dblclick id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . "><a title=\"".$atitle."\" href=\"" . $this->sub_dir . "/" . $this->filename . "/" . $this->current_query . '.' . $this->linked[$location] . "," . $this->query_run . "," . $this->linked[$location] . "," . (str_replace('/','',$value_first)) . "," . (str_replace('/','',$item)) . $this->extension . "\">" . $item . "&nbsp;</a></td>\n";
+                    }
+
                 }
                 // not in the skip sub-program or matrix table
                 elseif(empty($this->skip[$location]))
@@ -488,13 +529,20 @@ if(!class_exists('mobileReportr'))
                             $item="<a oncontextmenu='$context' title=\"Click here to add/manage/view documents associated with this record.\" href=\"javascript:window.parent.FileBrowser('".strtolower($regs[1])."', '".str_replace("X","",$filecid)."')\"><img src='/css/$item.gif' border=0></a>";
                             // onclick='document.getElementById(\"FILELIST$filecid\").style.display=\"block\"'><span style=\"display:none;position:absolute\" id='FILELIST$filecid' onmouseout='this.style.display=\"none\"'>$myfiles</span>"//							$item=$directory;
                         }
+                        /*if( isset($_GET['e2mfindr']) && isset( $onclick ) )
+                            $this->output .= "<td $jumpback id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" style=\"background:$background\" valign=top " . $this->align[$location] . "><a href='javascript:void(0)' ". $onclick .">" . $item . ($item==""?"&nbsp;":"")."</a></td>\n";
+                        else*/
+                        //$this->output .= "<td $jumpback id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" style=\"background:$background\" valign=top " . $this->align[$location] . "><span ". $onclick .">" . $item . ($item==""?"&nbsp;":"")."</span></td>\n";
                         $this->output .= "<td $jumpback id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" style=\"background:$background\" valign=top " . $this->align[$location] . ">" . $item . ($item==""?"&nbsp;":"")."</td>\n";
                     }
                     // matrix linking of data (run on all cells)
                     else
                     { // added the started linking variable to bypass invisible columns in 1st field skipping in the matrix tables
                         if($location === 0 || ($location == 1 && ($this->col_info[$location]->name{0} == "&" || $this->col_info[$location]->name{0} == "*" ||  $this->col_info[$location]->hidezeros)) || (!$this->started_linking[$this->ident])) {
-                            $this->output .= "<td id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . ">" . $item . "&nbsp;</td>\n";
+                            /*if( isset($_GET['e2mfindr']) && isset( $onclick ) )
+                                $this->output .= "<td id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . "><a href='javascript:void(0)' ". $onclick .">" . $item . "</a></td>\n";
+                            else*/
+                                $this->output .= "<td id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "', '$rowonclick');\" nowrap class=\"data\" valign=top " . $this->align[$location] . ">" . $item . "&nbsp;</td>\n";
                         } else {
                             $this->output .= "<td $jumpback id=\"$this->query_run-" . ($this->ident+1) . "-$location\" onclick=\"this_select(this, '".str_replace('\"','',addslashes($one_row[0]))."','" . str_replace('\"','',addslashes($one_row[1])). "');\" nowrap class=\"data\" valign=top " . $this->align[$location] . "><a title=\"".$this->related_desc[$location]."\" href=\"" . $this->sub_dir . "/" . $this->filename . "/" . $this->current_query . '.' . $this->matrix_next . "," . urlencode($this->query_run) . "," . urlencode($this->field[$location]) . "," . urlencode(str_replace('/','',$value_first)) . "," . urlencode(str_replace('/','',$item)) . $this->extension . "\">" . $item . "&nbsp;</a></td>\n";
                         }

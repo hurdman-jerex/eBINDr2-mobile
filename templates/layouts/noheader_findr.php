@@ -14,17 +14,21 @@
     <link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.css"/>-->
 
     <!--<link href="/m/assets/css/report.css" rel="stylesheet">-->
-    <link href="/m/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css" rel="stylesheet">
+    <!--<link href="/m/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">-->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet">
 
     <link href="/m/assets/css/findr.css" rel="stylesheet">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript">jQuery.noConflict();</script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 
 
     <script type="text/javascript" src="/ebindr/scripts/framework/core-1.4.0.js"></script>
@@ -494,14 +498,29 @@ window.addEvent( 'load', function() {
 <[restriction_link_noheader]><[iptracking]>
 
 <script type="text/javascript">
+    var findrOpenBID = function( bid, start, cid, minimize ){
+        window.parent.ebindr.openBID( bid, start, cid, minimize );
+        window.parent.dopage("records");
+    }
    jQuery(document).ready(function() {
        jQuery('.dataset').DataTable({
-            responsive: {
-                details: {
-                    display: jQuery.fn.dataTable.Responsive.display.childRow
-                }
-            }
+           responsive: {
+               details: {
+                   display: jQuery.fn.dataTable.Responsive.display.modal( {
+                       header: function ( row ) {
+                           var data = row.data();
+                           return 'Details for '+ data[0];
+                       }
+                   } ),
+                   renderer: jQuery.fn.dataTable.Responsive.renderer.tableAll( {
+                       tableClass: 'table'
+                   } )
+               }
+           }
         });
+
+       jQuery( '<div class="divider"></div>').insertAfter( jQuery( '.dataTables_wrapper' ) );
+
     } );
 </script>
 </div>

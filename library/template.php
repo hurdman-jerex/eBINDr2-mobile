@@ -6,6 +6,7 @@ if(!class_exists('mobileDisplay'))
     class mobileDisplay extends template
     {
         public $template_uri = '/home/serv/templates/';
+        protected $views = array();
 
         function __construct( $templates = array(), $path = '/home/serv/templates/' )
         {
@@ -16,6 +17,30 @@ if(!class_exists('mobileDisplay'))
             $this->display();
 
             $this->init( $templates );
+
+            $this->__views = include MOBILE_INCLUDE_URI . 'views.php';
+            $this->initMobileTemplates();
+        }
+
+        function initMobileTemplates(){
+            /* Layouts */
+            foreach( $this->__views['layouts']['views'] as $view ){
+                $__layout_path = $this->__views['layouts']['path'];
+
+                $this->templateadd( $view . '_layout',
+                    $view . '.php',
+                    $__layout_path );
+
+            }
+
+            /* Components */
+            foreach( $this->__views['components']['views'] as $view ){
+                $__layout_path = $this->__views['components']['path'];
+
+                $this->templateadd( $view . '_layout',
+                    $view . '.php',
+                    $__layout_path );
+            }
         }
 
         /**
@@ -140,7 +165,7 @@ if(!class_exists('mobileDisplay'))
                     // could not open file
                     if($this->debug) {
                         // will have error() handling installed here soon
-                        echo ("could not open file ". $path .$templatefile);
+                        echo ("mobile could not open file ". $path .$templatefile);
                     }
 
                     return false;
@@ -149,7 +174,7 @@ if(!class_exists('mobileDisplay'))
                 // file does not exist
                 if( $this->debug ) {
                     // will have error() handling installed here soon
-                    echo ("could not find file ". $path .$templatefile);
+                    echo ("mobile could not find file ". $path .$templatefile);
                 }
 
                 return false;

@@ -253,3 +253,14 @@
 .show-more{
     display: inline-block;
 }
+
+#findr2-body .search-bar {
+	background-image: url( '/m/assets/img/findrsearchbar.png' );
+	height: 35px;
+	line-height: 35px;
+}
+
+#findr2-body #search-q {
+	height: 27px;
+	background-position: 5px 7px;
+}

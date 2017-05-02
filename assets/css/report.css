@@ -104,11 +104,12 @@ table{
 }
 
 div.breadcrumbs {
-    background-image: url( '/ebindr/images/horizontal-button-bg.gif' );
+    background-image: url( '/m/assets/img/horizontal-button-bg.gif' );
     background-repeat: repeat-x;
-    height: 24px;
-    line-height: 24px;
-    margin-bottom: 5px;
+    height: 28px;
+    line-height: 28px;
+    /*margin-bottom: 5px;*/
+    margin: 5px 0;
     /*border: 1px solid #cccccc;*/
 }
 
@@ -118,8 +119,8 @@ div.breadcrumbs div.active {
     color: #000000;
 }
 div.breadcrumbs div {
-    line-height: 24px;
-    height: 24px;
+    line-height: 28px;
+    height: 28px;
     float: left;
     padding-left: 10px;
     padding-right: 30px;
@@ -157,4 +158,15 @@ div.cr-top {
     background-color: #666;
     border: 1px solid #eee;
     -webkit-border-radius: 6px;
+}
+
+.datepicker_dashboard {
+    -webkit-box-sizing: unset !important;
+    -moz-box-sizing: unset !important;
+    box-sizing: unset !important;
+}
+
+.col-md-12{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }

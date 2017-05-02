@@ -1,7 +1,9 @@
 <?php
 /* REPORT REPORT */
-//echo $layout_template;
-//dd( $reportr );$this->col_info
+/*echo $layout_template;
+dd( $device->templates->table );
+exit();*/
+//dd( $device );
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {
     $task->num_rows = 1;
     $temp = read_tmp_file('query');

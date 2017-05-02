@@ -59,7 +59,7 @@ foreach( $__views['components']['views'] as $view ){
         $__layout_path );
 }
 
-$parse = new parse(); // initialize the parser
+$parse = new mobileParse(); // initialize the parser
 $reportr = new mobileReportr($variables["db"], $variables["host"]);
 if($_SERVER[SCRIPT_NAME]=='/sbq') {
     $parse->params[bid]=$parse->params[staff];

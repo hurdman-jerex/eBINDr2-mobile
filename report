@@ -6,7 +6,7 @@ include "_m.php";
 include _MOBILEHELPERS;
 include _DATABASE;
 include _MOBILETEMPLATE;
-include _PARSER;
+include _MOBILEPARSE;
 include _MOBILEREPORTR;
 include _MOBILECONFIG;
 

@@ -1,11 +1,13 @@
 <[selection_message]>
 		<a id="top<[firsttid]>" name="top<[firsttid]>"></a>
 		<!--<table cellspacing="0" cellpadding="1">-->
-		<div class="row-fluid">
-            <div class="span12">
+	<div class="container-fluid">
+		<div class="row">
+            <div class="col-md-12">
                 <input type="hidden" name="limit<[firsttid]>" value="<[limit]>" /><input type="hidden" name="limitback<[firsttid]>" value="<[limitback]>" /><[options]><[data]>
             </div>
         </div>
+	</div>
 			<!--<tr>
 				<td colspan="300"></td>
 			</tr>

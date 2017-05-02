@@ -8,8 +8,10 @@
     <link rel="stylesheet" type="text/css" href="/ebindr/styles/plugins/spellchecker.css" />
 
     <link href="/m/assets/css/report.css" rel="stylesheet">
-    <link href="/m/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <!--<link href="/m/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">-->
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- script type="text/javascript" src="/ebindr/scripts/framework/core.js"></script -->
     <script type="text/javascript" src="/ebindr/scripts/framework/core-1.2.4.js"></script>
@@ -216,7 +218,7 @@
             } catch(error) { console.log(error); }
         }
         var exportrString="<[exportr_string]>";
-        var windowEl = null;
+        var windowEl = '';
         /*				var pubprompt=function(e) {
          new window.parent.Request.HTML({url:"/report/e%20button%20publish%20prompt?ebindr2=y&noheaderhidden", async:false}).post({cid:window.parent.ebindr.current.cid});
          };*/
@@ -237,10 +239,12 @@
         });
         var freezetop=function() {
             if($$('form[name=complaintform]').length>0) return;
+
             return;
+            /*return;
             $$('form[name=limit]').setStyles({'height':windowEl.canvasEl.getHeight()-110, 'width':windowEl.canvasEl.getWidth(), 'overflow':'scroll'});
-            $$('body')[0].setStyles({'overflow':'hidden'});
-        }
+            $$('body')[0].setStyles({'overflow':'hidden'});*/
+        };
         window.addEvent( 'load', function() {
             $$('a').each(function(el) {
 
@@ -264,18 +268,24 @@
                 }
             });
 
-            $$( 'input[type=button]').each( function(el){
+            $$( 'input[type=button], input[type=submit]').each( function(el){
                 el.addClass( 'btn' );
-                if( el.name == 'next' || el.name == 'submit' )
+                if( el.name == 'next' || el.name == 'submit' || el.id == 'adoptee' )
                     el.addClass( 'btn-primary' );
+            } );
+
+            $$( 'form' ).each( function(el){
+                el.action=el.action.replace( /\/report\/menu/i, "\/m\/report\/menu" );
+                el.action=el.action.replace( /\/m\/m\//i, "\/m\/" );
             } );
 
             // get the parent frames and find ourselves
             // check out what our current url is
             var thisurl = unescape(window.location.href.replace(window.location.hostname,"").replace("http://",""));
-            var thisframe = '';
+            var thisframe = window.parent.ebindr.frameEl;
+            windowEl = window.parent;
             // go through each iframe in the parent to find itself
-            window.parent.document.getElements('iframe').each( function(frame) {
+            /*window.parent.document.getElements('iframe').each( function(frame) {
                 // find the frames location object
                 if(frame.get('src').match(/https*:\/\/[^\/]+/)) return;
                 var thislocation = frame.contentWindow.location;
@@ -285,11 +295,11 @@
                     // if we have the same url then we're done searching for the iframe
                     if( compareurl == thisurl ) {
                         // get the window element from mochaui
-                        windowEl = window.parent.ebindr.window.parent.Windows.instances.get(frame.id.replace("_iframe",""));
-                        thisframe = frame;
+                        windowEl = window.parent;
+                        thisframe = window.parent.ebindr.frameEl;
                     }
                 } catch(error) { };
-            });
+            });*/
 
 //	try { if($$('div.breadcrumbs div').length<2) $('backrptbtn').dispose(); } catch(err) { };
 

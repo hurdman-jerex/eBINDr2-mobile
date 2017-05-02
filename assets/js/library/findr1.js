@@ -491,7 +491,7 @@ ebindr.library.findr2 = new Class({
 		/*if( $('findr2-search-frame') ) $('findr2-search-frame').dispose();
 		ebindr.findr2.showLoading();*/
 
-		var searchurl = 'report/lite findr ' + what + '/?noheaderfindr&e2mfindr&ebindr2=y' +
+		var searchurl = 'report/e2m lite findr ' + what + '/?noheaderfindr&e2mfindr&ebindr2=y' +
 		'&find=' + escape(q) +
 		'&bid=' + ebindr.current.bid +
 		'&lid=' + ebindr.current.lid +
