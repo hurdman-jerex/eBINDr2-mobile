@@ -1,67 +1,29 @@
+<? if( $page == 'business' ) $page = 'record information'; ?>
 <style type="text/css">
     .ebindr-mobile-sidenav li a {
         padding: 10px 15px;
         font-size: 11pt;
     }
 </style>
-
-<?
-$url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/business/basic/' . $_SESSION['bid'];
-$dba = json_decode($bbapi->get($url))->results;
-$dba = $dba[0];
-?>
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span3" style="padding-bottom: 10px;">
         
-            <h3 style="padding-bottom: 10px;"><a alt="Company Name" href="/m/business.html?info=business-names"><?=$dba->Name?></a> <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/dba/edit.html?did=<?=$dba->DID?>"><i class="icon-edit icon-white"></i></a></h3>
+            <h3 style="padding-bottom: 10px;">
+                <a alt="Company Name" href="/m/business.html?info=business-names"><?=$__business_info['button_bn']?></a>
+                <a alt="Edit Company Name" class="btn btn-primary" id="edit-complaint" href="/m/business/names-dba/edit.php?did=<?=$__business_info['did']?>"><i class="icon-edit icon-white"></i></a>
+            </h3>
 
-            <!-- Tab -->
-
-                <div class="tabbable"> <!-- Only required for left/right tabs -->
-                  <ul class="nav nav-tabs">
-                    <li class="active"><a alt="Business Tab" href="#business-tab" data-toggle="tab">Business</a></li>
-                    <li><a alt="Inquiry Tab" href="#inquiry-tab" data-toggle="tab">Inquiry</a></li>
-                    <li><a alt="Accreditation Tab" href="#accreditation-tab" data-toggle="tab">Accreditation</a></li>
-                    <li><a alt="Complaints Tab" href="#complaints-tab" data-toggle="tab">Complaints</a></li>
-                  </ul>
-                  <div class="tab-content">
-
-                    <div class="tab-pane active" id="business-tab">
-                        <!-- Business Tab -->
-                        <div class="nav">
+            <div class="clearfix"></div>
+                <div class="nav">
                             <ul class="nav nav-tabs nav-stacked biz-collapse">
-                                <li<?= ( $page == 'info' ? ' class="active"' : '' ) ?>><a alt="Record Information" href="/m/business.html">Record Information</a></li>
-                                <li<?= ( $page == 'complaints' ? ' class="active"' : '' ) ?>><a alt="Complaints" href="/m/business/complaints.html">Complaints</a></li>
-                                <li<?= ( $page == 'ratings' ? ' class="active"' : '' ) ?>><a alt="Ratings Info" href="/m/business/ratings.html">Ratings Info</a></li>
-                                <li<?= ( $page == 'journal' ? ' class="active"' : '' ) ?>><a alt="Journal" href="/m/business/journal.html">Journal</a></li>
-                                <li<?= ( $page == 'sales' ? ' class="active"' : '' ) ?>><a alt="Sales" href="/m/business/sales.html">Sales</a></li>
-                                <li<?= ( $page == 'general' ? ' class="active"' : '' ) ?>><a alt="General" href="/m/business/general.html">General</a></li>
-                                <li<?= ( $page == 'snapshot' ? ' class="active"' : '' ) ?>><a alt="Snapshot" href="/m/business/snapshot.html">Snapshot</a></li>
-                                <li class="divider"></li>
-                                <li class="force_update" <?= ( $page == 'force-update' ? ' class="active"' : '' ) ?>><a href="#">Force Update</a></li>
+                                <? foreach( $__main_menu['ul']['Business'] as $_li => $_value ): ?>
+                                <? if( $_li == '_blank' ) continue; ?>
+                                    <? list($_v,$_class) = explode( ':', $_value ); ?>
+                                    <li class="<?=$_class?> <?=( $page == strtolower($_li) ? 'active' : '' ) ?>"><a alt="<?=$_li?>" href="<?=$___ebindr2mobile_http[ 'url' ].$_v?>"><?=$_li?></a></li>
+                                <? endforeach; ?>
                             </ul>
                         </div>
-                    </div>
-
-                    <div class="tab-pane" id="inquiry-tab">
-                        <!-- Inquiry Tab -->
-                        <p>I'm in Inquiry Tab.</p>
-                    </div>
-
-                    <div class="tab-pane" id="accreditation-tab">
-                        <!-- Accreditation Tab -->
-                        <p>I'm in Accreditation Tab.</p>
-                    </div>
-
-                    <div class="tab-pane" id="complaints-tab">
-                        <!-- Complaints Tab -->
-                        <p>I'm in Complaints Tab.</p>
-                    </div>
-                  </div>
-                </div>
-
-            <!-- End of Tab -->
 
                     
         </div><!--/span-->

@@ -1,23 +1,138 @@
 <?php
-  /**
-  * Editr
-  */
-  
-/**
-* @params /{class}/{method}/{mergecode}/{?variables}
-*/
-  
-list( $uri, $args ) = explode( "?", $_SERVER['REQUEST_URI'] );
 
-$segments = explode( "/", $uri );
-$segments = array_diff( array_filter( $segments ), array( 'm', 'editr' ) ); 
+include "_m.php";
 
-include "../../includes/readme.php";
+// Library
+include _DATABASE;
+include _MOBILETEMPLATE;
+include _MOBILEPARSE;
+include _MOBILEREPORTR;
+include _MOBILECONFIG;
 
-include "/home/serv/public_html/m/app/editr/editr-top.php"; 
-include "/home/serv/public_html/m/app/editr/editr.php"; 
+if(isset($_COOKIE["reportr_username"]) && !(strstr($_COOKIE["reportr_keys"],"a*") xor strstr($_COOKIE["reportr_keys"],"ak"))) {
+    $find = $task->get_row("SELECT allowed FROM reportaccess WHERE allowed='n' and staff='".$_COOKIE["reportr_username"]."' and (MergeCode = '" . $reportr->current_query .(isset($_GET["editr"]) || isset($_POST[editr])?".editr":""). "' or '" . $reportr->current_query .(isset($_GET["editr"]) || isset($_POST[editr])?".editr":""). "' like concat(mergecode,'.%'))");
+    if($task->num_rows > 0) {
+        $find = $task->get_row("SELECT allowed FROM reportaccess WHERE allowed='y' and staff='".$_COOKIE["reportr_username"]."' and (mergecode like '" . $reportr->current_query .(isset($_GET["editr"]) || isset($_POST[editr])?".editr":""). ".%' || mergecode = '" . $reportr->current_query .(isset($_GET["editr"]) || isset($_POST[editr])?".editr":""). "')");
+        if($task->num_rows > 0) $task->num_rows=0; else $task->num_rows=1;
+    }
+    if($task->num_rows > 0) { $reportr->current_query="access denied"; $variables[0]="access denied"; }
+    if($reportr->current_query=="exportr") {
+        $find = $task->get_row("SELECT allowed FROM reportaccess WHERE allowed='n' and staff='".$_COOKIE["reportr_username"]."' and (MergeCode = '" . $parse->params["exportrquery"] . "' or '" . $parse->params["exportrquery"] . "' like concat(mergecode,'.%'))");
+        if($task->num_rows > 0) {
+            $find = $task->get_row("SELECT allowed FROM reportaccess WHERE allowed='y' and staff='".$_COOKIE["reportr_username"]."' and (mergecode like '" . $parse->params["exportrquery"].".%' or mergecode = '" . $parse->params["exportrquery"]."')");
+            if($task->num_rows > 0) $task->num_rows=0; else $task->num_rows=1;
+        }
+        if($task->num_rows > 0) { $parse->params["exportrquery"]="access denied"; }
+    }
+}
 
-//echo '<pre>'.print_r( $segments, true ).'</pre>'; 
-//echo '<pre>'.print_r( $uri, true ).'</pre>'; 
-//echo '<pre>'.print_r( $args, true ).'</pre>'; 
+$device->define("about_link", "About");
+$device->define("APPLICATION_FILENAME", APPLICATION_FILENAME);
+
+$reportr->background->select(NO_REPLICATE_DB);
+$reportr->background->query("replace into ".LOCAL_DB.".reportlog (mergecode, staff, day, count) select ifnull(mergecode,'".$reportr->current_query."'), ifnull(staff,'".$_COOKIE["reportr_username"]."'), ifnull(day,curdate()), ifnull(count+1,1) from ".LOCAL_DB.".reportlog where mergecode='".$reportr->current_query."' and staff='".$_COOKIE["reportr_username"]."' and day=curdate() having count(*) in (0,1)");
+$reportr->background->select(LOCAL_DB);
+
+if(ereg("mycomplaints",$_SERVER["REQUEST_URI"]) && ($_COOKIE["reportr_flag"]=="" || $_COOKIE["reportr_flag"]==" "))
+    $parse->params["reportr_flag"]=$reportr->background->get_var("select bid from staff where initials='".$_COOKIE["reportr_username"]."' union select bid from commonstaff where initials='".$_COOKIE["reportr_username"]."' union select bid from mclogin where uid='".$_COOKIE["reportr_username"]."' limit 1");
+
+// start reportr processing
+if($variables[0] == 'auth') login(_prompt); // prompt to login to the system
+
+if(isset($_COOKIE["reportr_username"]) && $reportr->filename=='report' && ereg("auth",$_SERVER["HTTP_REFERER"]) && ereg("^,[0-9]+,", $_COOKIE["reportr_keys"])) $device->define("iptracking", "<script>window.parent.open(\"http://www.bbbmetrics.com/setips.html?database=".LOCAL_DB."&bypass=jv53gh8029f43ig5j290\", \"setip\", \"status=no, scrollbars=yes, addressbar=none, toolbars=none, resizable=no, width=10, height=10\");</script>");
+else $device->define("iptracking", "");
+
+if($reportr->current_query!="report access" and (strstr($_COOKIE["reportr_keys"],"a*") xor strstr($_COOKIE["reportr_keys"],"ak"))) {
+    $device->define("restriction_link", "<div style='display:block;position:absolute;left:0px;top:0px;'><a target=\"_blank\" href=\"/report/report access/?noheader&mymergecode=".$reportr->current_query.(isset($_GET["editr"]) || isset($_POST[editr])?".editr":"")."\"><img border=0 src=\"/images/key.gif\"></a></div>");
+    if(eregi("^qvq ",$reportr->current_query) || ereg("(advertising|mypl|investigationslist|statusreview|relatedreports|button mycomplaints|special projects|lite button bg[.]sales)",$reportr->current_query)) $device->define("restriction_link_noheader", "<div style='display:block;position:absolute;left:0px;top:0px;'><a target=\"_blank\" href=\"/report/report access/?noheader&mymergecode=".$reportr->current_query.(isset($_GET["editr"]) || isset($_POST[editr])?".editr":"")."\"><img border=0 src=\"/images/key.gif\"></a></div>");
+}
+
+$device->variable("postinputs", "");
+$current_query = $variables[0];
+
+if(!empty($variables[2])) $current_query .= "." . $variables[2];
+
+$device->define("current_query", $current_query.".editr");
+$device->define("bid", "'".$_REQUEST["bid"]."'");
+
+// Init Mobile Editr
+include _MOBILEEDITR;
+$editr = new mobileEditr;
+
+for($i=0; $i<sizeof($info);$i++) {
+    $editr->params[strtolower($elements[$i])] = $info[$i];
+}
+
+$editr->params = array_merge($editr->params, $params, $parse->params);
+$editr->database = (ereg("^masterlist",$current_query)?"masters":$variables["db"]);
+
+list($query, $desc) = $editr->getquery($current_query . ".editr");
+if($query=="default") {
+    list($query, $desc) = $editr->getdefaultquery($current_query.".editr", $desc);
+}
+
+$task->get_row("SELECT mergecode FROM ".QUERY_DB.".reporthelp WHERE MergeCode = '" . $reportr->current_query . "'");
+
+if($task->num_rows==0) $task->get_row("SELECT mergecode FROM reporthelp WHERE MergeCode = '" . $reportr->current_query . "'");
+if($task->num_rows>0) $device->define("about_link", "Help");
+
+$query = $editr->querygroup($parse->resolve_merge($query));
+$editr->addparm("heading", str_replace("\r\n","\\r\\n",$desc));
+$sql = $query[select];
+
+if($_POST[STEP]==0) {
+    for($i=0;$i<sizeof($query[update][0]);$i++)
+        $query[update][0][$i]=$parse->resolve($query[update][0][$i]);
+    //print_r($query); exit();
+    $editr->runqueries($query[update][0]);
+    if(ereg("HURDMAN",$editr->params["keys"]) && sizeof($editr->queriesrun)>0) $editr->mybindr_query("insert into reportquerylog (mergecode, day, staff, results) values ('".$reportr->current_query.".editr', now(), '".$_COOKIE["reportr_username"]."', '".addslashes(implode("\r\n",$editr->queriesrun))."')");
+}
+
+if(ereg("^FORCE(.+)$", $_POST["reportr"], $reportrregs)) $editr->params["reportr"]=$reportrregs[1];
+
+if($_POST[STEP]==1 || $_GET['SUBMIT']=='yes') {
+    for($i=0;$i<sizeof($query[update][1]);$i++) {
+        $onequery=$parse->resolve($query[update][1][$i]);
+        if(eregi("^use .+", $onequery)) $editr->runqueries(array($onequery));
+    }
+    if($sql>"") {
+
+        $editr->mybindr_query($editr->setform($editr->ResolvePipes($parse->resolve($sql[0]))),$editr->database, false, true);
+        if(mysql_affected_rows($editr->db)>0) {
+            $reportr->background->select(NO_REPLICATE_DB);
+            $reportr->background->query("replace into ".LOCAL_DB.".reportlog (mergecode, staff, day, count) select ifnull(mergecode,'".$reportr->current_query.".editr'), ifnull(staff,'".$_COOKIE["reportr_username"]."'), ifnull(day,curdate()), ifnull(count+1,1) from ".LOCAL_DB.".reportlog where mergecode='".$reportr->current_query.".editr' and staff='".$_COOKIE["reportr_username"]."' and day=curdate() having count(*) in (0,1)");
+            $reportr->background->select(LOCAL_DB);
+        }
+    }
+
+    for($i=0;$i<sizeof($query[update][1]);$i++) {
+        $query[update][1][$i]=$parse->resolve($query[update][1][$i]);
+        if(eregi("^use .+", $query[update][1][$i])) $editr->runqueries(array($query[update][1][$i]));
+    }
+
+    // Run Query Update
+    $editr->runqueries($query[update][1]);
+    if(ereg("HURDMAN",$editr->params["keys"])) $editr->mybindr_query("insert into reportquerylog (mergecode, day, staff, results) values ('".$reportr->current_query.".editr', now(), '".$_COOKIE["reportr_username"]."', '".addslashes(implode("\r\n",$editr->queriesrun))."')");
+
+    $reportr_url = $editr->ResolvePipes(stripslashes(stripslashes($editr->params[reportr])));
+
+    if( isset($_GET['eform']) && $eform = $_GET['eform'] ){
+        $reportr_url = base64_decode( $_GET['eform'] );
+    }
+
+    // Let's Display success and reload the parent page.
+    $device->define("content", "<div class='alert alert-success'>Changes have been saved</div><script type='text/javascript'>( function() { window.parent.scroll(0,0); window.parent.location = '". $reportr_url ."';}).delay(1000);</script>");
+    echo $device->buffer($layout_template);
+}
+
+if($sql=="") { header("Location: ".$editr->params[reportr]); exit();}
+
+for($i=0;$i<sizeof($sql);$i++)
+    $sql[$i]=$parse->resolve($sql[$i]);
+
+$editr->params = array_merge($editr->params, $params, $parse->params);
+$device->define("content", $editr->getform($sql, 0, $desc));
+// set mobile layout
+$layout_template = "editr";
+echo $device->buffer($layout_template);
 ?>

@@ -32,8 +32,10 @@ $sale = $sales[0];
 if ( sizeof($_POST)>0 ) {
 
     $bbapi->set('staff', $_POST['staff']);
+    $bbapi->set('staff_old', $_POST['staff_old']);
     $bbapi->set('callresult', $_POST['callresult']);
     $bbapi->set('callagain', $_POST['callagain']);
+    $bbapi->set('callagain_old', $_POST['callagain_old']);
     $bbapi->set('calltime', $_POST['calltime']);
     $bbapi->set('contact', $_POST['contact']);
     $bbapi->set('reminder', $_POST['reminder']);
@@ -41,8 +43,8 @@ if ( sizeof($_POST)>0 ) {
     $bbapi->set('sid', $_POST['salesid']);
 
     $result = $bbapi->post('http://'.$_SERVER['SERVER_NAME'].'/m/api/business/sales/edit/' . $_SESSION['bid'] . '/' . $_POST['salesid'] );
-    echo '<pre>'.print_r( $result, true ).'</pre>';
-    //echo '<script>window.location = "/m/business/sales.html";</script>';
+    //echo '<pre>'.print_r( $result, true ).'</pre>';
+    echo '<script>window.location = "/m/business/sales.html";</script>';
     exit;
 
 }else {
@@ -80,14 +82,15 @@ jQuery(function(){
 
 <form id="sForm" action="" method="post" class="form-horizontal">
 <input name="salesid" value="<?=$sale->sid?>" type="hidden">
-  <div class="row">    
+<input name="staff_old" value="<?=$sale->Staff?>" type="hidden">
+  <div class="row">
       <div class="span12">
           <fieldset>
               <legend>Edit Sales Call Log</legend>
               <div class="control-group">
-                  <label class="control-label" for="name">Staff:</label>
-                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']['staff_name'];?></div>
-                  <input name="staff" id="staff" class="input-xlarge" type="hidden" value="<?=$_SESSION['user']['reportr_username'];?>" readonly/>
+                  <label class="control-label" for="staff">Staff:</label>
+                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['staff_name'];?></div>
+                  <input name="staff" id="staff" class="input-xlarge" type="hidden" value="<?=$_SESSION['username']?>" readonly/>
               </div>
               <div class="control-group">
                   <label class="control-label" for="callresult">Call Result:</label>
@@ -151,7 +154,7 @@ jQuery(function(){
 
   <div class="row">
           <div class="controls"><button class="btn btn-primary" data-toggle="modal" name="Submit" id="Submit">Submit Data</button>
-        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/sales.html"><i class="icon-remove"></i> Cancel</a>
+        <a class="btn btn-medium" href="http://<?=$_SERVER['SERVER_NAME']?>/m/business/sales.html"><i class="icon-remove"></i> Cancel</a>
         </div>
   </div>
 </form>

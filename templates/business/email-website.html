@@ -9,9 +9,9 @@ $websites = json_decode($bbapi->post($url));
 $websites = $websites->results;
 ?>
 
-<h3>Email &amp; Website 
+<h3>Email
     <? if ( ( securityCheck('b@') || ( securityCheck('b*') && !securityCheck('b@') ) ) || ( securityCheck('bu') || ( securityCheck('b*') && !securityCheck('bu') ) ) ) { ?>
-    <a style="float: right;" href="/m/business/email-website/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <a style="float: right;" href="/m/business/email/add.php" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
     <? } ?>
 </h3>
 <table class="table table-striped table-bordered table-condensed">
@@ -29,22 +29,39 @@ $websites = $websites->results;
                 <td class="email-modal">
                     <a href="#"><?=(stripslashes($email->email) . " "); ?></a>
                     <?php if ($email->main == 'y') { ?>
-                        <span class="badge">Primary</span>
+                        <span class="badge badge-important">Primary</span>
                     <?php } ?>
                 </td>
                 <td class="email-edit"><?= stripslashes($email->label); ?></td>
             </tr>
-        <?php } ?>  
+        <?php } ?>
+    </tbody>
+</table>
+
+<h3>Website
+    <? if ( ( securityCheck('b@') || ( securityCheck('b*') && !securityCheck('b@') ) ) || ( securityCheck('bu') || ( securityCheck('b*') && !securityCheck('bu') ) ) ) { ?>
+    <a style="float: right;" href="/m/business/website/add.php" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+    <? } ?>
+</h3>
+<table class="table table-striped table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Address</th>
+            <th>Label</th>
+        </tr>
+    </thead>
+    <tbody>
         <?php foreach ($websites as $website) { ?>
             <tr data-id="<?=$website->wid?>" data-url="<?=$website->url?>" class="clickable-website">
-                <td class="website-edit">Website</td>    
+                <td class="website-edit">Website</td>
                 <td class="website-modal">
                     <a href="#"><?=(stripslashes((strlen(trim($website->displayurl)) == 0 ? '' . $website->url : '' . $website->displayurl)) . " ");?></a>
                     <?php if ($website->main == 'y') { ?>
-                        <span class="badge">Primary</span>
+                        <span class="badge badge-important">Primary</span>
                     <?php } ?>
-                </td>    
-                <td class="website-edit"><?= stripslashes($website->label); ?></td>    
+                </td>
+                <td class="website-edit"><?= stripslashes($website->label); ?></td>
             </tr>
         <?php } ?>
     </tbody>
@@ -54,13 +71,13 @@ $websites = $websites->results;
     function websitemodal(wid,gotourl) {
 
         jQuery('#goto-site').attr('href','http://'+gotourl);
-        jQuery('#edit-website').attr('href','/m/business/email-website/edit.html?id='+wid+'&type=website');
+        jQuery('#edit-website').attr('href','/m/business/website/edit.php?wid='+wid);
         jQuery('#website-modal').modal('toggle');
     }
     
     function emailmodal(eid,address) {
         jQuery('#send-mail').attr('href','mailto:'+address);
-        jQuery('#edit-email').attr('href','/m/business/email-website/edit.html?id='+eid+'&type=email');
+        jQuery('#edit-email').attr('href','/m/business/email/edit.php?eid='+eid);
         jQuery('#email-modal').modal('toggle');
     }
 </script>
@@ -68,7 +85,7 @@ $websites = $websites->results;
 <? if ( securityCheck('bu') || (securityCheck('b*') && !securityCheck('bu') ) ): ?>
     <script type="text/javascript">
         function editwebsite(wid){
-            window.location='/m/business/email-website/edit.html?id='+wid+'&type=website';
+            window.location='/m/business/website/edit.php?wid='+wid;
         }
     </script>
 <? else: ?>
@@ -80,7 +97,7 @@ $websites = $websites->results;
 <? if ( securityCheck('b@') || (securityCheck('b*') && !securityCheck('b@') ) ): ?>
     <script type="text/javascript">
         function editemail(eid){
-            window.location='/m/business/email-website/edit.html?id='+eid+'&type=email';
+            window.location='/m/business/email/edit.php?eid='+eid;
         }
     </script>
 <? else: ?>

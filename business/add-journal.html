@@ -49,8 +49,8 @@ jQuery(function(){
               <legend>Add Journal</legend>
               <div class="control-group">
                   <label class="control-label" for="name">Staff:</label>
-                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['user']->name;?></div>
-                  <input name="staff" id="staff" type="hidden" value="<?=$_SESSION['user']->initials;?>" />
+                  <div class="controls" style="margin-top:5px;"><?=$_SESSION['staff_name'];?></div>
+                  <input name="staff" id="staff" type="hidden" value="<?=$_SESSION['username']?>" />
               </div>
               <div class="control-group">
                   <label class="control-label" for="contact">Type:</label>

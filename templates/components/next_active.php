@@ -1,0 +1,1 @@
+<a style="cursor: pointer;" class=nav onclick="do_submit('<[firsttid]>');">Next<img border="0" src="/images/next.gif"><script>morerecords=true;</script></a>

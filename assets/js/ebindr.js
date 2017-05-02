@@ -103,6 +103,7 @@ var ebindr = new Hash({
 		undo2: false,
 		windowEl: new Object(),
 		frameEl: new Object(),
+		alertFrameEl: new Object(),
 		// the button currently running
 		button: '', 
 		// element that has focus
@@ -141,27 +142,85 @@ var ebindr = new Hash({
 		FINDrP: "",
 		FINDrE: "",
 		FINDrW: "",
-		link_search: ''
+		link_search: '',
+        segments: {},
+        _report_url: ''
 	}),
 	
 	/*
 		This is called onDomReady to initialize eBINDr and make the object
 		available globally to the program.
 	*/
-	initialize: function() {
-
-		// make sure we are logged in, if we are not launch the login method
-		/*ebindr.authenticate({
-			onFalse: function() {
-				ebindr.login();
-			}
-		});*/
-
+    initializeEditr: function( load ){
+        /*this.modal = */
+        ebindr.authenticated = true;
+        (function() {
+            load();
+        }).delay(1);
+    },
+	initializeUser: function( load ) {
+        this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
 		// check to see if we are authenticated
-		//if( ebindr.authenticate() )
-            ebindr.load();
+		if( ebindr.authenticate() )
+            ebindr.load( load );
 	},
-	
+	initializeFindr: function( load ) {
+		this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		this.findr2 = new ebindr.library.findr2();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+			ebindr.load( load );
+	},
+    initialize: function( load ) {
+        this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+            ebindr.load( load );
+	},
+
+	init_libraries: function( $name, $library ){
+		this.$name = $library;
+	},
+
+    /* Modal */
+    modal: {
+            confirm: function( text, ret ){
+                var $ret = ret;
+                $Modal.content( text ).open( function(){
+                    // Set event
+                    $Modal.modalElement.find( '.modal-title' ).html( 'Confirm' );
+                    $Modal.modalElement.find( '.submit' ).show();
+                    $Modal.modalElement.find( '.submit' ).on( 'click', function(){
+                        $Modal.close();
+                        if( $ret )
+                            $ret( true );
+                    } );
+                } );
+
+                setTimeout(function(){
+                    $Modal.modalElement.attr('aria-label',text).focus();
+                }, 800);
+
+            },
+
+            alert: function ( text, title ) {
+                $Modal.content( text ).open( function(){
+                    // Set event
+                    if( ! title )
+                        title = 'Alert';
+
+                    $Modal.modalElement.find( '.modal-title' ).html( title );
+                    $Modal.modalElement.find( '.submit' ).hide();
+                } );
+
+                setTimeout(function(){
+                    $Modal.modalElement.attr('aria-label',text).focus();
+                }, 800);
+            }
+    },
 	/*
 		This global method can be used to log all the actions of a user. This will
 		only be used if they need/want to dump the actions if they are submitting a
@@ -187,6 +246,10 @@ var ebindr = new Hash({
 			console.log( message );
 		}
 	},
+
+    preload: function( done ) {
+        return done();
+    },
 	
 	/*
 		This will show eBINDr after being logged in, and will preload everything that is
@@ -194,12 +257,70 @@ var ebindr = new Hash({
 		called after they have authenticated, whereas initialize is used to actually start up
 		eBINDr.
 	*/
-	load: function() {
+	load: function( load ) {
 		ebindr.authenticated = true;
-        // set the bbbid
-        ebindr.bbbid = Cookie.read("bbbidreal");
+		ebindr.windowEl = window;
 
+        this.preload( function() {
+            // bring in the styles
+            //ebindr.include( "/m/assets/css/button.css" );
+            // bring in the datepicker
+            ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
+            ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
+
+            //ebindr.include( "/ebindr/styles/findr.css" );
+            //ebindr.include( "/ebindr/styles/findr1.css" );
+
+            // add the events to each frame
+            $$( 'iframe' ).addEvent( 'reload', function(url) {
+                url = url.substitute( ebindr.current ) + ( url.contains('?') ? '&ebindr2=y' : '?ebindr2=y');
+                ebindr.src = url;
+            });
+
+            // load the data from SQL
+            ebindr.data.preload(function() {
+                ebindr.bbbid = Cookie.read("bbbidreal");
+                ebindr.platform();
+
+                (function() {
+                    load();
+                }).delay(1);
+
+                if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
+                    ebindr.dont_show_scrub_message = true;
+                }
+            });
+
+        });
 	},
+
+    getBizButtons: function( secondTime ) {
+        if( undefined == secondTime ) var secondTime = false;
+        ebindr.data.get('e button sort', function(data) {
+            if( data == 'empty' && !secondTime ) return ebindr.getBizButtons(true);
+
+            data.each(function(btn,i) {
+                var htmlForBtn =btn.name;
+                var $class = (i==0?'left dynamic':'dynamic') + ( ebindr.data.store.buttoncolor_bl == 'red' && btn.id == 'bl' ? ' red' : ( ebindr.data.store['isbuttonshade_'+btn.id] ? ' more' : '' ) ) + ( (btn.id=="scanneddocs" && ebindr.current.doccount==0) ? ' empty' : '' )  + (btn.class!='' && btn.class!=btn.id?' '+btn.class:'');
+                jQuery( '<li><a id="'+btn.id+'" alt="'+(jQuery('<p>'+htmlForBtn+'</p>').text())+'" class="'+$class+'" href="javascript:void(0)">'+ btn.name +'</a></li>' )
+                    .insertBefore( $( "editorderbtn" ) );
+            });
+
+
+            ebindr.button.activate('#quick-launch li a');
+            //console.log( data );
+        }, { type: 'b' });
+
+    },
+
+	notify: function( message, title ) {
+		ebindr.modal.alert( message, title );
+	},
+    alert: function( message, title ) {
+        ebindr.modal.alert( message, title );
+	},
+
+
 
 	ipaddress: function( url ) {
 		new Element( 'script', {
@@ -237,7 +358,65 @@ var ebindr = new Hash({
 		else if( Browser.Platform.ipod ) var os = 'ipod';
 		else var os = 'other';
 	},
-	
+
+    /*
+     alerts function runs e button alerts every minute
+     */
+    alerts: function() {
+        if( this.user.isActive() ) {
+            if(this.windowtrack.length>0) var mytracks="('"+this.windowtrack.join("),('").replace(/,([0-9])/g,"',$1")+")"; else var mytracks="()";
+            this.windowtrack=[];
+            var thisalert = new Request.HTML().get( '/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
+        }
+        if(this.myalerts_timeout) window.clearTimeout(this.myalerts_timeout);
+        this.myalerts_timeout=window.setTimeout( "ebindr.alerts();", 30000);
+    },
+
+    timeTrack: function() {
+        if( this.user.isActive() ) {
+            if($$('div.mocha.isFocused').length>0) var focusedwindow=escape($$('div.mocha.isFocused')[0].get('id')); else var focusedwindow=this.lastwindowtrack;//'none';
+            if(focusedwindow=='alert-box') focusedwindow=this.lastwindowtrack;
+            this.lastwindowtrack=focusedwindow;
+            focusedwindow=focusedwindow.replace(/%3A[0-9]+$/g, '').replace(/[-:][0-9]+$/g, '').replace(/^favorite-/g,'').replace(/^menu[.]/g, '');
+            for(var i=0;i < this.windowtrack.length;i++) if(this.windowtrack[i][0]==focusedwindow) { this.windowtrack[i][1]+=5; var added=true; break; }
+            if(!added) this.windowtrack.push([focusedwindow,5]);
+        } else this.lastwindowtrack='none';
+
+        if(this.timetrack_timeout) window.clearTimeout(this.timetrack_timeout);
+        this.timetrack_timeout=window.setTimeout( "ebindr.timeTrack();", 5000);
+    },
+    sysstatus: function(doalert) {
+        if( this.user.isActive() ) {
+            /*$('ns').removeClass('sysstatus-green').removeClass('sysstatus-red').removeClass('sysstatus-yellow').removeClass('sysstatus-unknown');
+            $('ns').addClass('sysstatus-loading' );*/
+            new Request({
+                'method': 'get',
+                'timeout': 15000,
+                'url': '/ebindr/systemstatus.php',
+                'onComplete': function(data) {
+                    /*$('ns').removeClass('sysstatus-loading');
+                    $('ns').addClass('sysstatus-' + data );*/
+                    if(doalert) ebindr.alert('Thank you for checking on our system status. We have updated your button to reflect the latest status, which is: '+( data == 'red' ? 'some systems down' : ( data == 'yellow' ? 'limited issues' : ( data == 'unknown' ? 'unknown' : 'everything is ok' ) ) )+'. If you wish for a more detailed report please click <a href="http://status.hurdman.com" target="_blank">here</a>.' );
+                },
+                'onTimeout': function(data) {
+                    /*$('ns').removeClass('sysstatus-loading');
+                    $('ns').addClass('sysstatus-unknown' );*/
+                    if(doalert) ebindr.alert('Thank you for checking on our system status. We currently are unable to determine system status, possible due to internet connectivity issues.' );
+                }
+            }).send();
+        }
+        if(this.sysstatus_timeout) window.clearTimeout(this.sysstatus_timeout);
+        this.sysstatus_timeout=window.setTimeout( "ebindr.sysstatus(false);", 600000);
+    },
+
+    isHurdman: function() {
+        return this.data.store.securitykeys.match("HURDMAN");
+    },
+
+    isHurdmantest: function() {
+        return ( Cookie.read("reportr_db") == 'hurdmantest' ? true : false );
+    },
+
 	/*
 		Include Function
 	*/

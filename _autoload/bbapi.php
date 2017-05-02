@@ -63,9 +63,27 @@ class bbapi {
 		return ( $url . ( ( strstr( $url, '?' ) && strlen($url) > 0 ) ? '' : '?' ) . rtrim( $vars, "& " ) );
 	}
 	
-	public function get( $url, $params = array() ) {
+	public function get( $url, $params = array(), $file = __FILE__, $line = __LINE__ ) {
 		$this->set($params);
-		return file_get_contents( $this->getParams( $this->serializeUrl( $url ) ) );
+        //echo $this->getParams( $this->serializeUrl( $url ) );
+		//return file_get_contents(  );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->getParams( $this->serializeUrl( $url ) ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0 );
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_REFERER, $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] . "|" . _IP);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'hurdman-internal ' . str_replace("/home/bbb_local/cms_portal/", "", $file) . ' (' . $line . ') ' . session_id());
+        //curl_setopt($ch, CURLOPT_COOKIE, session_name().'='.$_COOKIE[session_name()].'; path=/');
+
+        $raw = curl_exec($ch);
+        curl_close($ch);
+
+        //echo '<pre>'.print_r( $_COOKIE, true ).'</pre>';
+
+        return $raw;
+
 	}
 	
 	public function post( $url, $params = array() ) {

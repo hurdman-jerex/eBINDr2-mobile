@@ -1,7 +1,7 @@
 <h3>
 	People &amp; Contacts 
 	<? if (securityCheck('bo') || ( securityCheck('b*') && !securityCheck('bo') ) ) { ?>
-	<a style="float: right;" href="/m/business/people/add.html" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
+	<a style="float: right;" href="/m/business/people/add.php" class="btn btn-success btn-mini"><i class="icon-white icon-plus"></i> Add</a>
 	<? } ?>
 </h3>
 <?
@@ -24,7 +24,7 @@ $people=$people->results;
                 <td>
                     <?=stripslashes($person->prename)?> <?=stripslashes($person->firstname)?> <?=stripslashes($person->lastname)?> <?=stripslashes($person->postname)?> 
                     <? if($person->main=='y') { ?>
-                        <span class="badge">Primary</span>
+                        <span class="badge badge-important">Primary</span>
                     <? } ?>
                 </td>
                 <td>
@@ -41,7 +41,7 @@ $people=$people->results;
 <script type="text/javascript">
 <? if (securityCheck('bo') || ( securityCheck('b*') && !securityCheck('bo') ) ) { ?>
     jQuery('.clickable').click(function(){
-        window.location='/m/business/people/edit.html?pid='+this.id;
+        window.location='/m/business/people/edit.php?pid='+this.id;
     });
 <? } ?>
 </script>

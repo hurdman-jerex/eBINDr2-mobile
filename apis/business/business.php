@@ -9,7 +9,7 @@ class business_API extends hapi {
     
     public function info(){
         $this->bind('bid', (int) $this->segments[0]);
-        return $this->read("[e2mobile/api/business/basic/info]", 0);
+        return $this->read("[e2mobile/api/business/basic/info]", 14400);
     }
 
     public function complaints() {

@@ -1,4 +1,5 @@
 <?php 
+
 if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php";
 include "/home/definitions.php";
 
@@ -8,14 +9,15 @@ include "/home/serv/library/json.php";
 define('AUTO_LOGOUT_TIME', "14400");
 if( isset( $_POST['username'] ) && isset( $_POST['password'] ) ){
 
-    $bbapi->set('database', $_POST['database']);
+$bbapi->set('REMOTE_ADDR', $_SERVER['REMOTE_ADDR']);
+$bbapi->set('REQUEST_URI', $_SERVER['REQUEST_URI']);
+$bbapi->set('database', $_POST['database']);
 $bbapi->set('username', $_POST['username']);
 $bbapi->set('password', $_POST['password']);
 $bbapi->set('form_submit', 'y');
 $login = $bbapi->auth();
 
 if( $login['reportr_username'] != 'deleted' ){
-
 session_start();
 
 $login["reportr_keys"] = urldecode( $login["reportr_keys"] );
@@ -34,14 +36,27 @@ setcookie("staff_name", $login["staff_name"], time()+AUTO_LOGOUT_TIME, "/"); // 
 setcookie("staff_email", $login["email"], time()+AUTO_LOGOUT_TIME, "/"); // email field in staff table
 
 $_SESSION['user'] = $login;
-//$_SESSION['bid'] = $login->person_bid;
+$_SESSION['staff_name'] = str_replace( "+", " ", $login["staff_name"] );
 $_SESSION['username'] = $login["reportr_username"];
 $_SESSION['bbbidreal'] = $login["bbbidreal"];
 $_SESSION['BBBID'] = $login["BBBID"];
 
 $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/log/' . $login["reportr_username"]);
-header("Location: /m/index.html");
 
+$_login = json_decode( $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/login/' . $login["reportr_username"] ) )->results;
+//echo '<pre>'.print_r( $_login[0]->person_bid, true ).'</pre>';
+
+//if( ! isset( $_SESSION['bid'] ) )
+    $_SESSION['bid'] = $_login[0]->person_bid;
+
+if( isset( $_SESSION['bid'] ) && $_SESSION['bid'] < 1 )
+    unset( $_SESSION['bid'] );
+
+//echo '<pre>'.print_r( $_SESSION['bid'], true ).'</pre>';
+//header("Location: /m/searchlink.html?bid=" . $_login[0]->person_bid );
+$_SESSION['e2m_auth'] = 1;
+header("Location: /m/index.html?bid=".$_SESSION['bid'] );
+exit();
 }else
 $_SESSION['warning'] = "Incorrect username and/or password.";
 
