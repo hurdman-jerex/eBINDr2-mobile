@@ -22,7 +22,7 @@ include "templates/search/sub_nav.php";
     </div>
 </div>
 <script type="text/javascript">
-    window.addEvent( 'domready', function(e) {
+    jQuery(document).ready(function() {
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
     });
@@ -30,6 +30,11 @@ include "templates/search/sub_nav.php";
 <script type="text/javascript">
     jQuery( document ).ready(function() {
         ebindr.initializeFindr( function(){
+
+            /*ebindr.include( "/m/assets/js/jquery-1.12.4.min.js" );
+            ebindr.include( "/m/assets/js/bootstrap3.3.7.min.js" );
+            ebindr.include( "/m/assets/js/datatables/compress.min.js" );*/
+
             ebindr.findr2.start();
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
         } );

@@ -1,7 +1,7 @@
-table.dataTable > tbody > tr.child span.dtr-title {
+/*table.dataTable > tbody > tr.child span.dtr-title {
     font-weight: normal;
     font-size: inherit;
-}
+}*/
 
 .toplink {
     display: none;

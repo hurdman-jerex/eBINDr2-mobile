@@ -181,6 +181,8 @@ var ebindr = new Hash({
             ebindr.load( load );
 	},
 
+
+
 	init_libraries: function( $name, $library ){
 		this.$name = $library;
 	},
@@ -296,7 +298,7 @@ var ebindr = new Hash({
 
     getBizButtons: function( secondTime ) {
         if( undefined == secondTime ) var secondTime = false;
-        ebindr.data.get('e button sort', function(data) {
+        ebindr.data.get('e2m js button sort', function(data) {
             if( data == 'empty' && !secondTime ) return ebindr.getBizButtons(true);
 
             data.each(function(btn,i) {

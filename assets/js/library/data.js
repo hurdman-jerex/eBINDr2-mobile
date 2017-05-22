@@ -572,6 +572,54 @@ ebindr.library.data = new Class({
 				'type': options.type
 			});
 			
+		}else if( query == 'e2m button sort' ) {
+
+			var get = new Request.JSON({
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				nocache: true,
+				onComplete: function( data, str ) {
+					if( typeof(data) == 'object' && str != '//No data' ) {
+						// log that we loaded a query
+						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + str );
+						// run the callback
+						if( data !== null ) callback( data.resultset );
+					} else {
+						callback( 'empty' );
+					}
+				}
+			}).get({
+				'json': 'y',
+				'NOASK': '',
+				'query': query,
+				'bid': ( $chk(ebindr.current.bid) ? ebindr.current.bid : ebindr.data.store.bid ),
+				't': new Date().getTime(),
+				'type': options.type
+			});
+
+		}else if( query == 'e2m js button sort' ) {
+
+			var get = new Request.JSON({
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				nocache: true,
+				onComplete: function( data, str ) {
+					if( typeof(data) == 'object' && str != '//No data' ) {
+						// log that we loaded a query
+						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + str );
+						// run the callback
+						if( data !== null ) callback( data.resultset );
+					} else {
+						callback( 'empty' );
+					}
+				}
+			}).get({
+				'json': 'y',
+				'NOASK': '',
+				'query': query,
+				'bid': ( $chk(ebindr.current.bid) ? ebindr.current.bid : ebindr.data.store.bid ),
+				't': new Date().getTime(),
+				'type': options.type
+			});
+
 		} else {
 		
 			if( query == 'e button info' ) {

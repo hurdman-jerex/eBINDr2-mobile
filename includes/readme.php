@@ -79,6 +79,11 @@ if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' &&
     $___ebindr2mobile_http['segments'][$_segment_count - 1] = $___ebindr2mobile_http['segments'][$_segment_count - 1] . ' ' . $_business_info;
 }
 
+if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'quick-launch' && isset( $_GET[ 'name' ] ) ) {
+    $_business_info = str_replace( '-', ' ', $_GET[ 'name' ] );
+    $___ebindr2mobile_http['segments'][$_segment_count - 1] = $___ebindr2mobile_http['segments'][$_segment_count - 1] . ' ' . $_business_info;
+}
+
 $__page_title =  implode( " ", $___ebindr2mobile_http[ 'segments' ] );
 $__page_title = '- ' . ucwords( str_replace( 'index', '', $__page_title ) );
 

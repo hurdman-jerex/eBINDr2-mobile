@@ -110,7 +110,7 @@ ebindr.extend({
 		return;
 	},
 
-    /* FINDr */
+    /*/!* FINDr *!/
     openFINDr2: function( which, inquirystat ) {
         if( $type( inquirystat )=='undefined' ) inquirystat=false;
         ebindr.current.lastInquiry=inquirystat;
@@ -137,16 +137,16 @@ ebindr.extend({
             onWindowOpen: ebindr.findr2.start.bind(this),
             onResize: function() {
                 if(! ebindr.findr2.started ) return;
-                /*$('more-list').setStyles({
+                /!*$('more-list').setStyles({
                     'left': $('more-search').getCoordinates().left - 310,
                     'top': $('more-search').getCoordinates().top + 10
-                });*/
+                });*!/
             }
         });
 
     },
     openFINDr: function(which, inquirystat) {
-        if( 1==1 /*Cookie.read("reportr_username") == 'dst'*/ ) {
+        if( 1==1 /!*Cookie.read("reportr_username") == 'dst'*!/ ) {
             this.openFINDr2(which,inquirystat);
             return;
         }
@@ -203,7 +203,7 @@ ebindr.extend({
             }
         });
 
-    },
+    },*/
 
     backform: function( e ){
         //e.preventDefault();

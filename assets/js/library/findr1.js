@@ -22,7 +22,8 @@ ebindr.library.findr2 = new Class({
 	*/
 	windowInit: function() {
 		// focus on the box
-		if( $('search-q') ) {
+        $('findr2-body').focus();
+		/*if( $('search-q') ) {
 			$('search-q').focus();
 			$('search-q').select();
 			if( ebindr.current.auto_findr ) ebindr.findr2.setSearch( ebindr.current.auto_findr );
@@ -41,7 +42,7 @@ ebindr.library.findr2 = new Class({
 				// ebindr.current.link_search = '';
 			}
 			ebindr.findr2.typing = true;
-		}
+		}*/
 	},
 
 	findrhistory: function() {
@@ -258,10 +259,14 @@ ebindr.library.findr2 = new Class({
 			if( this.get('text') == 'Begins With *' ) {
 				this.set('text', '*Any Part Of*' );
 				ebindr.findr2.type = 'any';
+                $self._findr_text_label();
+                $('search-type-label').focus();
 			}
 			else {
 				this.set( 'text', 'Begins With *' );
 				ebindr.findr2.type = 'begins';
+                $self._findr_text_label();
+                $('search-type-label').focus();
 			}
 		});
 	},
@@ -278,7 +283,10 @@ ebindr.library.findr2 = new Class({
 					if( this.get('class').split(" ")[0] == 'editorderbtn' ) return ebindr.button.go('editorderbtnfindr');
 					else {
 						//new Event(e).stop();
-						if( btn.get('text') != 'Edit Order' ) $('search-type').set( 'text', btn.get('text') );
+						if( btn.get('text') != 'Edit Order' ) {
+							$('search-type-label').set('text', btn.get('text')).focus();
+							$self._findr_text_label();
+						}
 						// if we have something in the search box to search by
 						if( $('search-q').get('value').length > 0 || btn.get('class').split(" ")[0] == 'salescomment' ) {
 							ebindr.findr2.what = btn.get('class').split(" ")[0];
@@ -293,6 +301,10 @@ ebindr.library.findr2 = new Class({
 			}
 		});
 	},
+
+    _findr_text_label: function(){
+        jQuery('#search-q').attr('aria-label', 'Find ' + $('search-by-type').get('text') + $('search-type').get('text') );
+    },
 
 	/*
 		Build the more search options list
@@ -551,6 +563,7 @@ ebindr.library.findr2 = new Class({
             ebindr.findr2.hideLoading();
             ebindr.frameEl.setStyle( 'height', ( jQuery( window ).height() - 150 ) + 'px' );
             ebindr.frameEl.setStyle( 'display', '' );
+			ebindr.frameEl.set( 'aria-label', "Search Results by " + $('search-type').get('text') );
             ebindr.frameEl.focus();
         };
     },

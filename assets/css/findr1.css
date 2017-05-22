@@ -264,3 +264,7 @@
 	height: 27px;
 	background-position: 5px 7px;
 }
+
+#search-type-label {
+    padding: 8px;
+}
