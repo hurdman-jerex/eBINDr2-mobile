@@ -16,16 +16,16 @@
     <!--<link href="/m/assets/css/report.css" rel="stylesheet">-->
     <!--<link href="/m/assets/css/bootstrap.css" rel="stylesheet">
     <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">-->
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/m/assets/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.bootstrap.min.css">
 
     <link rel="stylesheet" type="text/css" href="/m/assets/css/findr.css">
 
-    <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js">
+    <script type="text/javascript" language="javascript" src="/m/assets/js/jquery/jquery-1.12.3.min.js">
     </script>
     <script type="text/javascript">jQuery.noConflict();</script>
-    <script type="text/javascript" language="javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js">
+    <script type="text/javascript" language="javascript" src="/m/assets/bootstrap3.3.7/js/bootstrap.min.js">
     </script>
     <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/jquery.dataTables.min.js">
     </script>
@@ -460,7 +460,7 @@ window.addEvent( 'load', function() {
 </head>
 <body ondblclick="DblClickHandle();">
 <div class="container-fluid">
-    <div class="row">
+    <div class="row-fluid">
 
 <a href="#" style="display:none;" id="cr-email" title="Email this report" lang="<[current_query]>"><img style="display:none;" src="/ebindr/images/icons16x/email.png" alt="Email this report" /><span style="display:none;"><[USED_PARAMETERS]></span></a>
 

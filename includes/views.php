@@ -14,6 +14,7 @@ return array(
             'noheader2',
             'noheader_hidden',
             'noheader_findr',
+            'noheader_findr2',
             'open',
             'printr'
         )

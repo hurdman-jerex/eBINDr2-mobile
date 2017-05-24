@@ -5,6 +5,8 @@ AjaxService.prototype = {
     handleErrorResponse : function( $error )
     {
         var $message = [];
+
+        console.log( $error.responseJSON );
         jQuery.each(
             $error.responseJSON,
             function( $key, $value )
@@ -21,7 +23,11 @@ AjaxService.prototype = {
             }
         );
 
-        alert( $message.join( '<br />' ) );
+        $ModalAlert.content( $message.join( '<br />' ) ).open( function(){
+            // Set event
+            $ModalAlert.modalElement.find( '.modal-title' ).html( 'Error!' );
+            $ModalAlert.modalElement.find( '.submit' ).hide();
+        } );
     },
 
     post : function( $url, $data, type, callback, preload ) {
@@ -124,7 +130,7 @@ AjaxService.prototype = {
         );
     },
 
-    get : function( $url, $data, callback, preload, errorCallback ) {
+    get : function( $url, $data, callback, onComplete, preload, errorCallback ) {
         var $self = this;
 
         jQuery.ajax(
@@ -148,6 +154,11 @@ AjaxService.prototype = {
                         window.location = $json_response.redirect;
                     }
 
+                },
+                complete : function( $resp ){
+                    if( onComplete ){
+                        onComplete( $resp.responseJSON );
+                    }
                 },
                 error: function( $error ) {
                     if( errorCallback )

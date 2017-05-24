@@ -1,0 +1,348 @@
+#findr2-body {
+    /*background-color: #ffffff !important;*/
+}
+#findr2-body .search-bar {
+    background-image: url( '/ebindr/images/findr1/findrsearchbar.png' );
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    padding: 0 15px;
+}
+#findr2-body .search-bar input {
+
+}
+#findr2-body .findr-btns {
+    overflow: hidden;
+    height: 36px;
+    width: 95%;
+}
+#findr2-body .findr-btns li a {
+    /*float: left;
+    list-style: none;
+
+    margin-right: 3px;
+    font-size: 10px;
+    line-height: 26px;
+    height: 26px;*/
+    padding-left: 20px;
+    background-position: left;
+    background-repeat: no-repeat;
+    /*cursor: pointer;*/
+}
+#findr2-body .findr-btns li.more {
+    /*padding-left: 10px;
+    padding-right: 10px;*/
+}
+
+#findr2-body ul.more-nav {
+    /*padding-left: 10px;
+    padding-right: 10px;*/
+    float: right;
+    text-align: center;
+    width: 4%;
+}
+
+
+#findr2-body .findr-btns li {
+    margin-left: 0;
+}
+#findr2-body li.spacer {
+    width: 8px;
+    background-image: url( '/ebindr/images/e2/btnbar-spacer.png' );
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 0px;
+    height: 26px;
+}
+#findr2-body li.n a {
+    background-image: url( '/ebindr/images/findr1/dba.png' );
+}
+#findr2-body li.i a {
+    background-image: url( '/ebindr/images/findr1/bid.png' );
+}
+#findr2-body li.e a {
+    background-image: url( '/ebindr/images/findr1/bizemployee.png' );
+}
+#findr2-body li.p a, #findr2-body li.h a {
+    background-image: url( '/ebindr/images/findr1/phone.png' );
+}
+#findr2-body li.a a, #findr2-body li.address a {
+    background-image: url( '/ebindr/images/findr1/address.png' );
+}
+#findr2-body li.u a, #findr2-body li.complaint a {
+    background-image: url( '/ebindr/images/findr1/cid.png' );
+}
+#findr2-body li.c a, #findr2-body li.consumer a {
+    background-image: url( '/ebindr/images/findr1/consumername.png' );
+}
+#findr2-body li.k a {
+    background-image: url( '/ebindr/images/findr1/agency.png' );
+}
+#findr2-body li.l a {
+    background-image: url( '/ebindr/images/findr1/bbblocation.png' );
+}
+#findr2-body li.z a, #findr2-body li.zip-postal a {
+    background-image: url( '/ebindr/images/findr1/bbbzip.png' );
+}
+#findr2-body li.t a {
+    background-image: url( '/ebindr/images/findr1/tobcode.png' );
+}
+#findr2-body li.d a {
+    background-image: url( '/ebindr/images/findr1/tobdesc.png' );
+}
+#findr2-body li.g a {
+    background-image: url( '/ebindr/images/findr1/genadv.png' );
+}
+#findr2-body li.x a {
+    background-image: url( '/ebindr/images/findr/lightning.png' );
+}
+#findr2-body li.w a {
+    background-image: url( '/ebindr/images/findr/link.png' );
+}
+#findr2-body li.genadv a {
+    background-image: url( '/ebindr/images/findr/comment.png' );
+}
+#findr2-body li.email a, #findr2-body li.email-c a {
+    background-image: url( '/ebindr/images/icons16x/email.png' );
+}
+#findr2-body li.charity a {
+    background-image: url( '/ebindr/images/findr/rosette.png' );
+}
+#findr2-body li.check a {
+    background-image: url( '/ebindr/images/findr/check-number.png' );
+}
+#findr2-body li.text a {
+    background-image: url( '/ebindr/images/icons16x/text.png' );
+}
+#findr2-body li.journal a {
+    background-image: url( '/ebindr/images/icons16x/journal.png' );
+}
+#findr2-body li.license a {
+    background-image: url( '/ebindr/images/icons16x/license.png' );
+}
+#findr2-body li.location a {
+    background-image: url( '/ebindr/images/icons16x/map.png' );
+}
+#findr2-body li.mediation a {
+    background-image: url( '/ebindr/images/findr/briefcase.png' );
+}
+#findr2-body li.newname a {
+    background-image: url( '/ebindr/images/findr/asterisk.png' );
+}
+#findr2-body li.reportstatus a {
+    background-image: url( '/ebindr/images/findr/gold_star_medal.png' );
+}
+#findr2-body li.reportcode a {
+    background-image: url( '/ebindr/images/findr/book_open.png' );
+}
+#findr2-body li.naturedispute a {
+    background-image: url( '/ebindr/images/findr/box.png' );
+}
+#findr2-body li.salescomment a {
+    background-image: url( '/ebindr/images/findr/money.png' );
+}
+#findr2-body li.smallclaims a {
+    background-image: url( '/ebindr/images/findr/bell.png' );
+}
+#findr2-body li.currentbid a {
+    background-image: url( '/ebindr/images/findr/layout.png' );
+}
+#findr2-body li.editorderbtn a {
+    background-image: url( '/ebindr/images/icons16x/edit.png' );
+}
+
+/*#findr2-body li.cust-reviews,*/
+#findr2-body li.r a {
+    background-image: url( '/ebindr/images/icons16x/customer-review.png' );
+}
+
+#findr2-body div#more-list, #bizmore-list {
+    width: 300px;
+    position: absolute;
+    z-index: 100000;
+}
+#findr2-body div#more-list div.top, #bizmore-list div.top {
+    height: 25px;
+    width: 300px;
+    background-image: url( '/ebindr/images/findr1/findrmore-top.png' );
+    background-repeat: no-repeat;
+}
+#findr2-body div#more-list div.bottom, #bizmore-list div.bottom {
+    height: 12px;
+    width: 300px;
+    background-image: url( '/ebindr/images/findr1/findrmore-bottom.png' );
+    background-repeat: no-repeat;
+}
+#findr2-body div#more-list div.list, #bizmore-list div.list {
+    width: 280px;
+    background-image: url( '/ebindr/images/findr1/findrmore-bg.png' );
+    color: #fff;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#findr2-body div#more-list div.list ul, #bizmore-list div.list ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+#findr2-body div#more-list div.list ul li a, #bizmore-list div.list ul li a {
+    float: left;
+    margin: 0px;
+    padding: 0px;
+    width: 115px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 10px;
+    background-repeat: no-repeat;
+    background-position: 5px 4px;
+    padding-left: 25px;
+    color: #fff;
+    cursor: pointer;
+}
+#findr2-body div#more-list div.list ul li.hover, #bizmore-list div.list ul li.hover {
+    background-color: #fff;
+    color: #666;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+#findr2-body #search-q {
+    width: 100%;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    background-image: url( '/ebindr/images/findr1/findr-search-bg.png' );
+    background-position: 4px 3px;
+    background-repeat: no-repeat;
+    /*border-left: 1px solid #999;
+    border-right: 1px solid #999;
+    color: #ffffcc;*/
+    font-size: 12px;
+    padding-left: 20px;
+    padding-right: 10px;
+    outline: none;
+}
+#findr2-body div.search-type {
+    border-left: 1px solid #999;
+    /*border-right: 1px solid #333;*/
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-weight: normal;
+}
+#findr2-body div#search-by-type {
+    border-right: 1px solid #333;
+    float: left;
+    color: #ccc;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.hide-more{
+    display: none;
+}
+.show-more{
+    display: inline-block;
+}
+
+#findr2-body .search-bar {
+    background-image: url( '/m/assets/img/findrsearchbar.png' );
+    height: 35px;
+    line-height: 35px;
+}
+
+#findr2-body #search-q {
+    height: 27px;
+    background-position: 5px 7px;
+}
+
+#search-type-label {
+    font-weight: normal;
+}
+
+.toplink {
+    display: none;
+}
+
+.modal-backdrop.in {
+    opacity: 0 !important;
+}
+
+div.divider {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+
+#findrhistory {
+    color: #555;
+    z-index: 9999;
+}
+
+/* Subnav */
+.subnav {
+    width: 100%;
+    height: 36px;
+    background-color: #eeeeee; /* Old browsers */
+    background-repeat: repeat-x; /* Repeat the gradient */
+    background-image: -moz-linear-gradient(top, #f5f5f5 0%, #eeeeee 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f5f5f5), color-stop(100%,#eeeeee)); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Chrome 10+,Safari 5.1+ */
+    background-image: -ms-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* IE10+ */
+    background-image: -o-linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* Opera 11.10+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+    background-image: linear-gradient(top, #f5f5f5 0%,#eeeeee 100%); /* W3C */
+    /*border: 1px solid #e5e5e5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;*/
+}
+.subnav .nav {
+    margin-bottom: 0;
+}
+.subnav .nav > li > a {
+    margin: 0;
+    padding-top:    10px;
+    padding-bottom: 7px;
+    border-left: 1px solid #f5f5f5;
+    border-right: 1px solid #e5e5e5;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.subnav .nav > .active > a,
+.subnav .nav > .active > a:hover {
+    padding-left: 13px;
+    color: #777;
+    background-color: #e9e9e9;
+    border-right-color: #ddd;
+    border-left: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+    -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.05);
+}
+.subnav .nav > .active > a .caret,
+.subnav .nav > .active > a:hover .caret {
+    border-top-color: #777;
+}
+.subnav .nav > li:first-child > a,
+.subnav .nav > li:first-child > a:hover {
+    border-left: 0;
+    padding-left: 12px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+.subnav .nav > li:last-child > a {
+    border-right: 0;
+}
+.subnav .dropdown-menu {
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+}

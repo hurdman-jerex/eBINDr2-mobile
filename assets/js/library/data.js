@@ -525,7 +525,7 @@ ebindr.library.data = new Class({
 				nocache: true,
 				onComplete: function(text) {
 					if( text.length > 3 ) {
-						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + text );
+						console.log( 'Query loaded: ' + query + ', the results were: ' + text );
 						
 						// store the result
 						ebindr.data.store.tickets = new Hash({

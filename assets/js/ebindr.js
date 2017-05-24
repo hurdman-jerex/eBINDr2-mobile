@@ -165,6 +165,22 @@ var ebindr = new Hash({
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
+	initializeMobileFindr: function( load ) {
+		this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		this.findr2 = new ebindr.library.mfindr();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+			ebindr.load( load );
+	},
+    initializeMobile2Findr: function( load ) {
+		this.button = new ebindr.library.button();
+		this.data = new ebindr.library.data();
+		this.findr2 = new ebindr.library.mfindr2();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+			ebindr.load( load );
+	},
 	initializeFindr: function( load ) {
 		this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
