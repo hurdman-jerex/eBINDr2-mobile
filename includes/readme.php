@@ -107,6 +107,7 @@ $q = $mybindr->ResolvePipes($q);
 foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
     ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
 
+$__business_info['info_js'] = preg_grep('/js_/', array_keys( $__business_info ));
 
 list($q) = $mybindr->getquery("e2m e button info2");
 $q = $mybindr->ResolvePipes($q);
@@ -166,8 +167,6 @@ $___ebindr2mobile_views['template_folder'] = 'default';
 //}catch ( Exception $e ){
 
 //}
-
-/*dd( $__business_info );*/
 
 
 

@@ -316,7 +316,7 @@ ebindr.library.data = new Class({
 			                'text': value
 			            }).inject(document.head); 
 					};
-					if(query=="e button info" && key.substring(0,3) == 'js_') {
+					/*if(query=="e button info" && key.substring(0,3) == 'js_') {
 						if($('info_'+key)) $('info_'+key).dispose();
 						var el = new Element('script', { 
 							'id': 'info_'+key,
@@ -331,7 +331,7 @@ ebindr.library.data = new Class({
 								'text': value
 							}).inject(document.head); 
 						};
-					}
+					}*/
 					if( key.substring(0,12) == 'buttoncolor_' ) {
 						if( $( key.split("_")[1] ) ) {
 							if( value.length > 0 ) $( key.split("_")[1] ).addClass(value);

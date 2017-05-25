@@ -7,3 +7,12 @@ if( isset( $_SERVER['css'] ) && is_array( $_SERVER['css'] ) ) {
         // Do nothing for now!!!
     }
 }
+
+if( isset( $__business_info['info_js'] ) && !empty( $__business_info['info_js'] ) ): ?>
+    <script type="text/javascript">
+        <?php
+            foreach( $__business_info['info_js'] as $js )
+                echo $__business_info[ $js ] . " ";
+        ?>
+    </script>
+<?php endif; ?>

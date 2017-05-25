@@ -177,7 +177,7 @@ var ebindr = new Hash({
 		this.button = new ebindr.library.button();
 		this.data = new ebindr.library.data();
 		this.findr2 = new ebindr.library.mfindr2();
-		this.keyboard = new ebindr.library.keyboard();
+		//this.keyboard = new ebindr.library.keyboard();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
 			ebindr.load( load );
