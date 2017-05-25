@@ -184,7 +184,7 @@ ebindr.library.mfindr2 = new Class({
                 ebindr.findr2.search( ebindr.findr2.what );
                 break;
             case "tab": event.stop(); ebindr.findr2.await = true; break;
-            case "esc": event.stop(); ebindr.window.minimize('findr2'); $('search-q').blur(); break;
+            case "esc": event.stop(); $('search-q').blur(); break;
             case "up":
                 if($('findrhistory').options.length>0) {
                     if($('findrhistory').selectedIndex>0) $('findrhistory').selectedIndex--; else {
@@ -253,13 +253,13 @@ ebindr.library.mfindr2 = new Class({
                 this.set('text', '*Any Part Of*' );
                 ebindr.findr2.type = 'any';
                 $self._findr_text_label();
-                $('search-type-label').focus();
+                $('search-q').focus();
             }
             else {
                 this.set( 'text', 'Begins With *' );
                 ebindr.findr2.type = 'begins';
                 $self._findr_text_label();
-                $('search-type-label').focus();
+                $('search-q').focus();
             }
         });
     },
@@ -277,8 +277,9 @@ ebindr.library.mfindr2 = new Class({
                     else {
                         //new Event(e).stop();
                         if( btn.get('text') != 'Edit Order' ) {
-                            $('search-type-label').set('text', btn.get('text')).focus();
+                            $('search-type-label').set('text', btn.get('text'));
                             $self._findr_text_label();
+                            $('search-q').focus();
                         }
                         // if we have something in the search box to search by
                         if( $('search-q').get('value').length > 0 || btn.get('class').split(" ")[0] == 'salescomment' ) {
