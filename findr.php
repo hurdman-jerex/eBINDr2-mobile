@@ -1,3 +1,4 @@
+<?php include '/home/serv/public_html/m/includes/readme.php'; ?>
 <?php $template_folder = 'bootstrap3.3.7/';
 $page = 'search';
 $_SERVER['css'][] = '/m/assets/css/findr2.css';
