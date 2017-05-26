@@ -297,9 +297,9 @@ if(!class_exists('mobileReportr'))
                 if($this->num_pages-$startnum<14) $startnum=$this->num_pages-14;
                 $endnum=$startnum+14;
             }
-            for($i=$startnum;$i<=$endnum;$i++) $this->page_links.=(($i==$this->current_page)?"<font color=black>":"<font color=blue><a onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">")."$i</a></font> ";
-            if($endnum<$this->num_pages) { $i=$this->num_pages; $this->page_links.="... <font color=blue><a onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">$i</a></font> "; }
-            if($startnum>1) { $i=1; $this->page_links="<font color=blue><a onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">$i</a></font> ... ".$this->page_links; }
+            for($i=$startnum;$i<=$endnum;$i++) $this->page_links.=(($i==$this->current_page)?"<font color=black>":"<font color=blue><a href=\"javascript:void(0);\" onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">")."$i</a></font> ";
+            if($endnum<$this->num_pages) { $i=$this->num_pages; $this->page_links.="... <font color=blue><a href=\"javascript:void(0);\" onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">$i</a></font> "; }
+            if($startnum>1) { $i=1; $this->page_links="<font color=blue><a href=\"javascript:void(0);\" onmouseover='this.style.cursor=\"hand\"' onmouseout='this.style.cursor=\"default\"' onclick=\"document.limit.limit".$this->query_run.".value=".(($i-1)*$this->options[1]).";do_submit('".$this->query_run."');\">$i</a></font> ... ".$this->page_links; }
             $this->display->variable("page_list", "<b>".$this->page_links."</b>| ");
             $this->display->variable("ident", ($this->ident+1));
             $this->display->variable("column_span", (count($this->col_info)+1));
