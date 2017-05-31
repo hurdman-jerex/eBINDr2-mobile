@@ -6,6 +6,12 @@ include "/home/serv/library/json.php";
 // get rid of the get query string
 if( strpos($_SERVER['REQUEST_URI'],"?") ) list( $_SERVER['REQUEST_URI'], $get ) = explode( "?", $_SERVER['REQUEST_URI'] );
 
+if( preg_match( '/boldcommercial|boldfundraising|hurdmantest/i', $_SERVER['SERVER_NAME'], $match ) ){
+    $_definitions_file_path = '/home/'. $match[0] .'/definitions.php';
+    if( file_exists( $_definitions_file_path ) )
+        include $_definitions_file_path;
+}
+
 if(file_exists("/home/definitions.php")) include "/home/definitions.php"; // global definitions
 if(file_exists("../definitions.php")) include "../definitions.php"; // global definitions
 include "/home/serv/includes/definitions.php"; // global definitions

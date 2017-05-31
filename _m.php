@@ -1,5 +1,5 @@
 <?php
-include "../../includes/readme.php";
+include "reports/readme.php";
 
 // Library
 define( '_MOBILEHELPERS', 'library/helpers.php' );

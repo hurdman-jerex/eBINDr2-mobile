@@ -385,7 +385,7 @@ var ebindr = new Hash({
         if( this.user.isActive() ) {
             if(this.windowtrack.length>0) var mytracks="('"+this.windowtrack.join("),('").replace(/,([0-9])/g,"',$1")+")"; else var mytracks="()";
             this.windowtrack=[];
-            var thisalert = new Request.HTML().get( '/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
+            var thisalert = new Request.HTML().get( '/m/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
         }
         if(this.myalerts_timeout) window.clearTimeout(this.myalerts_timeout);
         this.myalerts_timeout=window.setTimeout( "ebindr.alerts();", 30000);

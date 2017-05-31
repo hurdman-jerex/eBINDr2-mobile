@@ -7,8 +7,8 @@ ebindr.library.data = new Class({
 	
 	preloadPointer: 0, // where the preload query processing is at
 	preloadSQL: [
-		'e button info2',
-		'e button info',
+		'e2m e button info2',
+		'e2m e button info',
 		'e button info2 - custom',
 		//'e button dr',
 		//'e favorite reports.list',
@@ -467,7 +467,7 @@ ebindr.library.data = new Class({
 	runQuery: function(query, gets) {
 		if( typeof(gets) == 'undefined' ) gets = new Object();
 
-		var newQuery = ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' );
+		var newQuery = ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' );
 
 		var abisEmpty = true;
     if (gets == null) abisEmpty = true;
@@ -575,7 +575,7 @@ ebindr.library.data = new Class({
 		}else if( query == 'e2m button sort' ) {
 
 			var get = new Request.JSON({
-				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
 				nocache: true,
 				onComplete: function( data, str ) {
 					if( typeof(data) == 'object' && str != '//No data' ) {
@@ -599,7 +599,7 @@ ebindr.library.data = new Class({
 		}else if( query == 'e2m js button sort' ) {
 
 			var get = new Request.JSON({
-				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
 				nocache: true,
 				onComplete: function( data, str ) {
 					if( typeof(data) == 'object' && str != '//No data' ) {
@@ -636,7 +636,7 @@ ebindr.library.data = new Class({
 			}
 		
 			var get = new Request.JSON({
-				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
 				nocache: true,
 				onComplete: function( data, str ) {
 					if( typeof(data) == 'object' && str != '//No data' ) {
