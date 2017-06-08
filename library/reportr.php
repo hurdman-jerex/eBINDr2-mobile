@@ -445,7 +445,7 @@ if(!class_exists('mobileReportr'))
 
                         $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"$item\");'";
                         $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"$item\", null, null, false);'";
-                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"$item\"); window.parent.dopage(\"records\");'";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"$item\");'";
 
                     //}
                     $this->currentbid=$item;
@@ -462,7 +462,7 @@ if(!class_exists('mobileReportr'))
 
                         $dblclick = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\");'";
                         $dblclickeditr = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\",false);'";
-                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\"); window.parent.dopage(\"records\");'";
+                        $jumpback = "onmouseover=\"document.body.style.cursor = 'pointer';\" onmouseout=\"document.body.style.cursor = 'default';\" style='text-decoration:underline;' onclick='window.parent.ebindr.findr2.openBID(\"".$this->currentbid."\",false,\"$item\");'";
                         $item = "<div onclick=\"window.parent.ebindr.openBID('".$this->currentbid."',false,'".$item."');\">".$item."</div>";
                     //}
                 }

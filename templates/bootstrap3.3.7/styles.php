@@ -4,9 +4,9 @@
 <link href="/m/assets/bootstrap3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
 
 <!-- DataTable Jquery -->
-<link rel="stylesheet" type="text/css" href="/m/assets/css/dataTables.bootstrap.min.css">
+<!--<link rel="stylesheet" type="text/css" href="/m/assets/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.dataTables.min.css">-->
 
 <!-- Styles -->
 <link rel="stylesheet" type="text/css" href="/m/assets/css/m3.css">

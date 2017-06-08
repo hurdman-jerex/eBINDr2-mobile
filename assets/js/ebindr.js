@@ -66,7 +66,11 @@ var ebindr = new Hash({
 	windowtrack: [],
 	lastwindowtrack: 'none',
 	sysstatus_timeout: false,
-	lastfindr: "n",	
+	lastfindr: "n",
+
+    /* flag for initialize */
+    is_init_button: false,
+    is_init_data: false,
 	// stores what is current whether it be a tab, frame, or editr, etc.
 	// also this is included as a stutitute object for each url that is
 	// loaded in eBINDr so that {bid} will become the actualy value in the url string
@@ -159,50 +163,62 @@ var ebindr = new Hash({
         }).delay(1);
     },
 	initializeUser: function( load ) {
-        this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		// check to see if we are authenticated
+        this.init_button();
+        this.init_data();
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
 	initializeMobileFindr: function( load ) {
-		this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		this.findr2 = new ebindr.library.mfindr();
+        this.init_button();
+        this.init_data();
+        this.findr2 = new ebindr.library.mfindr();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
 			ebindr.load( load );
 	},
     initializeMobile2Findr: function( load ) {
-		this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		this.findr2 = new ebindr.library.mfindr2();
-		//this.keyboard = new ebindr.library.keyboard();
+        this.init_button();
+        this.init_data();
+        this.findr2 = new ebindr.library.mfindr2();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
 			ebindr.load( load );
 	},
 	initializeFindr: function( load ) {
-		this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		this.findr2 = new ebindr.library.findr2();
+        this.init_button();
+        this.init_data();
+        this.findr2 = new ebindr.library.findr2();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
 			ebindr.load( load );
 	},
     initialize: function( load ) {
-        this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
+        this.init_button();
+        this.init_data();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
 
+	init_library: function( $name, $library ){
 
-
-	init_libraries: function( $name, $library ){
-		this.$name = $library;
+        if( typeof $self[$name] === "undefined" || !$self[$name] )
+		    $self[$name] = new $library();
 	},
+
+    init_button: function(){
+        if( ! this.is_init_button ){
+            this.button = new ebindr.library.button();
+            this.is_init_button = true;
+        }
+    },
+
+    init_data: function(){
+        if( ! this.is_init_data ) {
+            this.data = new ebindr.library.data();
+            this.is_init_data = true;
+        }
+    },
 
     /* Modal */
     modal: {
@@ -284,8 +300,8 @@ var ebindr = new Hash({
             // bring in the styles
             //ebindr.include( "/m/assets/css/button.css" );
             // bring in the datepicker
-            ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
-            ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
+            //ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
+            //ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
 
             //ebindr.include( "/ebindr/styles/findr.css" );
             //ebindr.include( "/ebindr/styles/findr1.css" );

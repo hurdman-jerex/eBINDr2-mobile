@@ -368,6 +368,24 @@ ebindr.library.data = new Class({
 						ebindr.shownloginalert = true;
 					}*/
 					break;
+				case "e2m e button info2":
+					//ebindr.current.bid = this.store.bid;
+					if( ebindr.autoloadbid ) {
+						ebindr.openBID( ebindr.autoloadbid, true );
+						ebindr.autoloadbid = false;
+					} else {
+						if( !ebindr.current.switchedbid ) ebindr.openBID( this.store.bid, true );
+						edittitlecase = this.store.edittitlecase;
+					}
+
+					/*// login alert
+                    if( ebindr.segments )
+					if( this.store.loginalert.length > 0 && !ebindr.shownloginalert ) {
+						ebindr.alert( this.store.loginalert, 'Remember' );
+						//ebindr.growl( 'Remember', this.store.loginalert, true, 'black' );
+						ebindr.shownloginalert = true;
+					}*/
+					break;
 				case "e button info":
 					if( ebindr.data.store['forcepasscodechange'] == 'y' ) {
 						(function() {
@@ -437,6 +455,10 @@ ebindr.library.data = new Class({
 				case "e button info2" : var text = 'Global Variables'; 
 					if(ebindr.data.store.securitykeys.split(',')[2]=="") window.location.href="/logout.php";
 					break;
+				case "e2m e button info2" : var text = 'Global Variables';
+					if(ebindr.data.store.securitykeys.split(',')[2]=="") window.location.href="/logout.php";
+					break;
+				case "e2m e button info" : var text = 'Business Data'; break;
 				case "e button info" : var text = 'Business Data'; break;
 				case "e button dr" : var text = 'Registers'; break;
 				case "e favorite reports.list" : var text = 'Favorite Reports'; break;
@@ -445,7 +467,8 @@ ebindr.library.data = new Class({
 				case "/ebindr/community.php/features/popular" : var text = 'Retrieving Queue Items'; break;
 				case "e findr s" : var text = 'Extended FINDr Searches'; break;
 			}
-			
+
+            jQuery('.loading-text').text( text );
 			 
 			// see if we are done the preloading of data
 			if( (ebindr.data.preloadPointer+1) == ebindr.data.preloadSQL.length ) {

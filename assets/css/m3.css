@@ -45,3 +45,7 @@ body {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+.findr2-loaded {
+    display: block !important;
+}

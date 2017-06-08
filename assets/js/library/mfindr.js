@@ -13,7 +13,7 @@ ebindr.library.mfindr2 = new Class({
     historyitems: [],
     lastsearchvalue: '',
 
-    initialize: function( options ) {
+    initializeMobile2Findr: function( options ) {
         $extend(this.options,options);
     },
 
@@ -21,13 +21,14 @@ ebindr.library.mfindr2 = new Class({
      What gets fired when the window is restored or opened for the first time
      */
     windowInit: function() {
+        var $searchQ = $('search-q');
         // focus on the box
-        if( $('search-q') ) {
+        if( $searchQ ) {
             /*$('search-q').focus();
              $('search-q').select();*/
             if( ebindr.current.auto_findr ) ebindr.findr2.setSearch( ebindr.current.auto_findr );
             if( ebindr.current.link_search != '' ) {
-                $('search-q').value = ebindr.current.link_search;
+                $searchQ.value = ebindr.current.link_search;
                 if (ebindr.current.auto_findr != '') {
                     ebindr.findr2.search(ebindr.current.auto_findr, ebindr.current.link_search);
                 } else {
@@ -40,11 +41,15 @@ ebindr.library.mfindr2 = new Class({
     },
 
     findrhistory: function() {
-        if($('findrhistory') && ebindr.data.store.dofindrhistory=='yes') {
+        var $searchQ = $('search-q');
+        var $findrhistory = $('findrhistory');
+        var $self = this;
+
+        if( $findrhistory && ebindr.data.store.dofindrhistory=='yes') {
 //			if($('findrhistory').style.display!='none') return;
-            if($('search-q').value==this.lastsearchvalue) return;
-            this.lastsearchvalue=$('search-q').value;
-            $('findrhistory').empty();
+            if($searchQ.value==this.lastsearchvalue) return;
+            this.lastsearchvalue=$searchQ.value;
+            $findrhistory.empty();
             this.historyitems=[];
             for(var i=49;i>-1;i--) {
                 if(Cookie.read('findr_'+i)===null) continue;
@@ -57,8 +62,8 @@ ebindr.library.mfindr2 = new Class({
             }
 //			this.historyitems.sort(function(a,b) { return a[2]>b[2]; });
             this.historyitems.sort(function(a,b) {
-                if( b[2].match('^'+$('search-q').value) && !a[2].match('^'+$('search-q').value) ) return true;
-                if( a[2].match('^'+$('search-q').value) && !b[2].match('^'+$('search-q').value) ) return false;
+                if( b[2].match('^'+$searchQ.value) && !a[2].match('^'+$searchQ.value) ) return true;
+                if( a[2].match('^'+$searchQ.value) && !b[2].match('^'+$searchQ.value) ) return false;
                 return a[2]>b[2];
             });
             for(var i=0;i<this.historyitems.length;i++) {
@@ -80,9 +85,9 @@ ebindr.library.mfindr2 = new Class({
                     $('search-type-label').set( 'text', ebindr.findr2.getButtonByClass(searchoption[0]) );
                     ebindr.findr2.search(searchoption[0],searchoption[1].replace(/^%/g, ''));
                 });
-                $('findrhistory').add(newoption);
+                $findrhistory.add(newoption);
             }
-            $('findrhistory').setStyle('display','block');
+            $findrhistory.setStyle('display','block');
             var newoption = new Option("- Clear search history -","clear");
             newoption.addEvent('mouseover', function(e) {
                 this.selected=true;
@@ -93,27 +98,36 @@ ebindr.library.mfindr2 = new Class({
                     if(Cookie.read('findr_'+i)===null) continue;
                     Cookie.dispose('findr_'+i);
                 }
-                $('findrhistory').empty().setStyle('display','none');
+                $findrhistory.empty().setStyle('display','none');
             });
-            $('findrhistory').add(newoption);
+            $findrhistory.add(newoption);
         }
+    },
+
+    openBID: function( bid, start, cid, minimize ){
+        ebindr.openBID( bid, start, cid, minimize );
     },
 
     start: function() {
         // log that findr was started
         console.log( 'FINDr started' );
 
-        $('search-q').addEvent( 'keydown', ebindr.findr2.keyboard.bind(this) );
-        $('search-q').addEvent( 'keyup', ebindr.findr2.keyup.bind(this) );
+        $( 'findr2-preloading' ).addClass('hide');
+        $( 'findr-main-content' ).addClass( 'findr2-loaded' ).setStyle('display','block');
+
+        var $searchQ = $('search-q');
+
+        $searchQ.addEvent( 'keydown', ebindr.findr2.keyboard.bind(this) );
+        $searchQ.addEvent( 'keyup', ebindr.findr2.keyup.bind(this) );
         var dd=new Element('select', {
             id: 'findrhistory',
             multiple:true,
             size:6,
             styles: { display:'none', position:'absolute', width:'380px', 'padding-left':'15px', 'cursor':'pointer' }
         });
-        dd.injectAfter($('search-q'));
+        dd.injectAfter($searchQ);
 //		$('search-q').addEvent( 'mouseover', ebindr.findr2.findrhistory );
-        $('search-q').addEvent('blur', function(e) {
+        $searchQ.addEvent('blur', function(e) {
             (function() { if($$('::focus').length>0 && $$('::focus')[0].get('id')!='findrhistory')$('findrhistory').setStyle('display','none') }).delay(100);
         });
         ebindr.findr2.searchType();
@@ -121,7 +135,7 @@ ebindr.library.mfindr2 = new Class({
         ebindr.findr2.windowInit();
 
         if( ebindr.current.link_search != '' ) {
-            $('search-q').value = ebindr.current.link_search;
+            $searchQ.value = ebindr.current.link_search;
             if (ebindr.current.auto_findr != '') {
                 ebindr.findr2.search(ebindr.current.auto_findr, ebindr.current.link_search);
             } else {
@@ -431,7 +445,10 @@ ebindr.library.mfindr2 = new Class({
 
     search: function( what, q ) {
         if(what=="more") return;
-        $('findrhistory').setStyle('display','none');
+
+        var $findrhistory = $('findrhistory');
+        var $searchQ = $('search-q');
+        $findrhistory.setStyle('display','none');
 
         if( !ebindr.findr2.started ) {
             ebindr.findr2.onstart.push( "ebindr.findr2.search('" + what + "'" + ( typeof(q) != 'undefined' ? ",'" + q + "'" : "" ) + ");" );
@@ -443,12 +460,12 @@ ebindr.library.mfindr2 = new Class({
         }
 
         // see if we want to do an auto-search
-        if( typeof(q) != 'undefined' ) $('search-q').value = q;
+        if( typeof(q) != 'undefined' ) $searchQ.value = q;
         // set what we are search on and what we are searching for
-        var q = ( ebindr.findr2.type == 'begins' ? '' : '%' ) + $('search-q').get('value') + '%';
+        var q = ( ebindr.findr2.type == 'begins' ? '' : '%' ) + $searchQ.value + '%';
         if( what.match( /^findr-/ ) ) what = what.replace( /^findr-/g, "s." );
         var savedfindr=false;
-        if($('findrhistory') && ebindr.data.store.dofindrhistory=='yes') {
+        if( $findrhistory && ebindr.data.store.dofindrhistory=='yes') {
             for(var i=0;i<10;i++) {
                 if(Cookie.read('findr_'+i)===null && !savedfindr) {
                     Cookie.write('findr_'+i, what+':'+q.replace(/%+$/g, ''), {duration:365});
@@ -496,11 +513,11 @@ ebindr.library.mfindr2 = new Class({
         // log what the search
         console.log( 'FINDr Search Details: lite findr ' + what + ' "' + q + '"' );
 
-        if(what=="a") ebindr.current.FINDrA=$( 'search-q' ).get('value').replace('&','%26').replace('#','%23');
-        if(what=="p") ebindr.current.FINDrP=$( 'search-q' ).get('value');
-        if(what=="n") ebindr.current.FINDrN=$( 'search-q' ).get('value').replace('&','%26').replace('#','%23');
-        if(what=="e") ebindr.current.FINDrE=$( 'search-q' ).get('value');
-        if(what=="w") ebindr.current.FINDrW=$( 'search-q' ).get('value');
+        if(what=="a") ebindr.current.FINDrA=$searchQ.get('value').replace('&','%26').replace('#','%23');
+        if(what=="p") ebindr.current.FINDrP=$searchQ.get('value');
+        if(what=="n") ebindr.current.FINDrN=$searchQ.get('value').replace('&','%26').replace('#','%23');
+        if(what=="e") ebindr.current.FINDrE=$searchQ.get('value');
+        if(what=="w") ebindr.current.FINDrW=$searchQ.get('value');
 
         var searchurl = 'report/e2m lite findr ' + what + '/?noheaderfindr&e2mfindr&ebindr2=y' +
             '&find=' + escape(q) +
@@ -554,184 +571,5 @@ ebindr.library.mfindr2 = new Class({
             'margin': 0,
             'border': 'none'
         };
-    },
-
-    choose: function() {
-        switch( ebindr.lastfindr ) {
-            case "u": case "c": case "h": ebindr.openBID(ebindr.current.key1, false, ebindr.current.key2); break;
-            case "s.Consumer Member": var oldbid=bid; bid=key1; editr_run("qvq Consumer Members"); bid=oldbid; break;
-            case "s.Mediation Case":
-                var oldbid=ebindr.current.bid; bid=ebindr.current.key1;
-                ebindr.openBID(bid);
-                editr_run("qvq Mediation Cases"); bid=oldbid;
-                break;
-            case "s.Small Claims Case":
-                var oldbid=ebindr.current.bid;
-                bid=ebindr.current.key1;
-                ebindr.openBID(bid);
-                editr_run("qvq Small Claims Cases");
-                bid=oldbid;
-                break;
-            case "s.VORP Case":
-                var oldbid=ebindr.current.bid;
-                bid=ebindr.current.key1;
-                ebindr.openBID(bid);
-                editr_run("qvq VORP Cases");
-                bid=oldbid;
-                ebindr.current.bid = oldbid;
-                break;
-            case "x": case "k": case "w": case "n": case "e": case "p": case "i":
-            ebindr.openBID(ebindr.current.key1);
-            if(ebindr.current.lastInquiry=="A") {
-                ebindr.logstat(ebindr.current.key1, 'A', "bindr");
-                ebindr.button.linkreport(ebindr.data.store.agencyreportlink);
-            }
-            break;
-            case "l": case "z":
-            ebindr.openBID(ebindr.current.key1);
-            if(ebindr.current.lastInquiry=="B") {
-                ebindr.logstat(ebindr.current.key1, 'B', "bindr");
-                ebindr.button.linkreport(ebindr.data.store.bureaureportlink);
-            }
-            break;
-            case "g":
-                //if(ebindr.current.lastInquiry=="G") ebindr.logstat(ebindr.current.key1, 'G', "bindr");
-                if(ebindr.current.lastInquiry=="G" || ebindr.lastfindr=="g") ebindr.logstat(ebindr.current.key1, 'G', "bindr");
-                else ebindr.alert("A stat was NOT logged for this general advice report", "Notice");
-                ebindr.button.linkreport(ebindr.data.store.genadvreportlink);
-                break;
-            case "d": case "t":
-            //if(ebindr.current.lastInquiry=="T") ebindr.logstat(ebindr.current.key1, 'T', "bindr");
-            if(ebindr.current.lastInquiry=="T" || (ebindr.lastfindr=="d" || ebindr.lastfindr=="t")) ebindr.logstat(ebindr.current.key1, 'T', "bindr");
-            else ebindr.alert("A stat was NOT logged for this TOB roster", "Notice");
-            ebindr.button.linkreport(ebindr.data.store.rosterreportlink);
-            break;
-        }
-        ebindr.current.lastInquiry=false;
-    },
-
-    find: function( which ) {
-        switch( which ) {
-            case 'esc': // Close FINDr
-//				$( 'findr-search' ).blur();
-                ebindr.window.minimize( 'findr' );
-//				alert(window.parent.$( 'findr_closeButton' ).get('title'));
-//				var closefindr=window.parent.$( 'findr_closeButton' );
-//				closefindr.click();
-//				window.parent.$( 'findr_titleBar' ).focus();
-//				window.setTimeout("", 200);
-                window.parent.document.getElementById("keydownfield").focus();
-//				alert(window.parent.document.getElementById("keydownfield").value);
-//				window.parent.MochaUI.closeWindow(window.parent.MochaUI.Windows.instances.get('findr').windowEl);
-                break;
-            case 'enter': // Retrieve record
-                switch( ebindr.lastfindr ) {
-                    case "u": case "c": case "h": ebindr.openBID(ebindr.current.key1, false, ebindr.current.key2); break;
-                    case "s.Consumer Member": var oldbid=bid; bid=key1; editr_run("qvq Consumer Members"); bid=oldbid; break;
-                    case "s.Mediation Case": var oldbid=bid; bid=key1; editr_run("qvq Mediation Cases"); bid=oldbid; break;
-                    case "s.Small Claims Case": var oldbid=bid; bid=key1; editr_run("qvq Small Claims Cases"); bid=oldbid; break;
-                    case "x": case "k": case "w": case "n": case "e": case "p": case "i":
-                    if(ebindr.current.lastInquiry=="A") {
-                        ebindr.logstat(ebindr.current.key1, 'A', "bindr");
-                        ebindr.button.linkreport(ebindr.data.store.agencyreportlink);
-                    }
-                    ebindr.openBID(ebindr.current.key1)
-                    break;
-                    case "l": case "z":
-                    if(ebindr.current.lastInquiry=="B") {
-                        ebindr.logstat(ebindr.current.key1, 'B', "bindr");
-                        ebindr.button.linkreport(ebindr.data.store.bureaureportlink);
-                    }
-                    ebindr.openBID(ebindr.current.key1)
-                    break;
-                    case "g":
-                        if(ebindr.current.lastInquiry=="G") ebindr.logstat(ebindr.current.key1, 'G', "bindr");
-                        else ebindr.alert("A stat was NOT logged for this general advice report", "Notice");
-                        ebindr.button.linkreport(ebindr.data.store.genadvreportlink);
-                        break;
-                    case "d": case "t":
-                    if(ebindr.current.lastInquiry=="T") ebindr.logstat(ebindr.current.key1, 'T', "bindr");
-                    else ebindr.alert("A stat was NOT logged for this TOB roster", "Notice");
-                    ebindr.button.linkreport(ebindr.data.store.rosterreportlink);
-                    break;
-                }
-                ebindr.current.lastInquiry=false;
-                break;
-            default:
-                if( which.match( /^findr-/ ) ) which = which.replace( /^findr-/g, "s." );
-                var find = ( $( 'begins' ).get('text') == 'Find Begins With *' ? '' : '%' ) + $( 'findr-search' ).get('value') + '%';
-                // log what we are searching for
-                ebindr.log( 'FINDr Search Details: lite findr ' + which + ' "' + find + '"' );
-                if(which=="a") ebindr.current.FINDrA=$( 'findr-search' ).get('value');
-                if(which=="p") ebindr.current.FINDrP=$( 'findr-search' ).get('value');
-                if(which=="n") ebindr.current.FINDrN=$( 'findr-search' ).get('value');
-                if(which=="e") ebindr.current.FINDrE=$( 'findr-search' ).get('value');
-                if(which=="w") ebindr.current.FINDrW=$( 'findr-search' ).get('value');
-                //$( 'findr-results' ).innerHTML = "Searching... please wait.";
-                var searchstring = '/report/lite findr ' + which + '/?noheader&ebindr2' +
-                    '&find=' + escape(find) +
-                    '&bid=' + ebindr.current.bid +
-                    '&lid=' + ebindr.current.lid +
-                    '&key1=' + ebindr.current.key1;
-                $( 'findr-results' ).set( 'src', searchstring );
-                $( 'findr-results' ).focus();
-                ebindr.lastfindr=which;
-
-        }
-    },
-
-    resize: function () {
-        (function() {
-            $( 'findr-results' ).setStyle( 'height', window.getSize().y-195 );
-            $( 'findr-results' ).setStyle( 'width', window.getSize().x );
-            $( 'findr-search-div' ).setStyle( 'width', window.getSize().x-165 );
-            $( 'begins' ).setStyle( 'width', '110px' );
-            $( 'findr-more' ).setStyle( 'width', '50px' );
-        }).delay(50);
-    },
-
-    listen: function() {
-        ( Browser.Engine.trident ? $$('body')[0] : window ).addEvent( 'keydown', function(event) {
-            event = new Event(event);
-            if( event.key == "esc" ) {
-                ebindr.findr.find( 'esc' );
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            switch( event.target.get('id') ) {
-                case "findr-search":
-                    switch( event.key ) {
-                        case 'enter':
-                            $$( '.shade' ).fireEvent( 'click' );
-                            $( 'findr-search' ).blur();
-                            break;
-                        case 'tab':
-                            $( 'findr-search' ).blur();
-                            event.preventDefault();
-                            event.stopPropagation();
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                case null:
-                    switch( event.key ) {
-                        case "n": case "i": case "e": case "p": case "a": case "u": case "h": case "c": case "k": case "l": case "z": case "t": case "d": case "g":
-                        //alert( event.key );
-                        $( 'findr_' + event.key ).fireEvent( 'click' );
-                        break;
-                        case "tab":
-                            $( 'findr-search' ).focus();
-                            event.preventDefault();
-                            event.stopPropagation();
-                            break;
-                    }
-                    break;
-                default:
-                    alert( event.key + event.target.get('id') );
-                    break;
-            }
-
-        });
     }
 });

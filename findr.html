@@ -41,37 +41,40 @@
     </div>
 </nav>
 
-<?php include "/home/serv/public_html/m/templates/bootstrap3.3.7/search/sub_nav.php"; ?>
+<div class="container-fluid" aria-label="Loading Findr2" alt="Loading Findr2" id="findr2-preloading" style="text-align: center;">
+    <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />
+    Loading <span class="loading-text"></span>
+</div>
 
-<div class="container-fluid theme-showcase" role="main">
+<div id="findr-main-content" style="display: none;">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div id="findr2-search-container">
-                <div class="" id="search-result" style="padding-top: 10px;">
-                    <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
+    <?php include "/home/serv/public_html/m/templates/bootstrap3.3.7/search/sub_nav.php"; ?>
+    <div class="container-fluid theme-showcase" role="main">
 
-                    </iframe>
-                    <!--<div id="mfindr2-search-result-wrapper" aria-live="assertive" role="status">
-                        &lt;!&ndash; HTML will be inserted here &ndash;&gt;
-                    </div>-->
+        <div class="row">
+            <div class="col-md-12">
+                <div id="findr2-search-container">
+                    <div class="" id="search-result" style="padding-top: 10px;">
+                        <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
+
+                        </iframe>
+                    </div>
+                </div>
+                <div aria-label="Searching" alt="Searching" id="findr2-loading" style="display: none; text-align: center;">
+                    <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
                 </div>
             </div>
-            <div aria-label="Searching" alt="Searching" id="findr2-loading" style="display: none; text-align: center;">
-                <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
-            </div>
         </div>
-    </div>
 
-</div> <!-- /container -->
+    </div> <!-- /container -->
 
+</div>
 
-<!-- Bootstrap core JavaScript
+<!-- Core JavaScript
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 <? include "/home/serv/public_html/m/templates/bootstrap3.3.7/scripts.php"; ?>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     jQuery(document).ready(function() {
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
@@ -84,7 +87,7 @@
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
         } );
     });
-</script>
+</script>-->
 
 </body>
 </html>
