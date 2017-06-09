@@ -11,7 +11,7 @@
 <!-- Styles -->
 <link rel="stylesheet" type="text/css" href="/m/assets/css/m3.css">
 <link rel="stylesheet" type="text/css" href="/m/assets/css/button.css">
-<link rel="stylesheet" type="text/css" href="/m/assets/css/findr2.css">
+<!--<link rel="stylesheet" type="text/css" href="/m/assets/css/findr2.css">-->
 
 <!-- Server Styles included -->
 <?php include "/home/serv/public_html/m/includes/styles.php"; ?>

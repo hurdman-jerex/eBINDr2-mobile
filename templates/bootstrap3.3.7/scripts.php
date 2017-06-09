@@ -44,13 +44,18 @@
             return this.close; }
     });
 
+    /* Let's try to load it when Window is successfully loaded */
+    /*ebindr.onWindowLoaded(function() {
+        ebindr.openFINDr2(ebindr.lastfindr);
+    });*/
+
     jQuery(document).ready(function() {
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
 
         ebindr.initializeMobile2Findr( function(){
-            ebindr.findr2.start();
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
+            ebindr.openFINDr2(ebindr.lastfindr);
         } );
     });
 </script>

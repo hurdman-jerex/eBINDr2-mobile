@@ -177,12 +177,23 @@ var ebindr = new Hash({
 			ebindr.load( load );
 	},
     initializeMobile2Findr: function( load ) {
-        this.init_button();
-        this.init_data();
-        this.findr2 = new ebindr.library.mfindr2();
-		// check to see if we are authenticated
-		if( ebindr.authenticate() )
-			ebindr.load( load );
+        try {
+            this.init_button();
+            this.init_data();
+            this.findr2 = new ebindr.library.mfindr2();
+
+            ebindr.include( "/m/assets/css/findr2.css" );
+
+            // check to see if we are authenticated
+            if( this.auth_check() )
+                ebindr.load( load );
+        }
+        catch(err) {
+            var errHtml = jQuery('<p class="err-msg">'+ err.message + '<br><button class="btn-warning" onclick="window.location.reload();">Reload Page</button>' +'</p>');
+            jQuery('.loading-text').html( errHtml );
+        }
+
+
 	},
 	initializeFindr: function( load ) {
         this.init_button();
@@ -218,6 +229,17 @@ var ebindr = new Hash({
             this.data = new ebindr.library.data();
             this.is_init_data = true;
         }
+    },
+
+    auth_check: function(){
+        ebindr.authenticate({
+            onFalse: function() {
+                ebindr.login();
+            }
+        });
+
+        if( ebindr.authenticate() )
+            return true;
     },
 
     /* Modal */
@@ -317,9 +339,7 @@ var ebindr = new Hash({
                 ebindr.bbbid = Cookie.read("bbbidreal");
                 ebindr.platform();
 
-                (function() {
-                    load();
-                }).delay(1);
+				load();
 
                 if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
                     ebindr.dont_show_scrub_message = true;
