@@ -53,9 +53,18 @@
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
 
-        ebindr.initializeMobile2Findr( function(){
+        var init_findr2_vars = function(){
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
             ebindr.openFINDr2(ebindr.lastfindr);
+        };
+
+        ebindr.initializeMobile2Findr( function(){
+            init_findr2_vars();
+        } );
+
+        ebindr.onWindowLoaded( function(){
+            if( ! ebindr.findr2.started )
+                init_findr2_vars();
         } );
     });
 </script>
