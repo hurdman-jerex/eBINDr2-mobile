@@ -359,7 +359,14 @@ if(!class_exists('mobileEditr')) {
                         $this->addparm("dropdownname", $fields[$i]->dropdownname);
                         $this->addparm("searchdropsql", $searchdrop);
                         $this->addparm("searchonblur", "dosearchdrop_".$fields[$i]->name."();");
+
+                        if($fields[$i]->help>"") $this->addparm("onfocus", "self.status='".$fields[$i]->help."';");
+                        else $this->addparm("onfocus", "");
+                        if($fields[$i]->help>"") $this->addparm("onfocus", "document.getElementById('helptext').innerText='".addslashes($fields[$i]->help)."';");
+                        else $this->addparm("onfocus", "");
+
                         $this->addparm("searchfield", $this->merge("input_search_field.tpl"));
+
                         $iframe=$this->merge("iframe.tpl");
                         $iframe.=$this->merge("searchdrop_js.tpl");
                     }
@@ -464,7 +471,7 @@ if(!class_exists('mobileEditr')) {
             if( ereg("[.]tpl$",$title) ) {
                 $_GET["NOCACHE"]="y";
 
-                if( preg_match( "/buttons|js_verify/", $title, $match ) ) {
+                if( preg_match( "/buttons|js_verify|input_search_field/", $title, $match ) ) {
                     $title = "e2m_$title";
                     $dtitle = "e2_$title";
                 }else

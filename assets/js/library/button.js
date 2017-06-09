@@ -448,7 +448,7 @@ ebindr.library.button = new Class({
 					case "orderentry": ebindr.button.editr_edit( 'lite button orderentry', ebindr.current.bid ); break;
 					case "emaillink":
 						this.logbutton( 'emaillink' );
-						var emaila=new Element('a', {target: '_blank', href:'mailto:?subject=' + escape (ebindr.data.store.sendemailsubject.replace('{dba}', ebindr.data.store.button_bn.replace( '&amp;', '&' ).replace(/<span.*/g,'')).replace('{bid}', ebindr.current.bid))});
+						var emaila=new Element('a', {target: '_blank', href:'mailto:'+ ( ebindr.data.store.copy_primary_email ) +'?subject=' + escape (ebindr.data.store.sendemailsubject.replace('{dba}', ebindr.data.store.button_bn.replace( '&amp;', '&' ).replace(/<span.*/g,'')).replace('{bid}', ebindr.current.bid))});
 						//remove new tabs per ticket 1384555071 {target:'_blank', href:'mailto:?subject=' + escape (ebindr.data.store.button_bn.replace( '&amp;', '&' ).replace(/<span.*/g,'') + ' (Business ID:' + ebindr.current.bid + ')')}
 						emaila.inject(document.body);
 						emaila.setStyles({'display':'none'});

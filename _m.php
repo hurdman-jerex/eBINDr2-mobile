@@ -1,10 +1,11 @@
 <?php
-include "../../includes/readme.php";
+include "reports/readme.php";
 
 // Library
 define( '_MOBILEHELPERS', 'library/helpers.php' );
 define( '_MOBILETEMPLATE', 'library/template.php' );
 define( '_MOBILEREPORTR', 'library/reportr.php' );
+define( '_MOBILEREPORTR2', 'library/reportr2.php' );
 define( '_MOBILEPARSE', 'library/parse.php' );
 define( '_MOBILEEDITR', 'library/editr.php' );
 define( '_MOBILECONFIG', 'library/config.php' );

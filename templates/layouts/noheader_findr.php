@@ -16,24 +16,51 @@
     <!--<link href="/m/assets/css/report.css" rel="stylesheet">-->
     <!--<link href="/m/assets/css/bootstrap.css" rel="stylesheet">
     <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">-->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/m/assets/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.bootstrap.min.css">
 
-    <link href="/m/assets/css/findr.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/m/assets/css/findr.css">
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" language="javascript" src="/m/assets/js/jquery/jquery-1.12.3.min.js">
+    </script>
     <script type="text/javascript">jQuery.noConflict();</script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/m/assets/bootstrap3.3.7/js/bootstrap.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.bootstrap.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.responsive.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/responsive.bootstrap.min.js">
+    </script>
 
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            $dataTable = jQuery('.init-datatable').DataTable({
+                order: [],
+                responsive: {
+                    details: {
+                        display: jQuery.fn.dataTable.Responsive.display.modal( {
+                            header: function ( row ) {
+                                var data = row.data();
+                                return 'Details for '+ data[0];
+                            }
+                        } ),
+                        renderer: jQuery.fn.dataTable.Responsive.renderer.tableAll( {
+                            tableClass: 'table'
+                        } )
+                    }
+                }
+            });
+            //jQuery( '<div class="divider"></div>').insertAfter( jQuery( '.dataTables_wrapper' ) );
+
+        } );
+    </script>
 
     <script type="text/javascript" src="/ebindr/scripts/framework/core-1.4.0.js"></script>
     <script type="text/javascript" src="/ebindr/scripts/framework/more-1.4.0.1.js"></script>
-
 
 
     <!-- script type="text/javascript" src="/ebindr/scripts/framework/core.js"></script -->
@@ -431,8 +458,10 @@ window.addEvent( 'load', function() {
                 //alert(window.parent.ebindr.window.parent.focusedWindow.options.id);
     </script>
 </head>
-<body onFocus="" id='body_id' STYLE="background:transparent" ondblclick="DblClickHandle();">
+<body ondblclick="DblClickHandle();">
 <div class="container-fluid">
+    <div class="row-fluid">
+
 <a href="#" style="display:none;" id="cr-email" title="Email this report" lang="<[current_query]>"><img style="display:none;" src="/ebindr/images/icons16x/email.png" alt="Email this report" /><span style="display:none;"><[USED_PARAMETERS]></span></a>
 
 <form name="limit" action="" method="post">
@@ -441,6 +470,8 @@ window.addEvent( 'load', function() {
     <[content]>
     <[submit]>
 </form>
+    </div>
+</div>
 <script>
     if("<[current_query]>"!="lite button myalerts" && "<[current_query]>"!="lite button info2") window.focus();
     if(document.complaintform) {
@@ -502,27 +533,7 @@ window.addEvent( 'load', function() {
         window.parent.ebindr.openBID( bid, start, cid, minimize );
         window.parent.dopage("records");
     }
-   jQuery(document).ready(function() {
-       jQuery('.dataset').DataTable({
-           responsive: {
-               details: {
-                   display: jQuery.fn.dataTable.Responsive.display.modal( {
-                       header: function ( row ) {
-                           var data = row.data();
-                           return 'Details for '+ data[0];
-                       }
-                   } ),
-                   renderer: jQuery.fn.dataTable.Responsive.renderer.tableAll( {
-                       tableClass: 'table'
-                   } )
-               }
-           }
-        });
 
-       jQuery( '<div class="divider"></div>').insertAfter( jQuery( '.dataTables_wrapper' ) );
-
-    } );
 </script>
-</div>
 </body>
 </html>

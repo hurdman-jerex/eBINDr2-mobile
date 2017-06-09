@@ -110,99 +110,21 @@ ebindr.extend({
 		return;
 	},
 
-    /* FINDr */
     openFINDr2: function( which, inquirystat ) {
         if( $type( inquirystat )=='undefined' ) inquirystat=false;
         ebindr.current.lastInquiry=inquirystat;
         ebindr.current.auto_findr=which;
-        ebindr.doNormal( 'e button findr', {
-            id: 'findr2',
-            loadMethod: 'xhr',
-            contentURL: '/ebindr/views/findr1.html',
-            padding: { left: 0, right: 0, top: 0, bottom: 0 },
-            width: window.getSize().x-65,
-            height: window.getSize().y-200,
-            minimizable: true,
-            maximizable: false,
-            resizable: true,
-            closable: false,
-            title: "FINDr",
-            onContentLoaded: ebindr.findr2.start.bind(this),
-            onMinimize: function() {
-                ebindr.findr2.typing = false;
-                ebindr.window.library.focusedWindow = false;
-            },
-            //onFocus: ebindr.findr2.windowInit.bind(this), // it fixed the shortcut key ? - Jerex
-            onRestore: ebindr.findr2.windowInit.bind(this),
-            onWindowOpen: ebindr.findr2.start.bind(this),
-            onResize: function() {
-                if(! ebindr.findr2.started ) return;
-                /*$('more-list').setStyles({
-                    'left': $('more-search').getCoordinates().left - 310,
-                    'top': $('more-search').getCoordinates().top + 10
-                });*/
-            }
-        });
+
+        (function() {
+            ebindr.findr2.start.bind(this);
+            ebindr.findr2.windowInit.bind(this);
+         }).call( ebindr.findr2.start() );
+
 
     },
-    openFINDr: function(which, inquirystat) {
-        if( 1==1 /*Cookie.read("reportr_username") == 'dst'*/ ) {
-            this.openFINDr2(which,inquirystat);
-            return;
-        }
-        if( $type( inquirystat )=='undefined' ) inquirystat=false;
-        ebindr.current.lastInquiry=inquirystat;
-        ebindr.current.auto_findr=which;
-        ebindr.doNormal( 'e button findr', {
-            id: 'findr',
-            contentURL: '/ebindr/views/findr.html',
-            width: window.getSize().x-350,
-            height: window.getSize().y-150,
-            minimizable: true,
-            maximizable: false,
-            closable: false,
-            storeOnClose: true,
-            padding: { top: 0, bottom: 0, left: 0, right: 0 },
-            title: "FINDr",
-            onContentLoaded: function() {
-                $( 'findr' ).focus();
-                ebindr.findr.setsearch( ebindr.current.auto_findr );
 
-                if( ebindr.current.link_search != '' ) {
-                    $('findr_iframe').contentWindow.$('findr-search').value = ebindr.current.link_search;
-                    ebindr.findr.find('x');
-                    ebindr.current.link_search = '';
-                }
-            },
-            onResize: function(e) {
-                ebindr.findr.resize();
-            },
-            onWindowOpen: function(e) {
-                if( which ) {
-                    ebindr.findr.setsearch( which );
-                }
-                if( typeof(search_value) != 'undefined' ) {
-                    this.options.onContentLoaded();
-                }
-                if( ebindr.current.link_search != '' ) {
-                    $('findr_iframe').contentWindow.$('findr-search').value = ebindr.current.link_search;
-                    ebindr.findr.find( ebindr.current.auto_findr );
-                    ebindr.current.auto_findr=false;
-                }
-            },
-            onRestore: function(e) {
-//				alert(ebindr.current.link_search);
-                if( ebindr.current.link_search != '' ) {
-                    $('findr_iframe').contentWindow.$('findr-search').value = ebindr.current.link_search;
-                    ebindr.findr.find( ebindr.current.auto_findr );
-                    ebindr.current.auto_findr=false;
-                }
-                $( 'findr' ).focus();
-                ebindr.findr.setsearch( ebindr.lastfindr );
-                this.options.onContentLoaded();
-            }
-        });
-
+    onWindowLoaded: function( load ){
+        window.addEventListener( 'load', load );
     },
 
     backform: function( e ){

@@ -7,7 +7,10 @@ $files = array(
 	'library/user.js',
 	'library/legacy.js',
 	'library/button.js',
+	'library/keyboard.js',
 	'library/findr1.js',
+	'library/findr2.js',
+	'library/mfindr.js',
 	'library/data.js'
 );
 $leaveout = array(12);

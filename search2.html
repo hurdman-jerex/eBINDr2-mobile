@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="eBINDr2 Mobile">
+    <meta name="author" content="Hurdman Communications Inc.">
+    <link rel="shortcut icon" href="/m/assets/img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/m/assets/img/mobile-apps-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/m/assets/img/mobile-apps-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/m/assets/img/mobile-apps-72.png">
+    <link rel="apple-touch-icon-precomposed" href="/m/assets/img/mobile-apps-57.png">
+
+    <title><?=$__page_title?></title>
+
+    <?php include "/home/serv/public_html/m/templates/bootstrap3.3.7/styles.php"; ?>
+
+
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ebindr-mobile-navbar-collapse" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span style="color: #fff;">eBINDr</span> Mobile</a>
+        </div>
+
+        <?php include "/home/serv/public_html/m/templates/bootstrap3.3.7/menu.html"; ?>
+
+    </div>
+</nav>
+
+<?php include "/home/serv/public_html/m/templates/bootstrap3.3.7/search/sub_nav.php"; ?>
+
+<div class="container-fluid theme-showcase" role="main">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="findr2-search-container">
+                <div class="" id="search-result" style="padding-top: 10px;">
+                    <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
+
+                    </iframe>
+                    <!--<div id="mfindr2-search-result-wrapper" aria-live="assertive" role="status">
+                        &lt;!&ndash; HTML will be inserted here &ndash;&gt;
+                    </div>-->
+                </div>
+            </div>
+            <div aria-label="Searching" alt="Searching" id="findr2-loading" style="display: none; text-align: center;">
+                <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
+            </div>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<? include "/home/serv/public_html/m/templates/bootstrap3.3.7/scripts.php"; ?>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        if (document.getElementById('search-type').textContent == "ABs Near Address")
+            ebindr.findr2.what = "ab-address";
+    });
+</script>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        ebindr.initializeMobile2Findr( function(){
+            ebindr.findr2.start();
+            ebindr.findr2.initIFrame( 'findr2-search-frame' );
+        } );
+    });
+</script>
+
+</body>
+</html>

@@ -66,7 +66,11 @@ var ebindr = new Hash({
 	windowtrack: [],
 	lastwindowtrack: 'none',
 	sysstatus_timeout: false,
-	lastfindr: "n",	
+	lastfindr: "n",
+
+    /* flag for initialize */
+    is_init_button: false,
+    is_init_data: false,
 	// stores what is current whether it be a tab, frame, or editr, etc.
 	// also this is included as a stutitute object for each url that is
 	// loaded in eBINDr so that {bid} will become the actualy value in the url string
@@ -159,31 +163,84 @@ var ebindr = new Hash({
         }).delay(1);
     },
 	initializeUser: function( load ) {
-        this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		// check to see if we are authenticated
+        this.init_button();
+        this.init_data();
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
+	initializeMobileFindr: function( load ) {
+        this.init_button();
+        this.init_data();
+        this.findr2 = new ebindr.library.mfindr();
+		// check to see if we are authenticated
+		if( ebindr.authenticate() )
+			ebindr.load( load );
+	},
+    initializeMobile2Findr: function( load ) {
+        try {
+            this.init_button();
+            this.init_data();
+            this.findr2 = new ebindr.library.mfindr2();
+
+            ebindr.include( "/m/assets/css/findr2.css" );
+
+            // check to see if we are authenticated
+            if( this.auth_check() )
+                ebindr.load( load );
+        }
+        catch(err) {
+            var errHtml = jQuery('<p class="err-msg">'+ err.message + '<br><button class="btn-warning" onclick="window.location.reload();">Reload Page</button>' +'</p>');
+            jQuery('.loading-text').html( errHtml );
+        }
+
+
+	},
 	initializeFindr: function( load ) {
-		this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
-		this.findr2 = new ebindr.library.findr2();
+        this.init_button();
+        this.init_data();
+        this.findr2 = new ebindr.library.findr2();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
 			ebindr.load( load );
 	},
     initialize: function( load ) {
-        this.button = new ebindr.library.button();
-		this.data = new ebindr.library.data();
+        this.init_button();
+        this.init_data();
 		// check to see if we are authenticated
 		if( ebindr.authenticate() )
             ebindr.load( load );
 	},
 
-	init_libraries: function( $name, $library ){
-		this.$name = $library;
+	init_library: function( $name, $library ){
+
+        if( typeof $self[$name] === "undefined" || !$self[$name] )
+		    $self[$name] = new $library();
 	},
+
+    init_button: function(){
+        if( ! this.is_init_button ){
+            this.button = new ebindr.library.button();
+            this.is_init_button = true;
+        }
+    },
+
+    init_data: function(){
+        if( ! this.is_init_data ) {
+            this.data = new ebindr.library.data();
+            this.is_init_data = true;
+        }
+    },
+
+    auth_check: function(){
+        ebindr.authenticate({
+            onFalse: function() {
+                ebindr.login();
+            }
+        });
+
+        if( ebindr.authenticate() )
+            return true;
+    },
 
     /* Modal */
     modal: {
@@ -265,8 +322,8 @@ var ebindr = new Hash({
             // bring in the styles
             //ebindr.include( "/m/assets/css/button.css" );
             // bring in the datepicker
-            ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
-            ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
+            //ebindr.include( "/ebindr/styles/plugins/datepicker.css" );
+            //ebindr.include( "/ebindr/scripts/plugins/datepicker.js" );
 
             //ebindr.include( "/ebindr/styles/findr.css" );
             //ebindr.include( "/ebindr/styles/findr1.css" );
@@ -282,9 +339,7 @@ var ebindr = new Hash({
                 ebindr.bbbid = Cookie.read("bbbidreal");
                 ebindr.platform();
 
-                (function() {
-                    load();
-                }).delay(1);
+				load();
 
                 if(ebindr.data.store.attributes.indexOf("Suppress pop up publishing message") > -1) {
                     ebindr.dont_show_scrub_message = true;
@@ -296,7 +351,7 @@ var ebindr = new Hash({
 
     getBizButtons: function( secondTime ) {
         if( undefined == secondTime ) var secondTime = false;
-        ebindr.data.get('e button sort', function(data) {
+        ebindr.data.get('e2m js button sort', function(data) {
             if( data == 'empty' && !secondTime ) return ebindr.getBizButtons(true);
 
             data.each(function(btn,i) {
@@ -366,7 +421,7 @@ var ebindr = new Hash({
         if( this.user.isActive() ) {
             if(this.windowtrack.length>0) var mytracks="('"+this.windowtrack.join("),('").replace(/,([0-9])/g,"',$1")+")"; else var mytracks="()";
             this.windowtrack=[];
-            var thisalert = new Request.HTML().get( '/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
+            var thisalert = new Request.HTML().get( '/m/report/e button myalerts/?ebindr2=y&noheaderhidden&bid='+this.current.bid+'&systemmessagemid='+this.systemmessagemid+'&@NOPROMPTwindowtracks='+escape(mytracks) );
         }
         if(this.myalerts_timeout) window.clearTimeout(this.myalerts_timeout);
         this.myalerts_timeout=window.setTimeout( "ebindr.alerts();", 30000);

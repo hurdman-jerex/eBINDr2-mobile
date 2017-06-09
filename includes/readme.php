@@ -4,6 +4,13 @@ if(session_id() == '') {
 }
 error_reporting(0);
 include "/home/serv/public_html/ebindr/includes/functions.php";
+
+if( preg_match( '/boldcommercial|boldfundraising|hurdmantest/i', $_SERVER['SERVER_NAME'], $match ) ){
+    $_definitions_file_path = '/home/'. $match[0] .'/definitions.php';
+    if( file_exists( $_definitions_file_path ) )
+        include $_definitions_file_path;
+}
+
 if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) {
     include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php"; // global definitions
 }
@@ -16,6 +23,7 @@ if(file_exists("/home/definitions.php")) {
 if(file_exists("../definitions.php")) {
     include "../definitions.php"; // global definitions
 }
+
 include "/home/serv/includes/definitions.php"; // global definitions
 
 include "/home/serv/public_html/m/includes/helpers.php";
@@ -79,6 +87,11 @@ if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'business' &&
     $___ebindr2mobile_http['segments'][$_segment_count - 1] = $___ebindr2mobile_http['segments'][$_segment_count - 1] . ' ' . $_business_info;
 }
 
+if( $___ebindr2mobile_http[ 'segments' ][ $_segment_count - 1 ] == 'quick-launch' && isset( $_GET[ 'name' ] ) ) {
+    $_business_info = str_replace( '-', ' ', $_GET[ 'name' ] );
+    $___ebindr2mobile_http['segments'][$_segment_count - 1] = $___ebindr2mobile_http['segments'][$_segment_count - 1] . ' ' . $_business_info;
+}
+
 $__page_title =  implode( " ", $___ebindr2mobile_http[ 'segments' ] );
 $__page_title = '- ' . ucwords( str_replace( 'index', '', $__page_title ) );
 
@@ -102,6 +115,7 @@ $q = $mybindr->ResolvePipes($q);
 foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
     ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
 
+$__business_info['info_js'] = preg_grep('/js_/', array_keys( $__business_info ));
 
 list($q) = $mybindr->getquery("e2m e button info2");
 $q = $mybindr->ResolvePipes($q);
@@ -161,8 +175,6 @@ $___ebindr2mobile_views['template_folder'] = 'default';
 //}catch ( Exception $e ){
 
 //}
-
-/*dd( $__business_info );*/
 
 
 

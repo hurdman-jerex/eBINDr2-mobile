@@ -7,8 +7,8 @@ ebindr.library.data = new Class({
 	
 	preloadPointer: 0, // where the preload query processing is at
 	preloadSQL: [
-		'e button info2',
-		'e button info',
+		'e2m e button info2',
+		'e2m e button info',
 		'e button info2 - custom',
 		//'e button dr',
 		//'e favorite reports.list',
@@ -316,7 +316,7 @@ ebindr.library.data = new Class({
 			                'text': value
 			            }).inject(document.head); 
 					};
-					if(query=="e button info" && key.substring(0,3) == 'js_') {
+					/*if(query=="e button info" && key.substring(0,3) == 'js_') {
 						if($('info_'+key)) $('info_'+key).dispose();
 						var el = new Element('script', { 
 							'id': 'info_'+key,
@@ -331,7 +331,7 @@ ebindr.library.data = new Class({
 								'text': value
 							}).inject(document.head); 
 						};
-					}
+					}*/
 					if( key.substring(0,12) == 'buttoncolor_' ) {
 						if( $( key.split("_")[1] ) ) {
 							if( value.length > 0 ) $( key.split("_")[1] ).addClass(value);
@@ -360,6 +360,24 @@ ebindr.library.data = new Class({
 						edittitlecase = this.store.edittitlecase;
 					}
 								
+					/*// login alert
+                    if( ebindr.segments )
+					if( this.store.loginalert.length > 0 && !ebindr.shownloginalert ) {
+						ebindr.alert( this.store.loginalert, 'Remember' );
+						//ebindr.growl( 'Remember', this.store.loginalert, true, 'black' );
+						ebindr.shownloginalert = true;
+					}*/
+					break;
+				case "e2m e button info2":
+					//ebindr.current.bid = this.store.bid;
+					if( ebindr.autoloadbid ) {
+						ebindr.openBID( ebindr.autoloadbid, true );
+						ebindr.autoloadbid = false;
+					} else {
+						if( !ebindr.current.switchedbid ) ebindr.openBID( this.store.bid, true );
+						edittitlecase = this.store.edittitlecase;
+					}
+
 					/*// login alert
                     if( ebindr.segments )
 					if( this.store.loginalert.length > 0 && !ebindr.shownloginalert ) {
@@ -437,6 +455,10 @@ ebindr.library.data = new Class({
 				case "e button info2" : var text = 'Global Variables'; 
 					if(ebindr.data.store.securitykeys.split(',')[2]=="") window.location.href="/logout.php";
 					break;
+				case "e2m e button info2" : var text = 'Global Variables';
+					if(ebindr.data.store.securitykeys.split(',')[2]=="") window.location.href="/logout.php";
+					break;
+				case "e2m e button info" : var text = 'Business Data'; break;
 				case "e button info" : var text = 'Business Data'; break;
 				case "e button dr" : var text = 'Registers'; break;
 				case "e favorite reports.list" : var text = 'Favorite Reports'; break;
@@ -445,7 +467,8 @@ ebindr.library.data = new Class({
 				case "/ebindr/community.php/features/popular" : var text = 'Retrieving Queue Items'; break;
 				case "e findr s" : var text = 'Extended FINDr Searches'; break;
 			}
-			
+
+            jQuery('.loading-text').text( text );
 			 
 			// see if we are done the preloading of data
 			if( (ebindr.data.preloadPointer+1) == ebindr.data.preloadSQL.length ) {
@@ -467,7 +490,7 @@ ebindr.library.data = new Class({
 	runQuery: function(query, gets) {
 		if( typeof(gets) == 'undefined' ) gets = new Object();
 
-		var newQuery = ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' );
+		var newQuery = ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' );
 
 		var abisEmpty = true;
     if (gets == null) abisEmpty = true;
@@ -525,7 +548,7 @@ ebindr.library.data = new Class({
 				nocache: true,
 				onComplete: function(text) {
 					if( text.length > 3 ) {
-						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + text );
+						console.log( 'Query loaded: ' + query + ', the results were: ' + text );
 						
 						// store the result
 						ebindr.data.store.tickets = new Hash({
@@ -572,6 +595,54 @@ ebindr.library.data = new Class({
 				'type': options.type
 			});
 			
+		}else if( query == 'e2m button sort' ) {
+
+			var get = new Request.JSON({
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
+				nocache: true,
+				onComplete: function( data, str ) {
+					if( typeof(data) == 'object' && str != '//No data' ) {
+						// log that we loaded a query
+						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + str );
+						// run the callback
+						if( data !== null ) callback( data.resultset );
+					} else {
+						callback( 'empty' );
+					}
+				}
+			}).get({
+				'json': 'y',
+				'NOASK': '',
+				'query': query,
+				'bid': ( $chk(ebindr.current.bid) ? ebindr.current.bid : ebindr.data.store.bid ),
+				't': new Date().getTime(),
+				'type': options.type
+			});
+
+		}else if( query == 'e2m js button sort' ) {
+
+			var get = new Request.JSON({
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
+				nocache: true,
+				onComplete: function( data, str ) {
+					if( typeof(data) == 'object' && str != '//No data' ) {
+						// log that we loaded a query
+						ebindr.log( 'Query loaded: ' + query + ', the results were: ' + str );
+						// run the callback
+						if( data !== null ) callback( data.resultset );
+					} else {
+						callback( 'empty' );
+					}
+				}
+			}).get({
+				'json': 'y',
+				'NOASK': '',
+				'query': query,
+				'bid': ( $chk(ebindr.current.bid) ? ebindr.current.bid : ebindr.data.store.bid ),
+				't': new Date().getTime(),
+				'type': options.type
+			});
+
 		} else {
 		
 			if( query == 'e button info' ) {
@@ -588,7 +659,7 @@ ebindr.library.data = new Class({
 			}
 		
 			var get = new Request.JSON({
-				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' ),
+				url: ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/m/report/merge/JSON.htm/' ),
 				nocache: true,
 				onComplete: function( data, str ) {
 					if( typeof(data) == 'object' && str != '//No data' ) {

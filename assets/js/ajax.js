@@ -1,12 +1,10 @@
-function AjaxService() {};
+function AjaxService() {}
 
 AjaxService.prototype = {
 
     handleErrorResponse : function( $error )
     {
         var $message = [];
-
-        console.log( $error );
         jQuery.each(
             $error.responseJSON,
             function( $key, $value )
