@@ -33,6 +33,10 @@ td input{
     width: 270px;
 }
 
+select {
+    width: auto !important;
+}
+
 /*
 tr{
     margin-bottom: 18px;
