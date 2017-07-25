@@ -27,6 +27,9 @@ session_start();
 
 $login["reportr_keys"] = urldecode( $login["reportr_keys"] );
 
+//echo '<pre>' . print_r( $login, true ) . '</pre>';
+//exit();
+
 $_SESSION["security"] = $login["security"];
 setcookie("security", $login["security"], time()+AUTO_LOGOUT_TIME, "/"); // check security
 setcookie("reportr_auto_home", $login["reportr_auto_home"], time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
@@ -52,7 +55,8 @@ $_login = json_decode( $bbapi->post( $bbapi->getRootUrl() . '/m/api/user/login/'
 //echo '<pre>'.print_r( $_login[0]->person_bid, true ).'</pre>';
 
 //if( ! isset( $_SESSION['bid'] ) )
-    $_SESSION['bid'] = $_login[0]->person_bid;
+$_SESSION['bid'] = $_login[0]->person_bid;
+$_SESSION['user_info'] = $_login[0];
 
 if( isset( $_SESSION['bid'] ) && $_SESSION['bid'] < 1 )
     unset( $_SESSION['bid'] );

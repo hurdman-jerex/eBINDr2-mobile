@@ -1,27 +1,27 @@
 <?php
 session_start();
-include "/home/serv/public_html/m/_autoload/_autoload.php"; 
+include "/home/serv/public_html/m/_autoload/_autoload.php";
 include "/home/serv/library/json.php";
 
-$url='http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/staff/update/'.$_SESSION['bid'].'/'.$_SESSION['user']->sid;
+$url='http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/staff/update/'.$_SESSION['bid'].'/'.$_SESSION['user_info']->sid;
 $bbapi->post($url);
 
 if(isset($_GET['bid'])) {
-    $_SESSION['bid']=$_GET['bid'];
-    $_SESSION['e2m_bid_loaded']=$_GET['bid'];
+$_SESSION['bid']=$_GET['bid'];
+$_SESSION['e2m_bid_loaded']=$_GET['bid'];
 
-    $myHost = ( ( $_SERVER[HTTPS]=='on' ) ? 'https://' : 'http://' );
+$myHost = ( ( $_SERVER[HTTPS]=='on' ) ? 'https://' : 'http://' );
 
-		if ( strpos($_SERVER['SERVER_NAME'], 'mbc-web') > -1 || strpos($_SERVER['SERVER_NAME'], 'vancouver') > -1 ) {
-			$myHost = 'https://';
-		}
+if ( strpos($_SERVER['SERVER_NAME'], 'mbc-web') > -1 || strpos($_SERVER['SERVER_NAME'], 'vancouver') > -1 ) {
+    $myHost = 'https://';
+}
 
-    if(isset($_GET['cid'])) { 
-        header('Location: ' . $myHost . $_SERVER['SERVER_NAME'].'/m/business/complaints.html?cid='.$_GET['cid']);
-    }
-    else {
-        header('Location: ' . $myHost . $_SERVER['SERVER_NAME'].'/m/business.html');
-    }
+if(isset($_GET['cid'])) {
+    header('Location: ' . $myHost . $_SERVER['SERVER_NAME'].'/m/business/complaints.html?cid='.$_GET['cid']);
+}
+else {
+    header('Location: ' . $myHost . $_SERVER['SERVER_NAME'].'/m/business.html');
+}
 }
 else {
     header('Location: ' . $myHost . $_SERVER['SERVER_NAME'].'/m/index.html');

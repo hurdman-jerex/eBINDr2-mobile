@@ -100,14 +100,13 @@ ebindr.extend({
 
 			this.onOpenBID();
 			
-			this.onOpenBID=function(){return;};
+			//this.onOpenBID=function(){return;};
 		}
 
         //window.location = '/m/searchlink.html?bid='+ebindr.current.bid;
 	},
 	
-	onOpenBID: function( ) {
-		return;
+	onOpenBID: function() {
 	},
 
     openFINDr2: function( which, inquirystat ) {

@@ -246,6 +246,9 @@
             $$('body')[0].setStyles({'overflow':'hidden'});*/
         };
         window.addEvent( 'load', function() {
+
+            console.log( window.location.href );
+
             $$('a').each(function(el) {
 
                 if( el.hasClass( 'toplink' ) )
@@ -555,11 +558,21 @@
 <form name="reportlinkform" action="" method="get" target="_blank">
     <[setinputs]>
 </form>
+
+<input type="hidden" id="report_current_location" name="report_current_location" value="/<[APPLICATION_FILENAME]>/<[current_location]>?ebindr2=y">
+
 <script language="javascript">
     function MergeReport(myloc) {
         document.reportlinkform.action=myloc;
         document.reportlinkform.submit();
     }
+
+    /*window.addEvent( 'ready', function() {
+        console.log( 'ready' );
+        var $report_current_loc = $('report_current_location').get('value');
+        console.log( $report_current_loc )
+        }
+    );*/
 
 </script>
 <[restriction_link]><[iptracking]>

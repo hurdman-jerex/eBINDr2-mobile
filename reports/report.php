@@ -1,7 +1,8 @@
 <?php
 /* REPORT REPORT */
-/*echo $layout_template;
-dd( $device->templates->table );
+//echo $layout_template;
+//echo $reportr->current_query;
+/*dd( $device->templates->table );
 exit();*/
 //dd( $device );
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {

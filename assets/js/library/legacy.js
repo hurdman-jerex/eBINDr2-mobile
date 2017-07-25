@@ -4,6 +4,20 @@ var readonly=false;
 setbid = function(bid, start, cid, minimize) {
 	if( typeof(minimize) == 'undefined' ) var minimize = false;
 	ebindr.openBID(bid, start, cid, minimize);
+
+    $http.get( '/m/reports/openbid.php',
+        {
+            bid: ebindr.current.bid
+        },
+        function( $json_response ){
+            if( $json_response.success && $json_response.business.bid != ebindr.current.lastbid ){
+                console.log( 'Update Business Information' );
+                jQuery( '#business-information-name' ).text( $json_response.business.name );
+                jQuery( '#business-information-name-edit' ).attr('href', '/m/business/names-dba/edit.php?did=' + $json_response.business.did);
+            }else
+                console.log( 'Same BID loaded!' );
+        }
+    );
 }
 // do page
 dopage = function(page) {
