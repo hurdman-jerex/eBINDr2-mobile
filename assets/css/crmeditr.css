@@ -1,0 +1,63 @@
+body, html {
+    background-color: #FFFFFF;
+}
+.text-center .nav-tabs > li, .text-center .nav-pills > li {
+    float:none;
+    display:inline-block;
+    *display:inline; /* ie7 fix */
+    zoom:1; /* hasLayout ie7 trigger */
+}
+
+.text-center .nav-tabs, .text-center .nav-pills {
+    text-align:center;
+}
+.text-center .nav-tabs { border-bottom: none; }
+.tab-pane, .tab-content { background-color: #fff; }
+.tab-no-left {
+    /*border: 1px solid #ddd;
+    border-radius: 4px;*/
+}
+.active {
+    font-weight: bold;
+}
+.tab-content {
+    padding: 25px;
+}
+
+thead {
+    background-color: #666666;
+    color: white;
+}
+
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: white;
+}
+
+.table-striped > tbody > tr:nth-of-type(2n) {
+    background-color: #cccccc;
+}
+
+.nav li:not(.active) {
+    background-color: #666666;
+    border-radius: 5px 5px 0 0;
+    margin-bottom: 0;
+}
+
+.nav li:not(.active) a {
+    color: white;
+}
+
+.tabs-krajee.tab-sideways .nav-tabs > li {
+    height: 40px;
+    margin-bottom: 85px;
+    margin-left: 11px;
+    width: 120px;
+}
+
+li:not(.active) a:hover {
+    color: black;
+}
+
+.tab-sideways.tabs-left .nav-tabs > li.active, .tab-sideways.tabs-right .nav-tabs > li.active {
+    border-top: 0;
+}

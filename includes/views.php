@@ -16,7 +16,8 @@ return array(
             'noheader_findr',
             'noheader_findr2',
             'open',
-            'printr'
+            'printr',
+            'crmeditr'
         )
     ),
     'components' => array(

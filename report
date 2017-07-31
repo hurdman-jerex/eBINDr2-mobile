@@ -66,8 +66,14 @@ elseif($variables[0] == 'api')
 elseif(isset($_GET["importr"]))
     include MOBILE_REPORT_URI . 'importr.php';
 
-elseif(isset($_GET["editr"]) || isset($_POST[editr]))
-    include MOBILE_REPORT_URI . 'editr.php';
+elseif(isset($_GET["editr"]) || isset($_POST[editr])){
+
+    if(isset($_GET["callresult"]) && $_GET["callresult"] == 'EM' && isset($_GET['crm']))
+        include MOBILE_REPORT_URI . 'crm.php';
+    else
+        include MOBILE_REPORT_URI . 'editr.php';
+
+}
 
 elseif(ereg("^/open", $_SERVER[PATH_INFO]))
     include MOBILE_REPORT_URI . 'open.php';

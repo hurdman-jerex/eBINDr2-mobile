@@ -36,7 +36,7 @@ setcookie("reportr_auto_home", $login["reportr_auto_home"], time()+AUTO_LOGOUT_T
 setcookie("BBBID", $login['BBBID'], time()+AUTO_LOGOUT_TIME, "/");        // database
 setcookie("bbbidreal", $login["bbbidreal"], time()+AUTO_LOGOUT_TIME, "/"); // set the real bbbid not cid from customer table
 setcookie("reportr_db", $login["reportr_db"], time()+AUTO_LOGOUT_TIME, "/");        // database
-setcookie("reportr_username", $login["reportr_username"], time()+AUTO_LOGOUT_TIME, "/");        // username
+setcookie("reportr_username", str_replace( '+', '', $login["reportr_username"]), time()+AUTO_LOGOUT_TIME, "/");        // username
 setcookie("reportr_flag",$login["reportr_flag"], time()+AUTO_LOGOUT_TIME, "/");    // default home (default: menu)
 setcookie("reportr_keys", $login["reportr_keys"], time()+AUTO_LOGOUT_TIME, "/");            // security keys for current user
 setcookie("reportr_conf", $login["reportr_conf"], time()+AUTO_LOGOUT_TIME, "/");            // security keys for current user

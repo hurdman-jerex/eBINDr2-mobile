@@ -4,11 +4,15 @@
 <? $_menuPage= $url . '/m/report/Menu?ebindr2=y' ?>
 <script type="text/javascript">
     jQuery( document ).ready(function() {
+        console.log( ebindr );
         /*var reportIframeHeight = ( window.screen.height - 150 );
         jQuery( '#reportIframe' ).css( 'height', reportIframeHeight + 'px' );*/
         var _menupage = '<?=$_menuPage?>';
 
+
+
         ebindr.initialize( function(){
+            console.log( _menupage );
             ebindr.initIFrame( 'reportIframe', { contentURL : _menupage } );
         } );
     });
