@@ -119,7 +119,7 @@ ebindr.extend({
             ebindr.findr2.windowInit.bind(this);
          }).call( ebindr.findr2.start() );
 
-
+        ebindr.current.page = 'findr';
     },
 
     onWindowLoaded: function( load ){

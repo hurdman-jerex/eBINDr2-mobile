@@ -1,4 +1,5 @@
 <?php
+include "/home/serv/public_html/m/includes/http.php";
 $start = microtime();
 if(isset($_COOKIE[BBBID])) define("BBBID", $_COOKIE[BBBID]);
 include "../../includes/faxserver.php";

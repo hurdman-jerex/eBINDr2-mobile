@@ -4,7 +4,7 @@
 //echo $reportr->current_query;
 /*dd( $device->templates->table );
 exit();*/
-//dd( $device );
+//dd( $___ebindr2mobile_http );
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {
     $task->num_rows = 1;
     $temp = read_tmp_file('query');

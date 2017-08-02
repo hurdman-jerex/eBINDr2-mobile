@@ -247,7 +247,8 @@
         };
         window.addEvent( 'load', function() {
 
-            console.log( window.location.href );
+            /*var isReport = window.parent.location.href.indexOf('reports.html') !== -1;
+            console.log( isReport );*/
 
             $$('a').each(function(el) {
 
