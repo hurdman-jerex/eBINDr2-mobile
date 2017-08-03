@@ -375,7 +375,19 @@ var ebindr = new Hash({
         ebindr.modal.alert( message, title );
 	},
 
+	toast: function( title, text, icon, hideAfter, loader ){
+        var args = {
+            heading: title,
+            text: ( text || '' ),
+            position: 'top-right',
+            stack: 4,
+            hideAfter: hideAfter || 2000,
+            icon: icon || false,
+            loader: loader || false
+        };
 
+        return jQuery.toast( args )
+    },
 
 	ipaddress: function( url ) {
 		new Element( 'script', {

@@ -1,21 +1,28 @@
 <iframe id="reportIframe" class="mochaIframe" marginwidth="0" marginheight="0" scrolling="auto" style="width: 100%;" frameborder="0"></iframe>
 
-<? $url = $myHost . $_SERVER['SERVER_NAME']; ?>
-<? $_menuPage = $url . '/m/report/Menu?ebindr2=y'; ?>
-
 <?
-if( isset($_GET['merge'] ) ){
-    $mergecode = $_GET['merge'];
-    $_menuPage = $url . '/m/report/' . $mergecode . '?ebindr2=y';
-}
+$url = $myHost . $_SERVER['SERVER_NAME'];
+$mergecode = 'menu';
+if( isset($_GET['merge'] ) ):
+$mergecode = $_GET['merge'];
 ?>
-
 <script type="text/javascript">
     jQuery( document ).ready(function() {
-        var _menupage = '<?=$_menuPage?>';
-
+        var _menupage = '<?=$url?>' + '/m/report/<?=$mergecode?>?ebindr2=y';
         ebindr.initialize( function(){
             ebindr.initIFrame( 'reportIframe', { contentURL : _menupage } );
         } );
     });
 </script>
+<? else: ?>
+<script type="text/javascript">
+    jQuery( document ).ready(function() {
+        var _merge = '<?=$mergecode?>';
+        var _menupage = '<?=$url?>' + '/m/report/' + _merge + '?ebindr2=y';
+        ebindr.initialize( function(){
+            ebindr.initIFrame( 'reportIframe', { contentURL : _menupage } );
+        } );
+    });
+</script>
+<? endif; ?>
+

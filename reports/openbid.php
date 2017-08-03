@@ -27,23 +27,23 @@ $q = $mybindr->ResolvePipes($q);
 foreach( explode( "||", str_replace( "\r\n", "", $q ) ) as $query )
     ( $result = mysql_fetch_assoc( mysql_db_query(LOCAL_DB, $query, $mybindr->db) ) ) ? $__business_info = array_merge( $__business_info, $result ) : null;
 
-$__business_info['info_js'] = preg_grep('/js_/', array_keys( $__business_info ));
+//$__business_info['info_js'] = preg_grep('/js_/', array_keys( $__business_info ));
 
 /* Lets get basic info from API */
-$url= $___ebindr2mobile_http[ 'api_url' ] .'business/basic/staff/update/'.$_GET['bid'].'/'.$_SESSION['user_info']->sid;
+/*$url= $___ebindr2mobile_http[ 'api_url' ] .'business/basic/staff/update/'.$_GET['bid'].'/'.$_SESSION['user_info']->sid;
 $bbapi->get($url);
 
-$business_info = json_decode( $bbapi->get( $___ebindr2mobile_http[ 'api_url' ] .'business/info/'. $_GET['bid'] ) )->results;
+$business_info = json_decode( $bbapi->get( $___ebindr2mobile_http[ 'api_url' ] .'business/info/'. $_GET['bid'] ) )->results;*/
 
-ob_start();
+/*ob_start();
 include "/home/serv/public_html/m/templates/business/info.php";
 $html = ob_get_contents();
-ob_end_clean();
+ob_end_clean();*/
 
 $results = array(
-    'business' => $business_info[0],
+    //'business' => $business_info[0],
     'info' => $__business_info,
-    'html' => $html,
+    //'html' => $html,
     'success' => true
 );
 
