@@ -53,9 +53,16 @@
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
 
+        console.log( Cookie.read( 'lastfindrquery_value' ) );
+        console.log( Cookie.read( 'lastfindrquery' ) );
+
         var init_findr2_vars = function(){
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
-            ebindr.openFINDr2(ebindr.lastfindr);
+            ebindr.current.link_search  = Cookie.read( 'lastfindrquery_value' ) || '';
+            ebindr.lastfindr = Cookie.read( 'lastfindrquery' ) || null;
+            ebindr.openFINDr2( ebindr.lastfindr );
+
+            console.log( Cookie.read( 'lastfindr_query' ) );
         };
 
         ebindr.initializeMobile2Findr( function(){

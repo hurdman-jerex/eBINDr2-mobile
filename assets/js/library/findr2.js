@@ -93,7 +93,10 @@ ebindr.library.mfindr = new Class({
             }).addEvent('click', function(e) {
                 for(var i=49;i>-1;i--) {
                     if(Cookie.read('findr_'+i)===null) continue;
+
                     Cookie.dispose('findr_'+i);
+                    //Cookie.dispose( 'lastfindrquery' );
+                    //Cookie.dispose( 'lastfindrquery_value' );
                 }
                 $('findrhistory').empty().setStyle('display','none');
             });
@@ -509,8 +512,14 @@ ebindr.library.mfindr = new Class({
             '&lid=' + ebindr.current.lid +
             '&key1=' + ebindr.current.key1;
 
+        /* Lets store last run query for findr */
+        Cookie.write( 'lastfindrquery', what, {duration:365} );
+        Cookie.write( 'lastfindrquery_value', $('search-q').get('value'), {duration:365} );
+
         ebindr.findr2.loadFindrRequest( searchurl );
         ebindr.lastfindr = what;
+
+
     },
 
     showLoading: function() {

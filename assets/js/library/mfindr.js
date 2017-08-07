@@ -525,8 +525,13 @@ ebindr.library.mfindr2 = new Class({
             '&lid=' + ebindr.current.lid +
             '&key1=' + ebindr.current.key1;
 
+
         ebindr.findr2.loadIFrame( searchurl );
         ebindr.lastfindr = what;
+
+        /* Lets store last run query for findr */
+        Cookie.write( 'lastfindrquery', what, {duration:365} );
+        Cookie.write( 'lastfindrquery_value', $searchQ.get('value'), {duration:365} );
     },
 
     showLoading: function() {
