@@ -52,7 +52,8 @@
                             tableClass: 'table'
                         } )
                     }
-                }
+                },
+                paging: false
             });
             //jQuery( '<div class="divider"></div>').insertAfter( jQuery( '.dataTables_wrapper' ) );
 
@@ -275,7 +276,8 @@ window.addEvent( 'load', function() {
                 if( el.hasClass( 'toplink' ) )
                     el.addClass( 'btn pull-right').setStyle('margin', '5px');
 
-                el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
+                //el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
+                el.href=el.href.replace( /\/report\//i, "\/m\/report\/" );
                 if( typeof el.get('alt') !== "undefined" ){
                     el.set('alt', el.get('text') );
                 }

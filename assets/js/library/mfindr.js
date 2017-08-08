@@ -525,6 +525,12 @@ ebindr.library.mfindr2 = new Class({
             '&lid=' + ebindr.current.lid +
             '&key1=' + ebindr.current.key1;
 
+        /* Lets load last query loaded from Findr */
+        if( ebindr.findr2.first_load ) {
+            searchurl = ebindr.findr2.lastfindr_searchurl;
+            /* then set to null so it will be loaded on the next search process */
+            ebindr.findr2.first_load = false;
+        }
 
         ebindr.findr2.loadIFrame( searchurl );
         ebindr.lastfindr = what;

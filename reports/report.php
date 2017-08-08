@@ -7,7 +7,8 @@ exit();*/
 //dd( $_SERVER['HTTP_REFERER'] );
 //dd( $___ebindr2mobile_http );
 
-setcookie("lastfindr_query", $___ebindr2mobile_http['uri'] . "?" . $___ebindr2mobile_http['args'], time()+AUTO_LOGOUT_TIME, "/");// Lets store last findr query
+if( isset( $_GET['e2mfindr'] ) )
+    setcookie("lastfindr_query", $___ebindr2mobile_http['uri'] . "?" . $___ebindr2mobile_http['args'], time()+AUTO_LOGOUT_TIME, "/");// Lets store last findr query
 
 if(isset($_GET["external_gateway"]) && !empty($_GET["external_gateway"])) {
     $task->num_rows = 1;
