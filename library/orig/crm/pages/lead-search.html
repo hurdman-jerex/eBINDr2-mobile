@@ -1,0 +1,57 @@
+<? if (!isset($_GET['type'])) $_GET['type'] = 'tob'; ?>
+<? $type_array = array('tob', 'county', 'biz name', 'postal code', 'bid'); ?>
+<h4>Search for leads by 
+	<select id="type_change">
+		<? foreach ($type_array as $type) { ?>
+		<option value="<?=(str_replace(' ', '', $type));?>" <?=($_GET['type'] == (str_replace(' ', '', $type)) ? 'selected' : '');?>><?=(ucwords($type));?></option>
+		<? } ?>
+	</select>
+</h4>
+
+<? if ($_GET['type'] == 'bizname') : ?>
+	<input type="text" name="<?=($_GET['type']);?>" id="<?=($_GET['type'] . 's');?>" placeholder="Type a Business Name"><button id="search_bizname">Search</button>
+<? elseif ($_GET['type'] == 'bid') : ?>
+	<input type="text" name="<?=($_GET['type']);?>" id="<?=($_GET['type'] . 's');?>" placeholder="Type a BID"><button id="search_bid">Search</button>
+<? else : ?>
+	<select name="<?=($_GET['type']);?>" id="<?=($_GET['type'] . 's');?>" data-placeholder="Choose a <?=(ucwords($_GET['type']));?>">
+		<option value=""></option>
+	<? $samples = $crm->toarray( $crm->query( "[salescrm." . $_GET['type'] . "list]" ) );
+	foreach( $samples as $sample ) : ?>
+		<option<?=( $sample['code'] == $_GET['code'] ? ' selected="selected"' : '' )?> value="<?=$sample['code']?>"><?=$sample['name']?></option>
+	<? endforeach; ?>
+	</select>
+<? endif; ?>
+
+	<? if( isset($_GET['code']) ) : ?>
+	<hr />
+	<div>
+		<h5 style="float:left;">Search Results</h5>
+		<a target="_blank" href="/report/exportr,salescrm.print<?=$_GET['type'];?>,,,/?tid=1&code=<?=$_GET['code'];?>&EXPORT_OUTPUT=xlsx&ebindr2=y">
+			<img style="float:right;" src="/ebindr/images/icons16x/excelnew.png" alt="XLSX">
+		</a>
+		<div style="clear:both;"></div>
+	</div>
+	<?=$crm->mergecode('[salescrm.leadsearch' . (ucwords($_GET['type'])) . ']',array( 'code' => $_GET['code'] ))?>
+	<? endif; ?>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	<? if ($_GET['type'] == 'bizname') : ?>
+	$('#search_bizname').click( function() {
+		window.location = '/ebindr/views/crm/index.php/findleads/searchleads/?type=<?=($_GET["type"]);?>&code=' + $("#<?=($_GET['type'] . 's');?>").val();
+	});
+	<? elseif ($_GET['type'] == 'bid') : ?>
+	$('#search_bid').click( function() {
+		window.location = '/ebindr/views/crm/index.php/findleads/searchleads/?type=<?=($_GET["type"]);?>&code=' + $("#<?=($_GET['type'] . 's');?>").val();
+	});
+	<? else : ?>
+	$("#<?=($_GET['type'] . 's');?>").chosen({width: "100%"}).change(function(e) {
+		window.location = '/ebindr/views/crm/index.php/findleads/searchleads/?type=<?=($_GET["type"]);?>&code=' + $("#<?=($_GET['type'] . 's');?>").val();
+	});
+	<? endif; ?>
+	$('#type_change').change( function() {
+		window.location = '/ebindr/views/crm/index.php/findleads/searchleads/?type=' + $(this).val();
+	});
+});
+</script>

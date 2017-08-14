@@ -1,0 +1,150 @@
+<?
+	$current_week_start = date('Y-m-d',strtotime('last sunday'));
+	$current_week_end = date('Y-m-d',strtotime('next saturday'));
+	if(isset($segments[2])) {
+		$current_week_start = $segments[2];
+		$current_week_end = $segments[3];
+	}
+	//and CallAgain is not null 
+
+	$callagains = $crm->mergecodeToVariables( "salescrm.salescall calendar", array("start_date" => $current_week_start, "end_date" => $current_week_end, "staff" => $_COOKIE['reportr_username']) );
+
+	$call_array = array();
+
+	if (count($callagains) == 1) {
+		if ($callagains->Staff == $_COOKIE['reportr_username']) {
+			$call_array[$callagains->day][] = $callagains;
+			$call_max = 0;
+			foreach ($call_array as $tmp_row) {
+				if(count($tmp_row) > $call_max) $call_max = count($tmp_row);
+			}
+		}
+	} elseif (count($callagains) > 0) {
+		foreach ($callagains as $callagain) {
+			if ($callagain->Staff == $_COOKIE['reportr_username']) {
+				$call_array[$callagain->day][] = $callagain;
+			}
+		}
+		
+		$call_max = 0;
+		foreach ($call_array as $tmp_row) {
+			if(count($tmp_row) > $call_max) $call_max = count($tmp_row);
+		}
+	}
+
+	$color_array = array(
+		array(
+			'red' => '162',
+			'green' => '162',
+			'blue' => '162'
+		), array(
+			'red' => '255', 
+			'green' => '255',
+			'blue' => '255'
+		), array(
+			'red' => '200', 
+			'green' => '200',
+			'blue' => '200'
+		), array(
+			'red' => '255', 
+			'green' => '255',
+			'blue' => '255'
+		), array(
+			'red' => '200', 
+			'green' => '200',
+			'blue' => '200'
+		), array(
+			'red' => '255', 
+			'green' => '255',
+			'blue' => '255'
+		), array(
+			'red' => '162',
+			'green' => '162',
+			'blue' => '162'
+		)
+	);
+?>
+<style type="text/css">
+	.nav_date {
+		background-color: rgb(242, 242, 242);
+		border: 1px solid rgb(218, 218, 218);
+		width: 25px;
+		height: 25px;
+		display: inline-block;
+		text-align: center;
+		line-height: 25px;
+	}
+
+	table thead th{
+		text-align: center;
+		background-color: #666666;
+		border: 1px solid #ddd;
+	}
+
+	<? for ($h = 0; $h < 7; $h++) : ?>
+	table tbody tr td:nth-child(<?=($h + 1);?>) {
+		background-color: rgb(<? foreach ($color_array[$h] as $colorname => $color) { ?> <?=($colorname == 'blue' ? $color : $color . ',');?> <? } ?>);
+	}
+	<? endfor; ?>
+	
+	table tbody tr .today {
+		background-color: #EAF1F9;
+	}
+
+	table thead .today {
+		background-color: #17365D;
+	}
+
+	.legendary {
+		margin-left: 10px;
+		height: 10px;
+		width: 10px;
+		display: inline-block;
+	}
+</style>
+<? //print_r($callagains_by_bid); ?>
+<div style="min-height: 830px;">
+	<div style="margin-left: 30px;">
+		<a class="nav_date" href="/ebindr/views/crm/index.php/myleads/calendar/<?=( date( 'Y-m-d', strtotime( $current_week_start . ' -1 week' ) ) );?>/<?=( date( 'Y-m-d', strtotime( $current_week_end . ' -1 week' ) ) );?>">&lt;</a>
+		<a class="nav_date" style="margin-left: -5px;" href="/ebindr/views/crm/index.php/myleads/calendar/<?=( date( 'Y-m-d', strtotime( $current_week_start . ' +1 week' ) ) );?>/<?=( date( 'Y-m-d', strtotime( $current_week_end . ' +1 week' ) ) );?>">&gt;</a>
+		<span style="margin-left: 10px;"><?=( date( 'M j', strtotime($current_week_start) ) );?> - <?=( date( 'j, Y', strtotime($current_week_end) ) );?></span>
+		<div style="float: right;">
+			<span class="legendary" style="background-color: blue;"></span> - Most Recent Sales Call
+			<span class="legendary" style="background-color: red;"></span> - Responded to by you
+			<span class="legendary" style="background-color: orange;"></span> - Responded to by other staff
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+	<table class="table" cellspacing="0" width="100%">
+		<thead>
+			<? for ($i = 0; $i < 7; $i++) : ?>
+			<th class="<?=( date( 'Y-m-d', strtotime($current_week_start . ' +' . $i . ' day') ) == date('Y-m-d') ? 'today' : '' );?>">
+				<?=( date( 'D n/j', strtotime($current_week_start . ' +' . $i . ' day') ) );?>
+			</th>
+			<? endfor; ?>
+		</thead>
+		<tbody>
+			<? for ($j = 0; $j < $call_max; $j++) : ?>
+			<tr>
+				<? for ($k = 0; $k < 7; $k++) : ?>
+				<td class="<?=( date( 'Y-m-d', strtotime($current_week_start . ' +' . $k . ' day') ) == date('Y-m-d') ? 'today' : '' );?>">
+				<? $current_date = date( 'Y-m-d', strtotime( $current_week_start . ' +' . $k . ' day' ) ); ?>
+				<? if ( isset($call_array[$current_date][$j]) ) : ?>
+					<? $temp_cell = $call_array[$current_date][$j]; ?>
+					<a 
+						onclick="javascript:window.parent.ebindr.openBID(<?=($temp_cell->bid);?>, false, 0, false);" 
+						href="/ebindr/views/crm/index.php/leaddetails/<?=($temp_cell->bid);?>" 
+						style="color: <?=($temp_cell->Color);?>;"
+						title="<?=($temp_cell->nextName);?>"
+					>
+						<?=( date( 'H:i', strtotime($temp_cell->time) ) );?> - <?=($temp_cell->Name);?>
+					</a>
+				<? endif; ?>
+				</td>
+				<? endfor; ?>
+			</tr>
+			<? endfor; ?>
+		</tbody>
+	</table>
+	<span style="font-size: 7pt;">Note: Hover over callagain to see response staff</span>
+</div>

@@ -1,0 +1,327 @@
+<?
+$new = false;
+if( $segments[1] == 'new?noremember=y' ) {
+	$business = $crm->mergecodeToVariables("salescrm.new business", array());
+	$segments[1] = $business->bid;
+	$new = true;
+}
+$segments[1] = str_replace('?noremember=y', '', $segments[1]);
+if( is_numeric($segments[1]) ) $_SESSION['currentBID'] = $segments[1];
+else $segments[1] = $_SESSION['currentBID'];
+
+$data2 = $crm->mergecodeToVariables("salescrm.primary business information", array("bid"=>$segments[1]));
+$salesnotes = $crm->mergecodeToVariables("salescrm.salescall list", array("bid"=>$segments[1]));
+$salesinfo = $crm->mergecodeToVariables("salescrm.salescall info", array("bid"=>$segments[1]));
+$leadinfo = $crm->mergecodeToVariables("salescrm.saleslead info", array("bid"=>$segments[1]));
+$abblock = $crm->mergecodeToVariables("salescrm.ab block", array("bid"=>$segments[1]));
+$customer_reviews = $crm->mergecodeToVariables("customerreviews.review.count by bid", array("bid"=>$segments[1]));
+
+$stage_array = array('New', 'Prospect', 'Meeting', 'Applying', 'Submitted', 'Remove Lead', 'Declined');
+$tmp_edit = $crm->toarray( $crm->query( "select setup(783) as `option`" ) );
+$tmp_newab = $crm->toarray( $crm->query( "select setup(5706) as `option`" ) );
+$tmp_journal = $crm->toarray( $crm->query( "select setup(5709) as `option`" ) );
+$journal_array = array();
+if ( strtolower(substr($tmp_journal[0]['option'], 0, 1)) == 'y' ) {
+	$journal_array = $crm->mergecodeToVariables("salescrm.journal list", array("bid"=>$segments[1]));
+}
+?>
+<div>
+	<div style="color: white; float: left; background-color: rgb(63, 63, 63); height: 125px; width: 125px; margin-right: 20px; text-align: center; line-height: 125px; font-size: 80px;">
+		<?=$data2->Letter;?>
+	</div>
+	<div style="float: left;">
+		<div style="font-weight: bold;">#<?=$segments[1];?> <?=$data2->Name;?></div>
+		<div style="margin-top: 7px;"><?=$data2->Contact?>, <?=$data2->Title;?></div>
+		<div style="margin-top: 10px;">
+			<div style="float: left; width: 200px;">
+				<b>Phone:</b> <?=$data2->Phone;?><br>
+				<b>Fax:</b> <?=$data2->Fax;?>
+			</div>
+			<div style="margin-left: 20px; width: 200px; float: left;">
+				<?=$data2->Street;?><br>
+				<?=$data2->City;?>, <?=$data2->StateProv;?> <?=$data2->PostalCode;?>
+			</div>
+			<div style="margin-left: 20px; float: left;">
+				<b>Email:</b> <a href="mailto:<?=$data2->Email;?>" target="_blank"><?=$data2->Email;?></a><br>
+				<b>Web:</b> <a href="http://<?=$data2->URL;?>" target="_blank"><?=$data2->URL;?></a>
+			</div>
+
+			<div style="clear: both;"></div>
+		</div>
+		<div style="margin-top: 10px;">
+			<b>TOB:</b> <?=$data2->TOB;?></b>
+		</div>
+	</div>
+</div>
+<div style="clear: both;"></div>
+<div style="margin-top: 40px; width: 100%;">
+	<div style="width: 345px; float: left;">
+		<b>Employees:</b> <?=$data2->Employees;?><br>
+		<b>Dues:</b> $<?=$data2->Dues;?><br>
+		<b>Monthly:</b> $<?=( number_format( ($data2->Dues / 12), 2 ) );?><br>
+		<b>Last Contact Date:</b> <?=$salesinfo->{'Last Contact Date'};?><br>
+		<b>Next Contact Date:</b> <?=$salesinfo->{'Next Contact Date'};?><br>
+	</div>
+	<div style="margin-left: 20px; width: 200px; float: left;">
+		<b>Inquiries:</b> <?=$data2->Inquiry;?><br>
+		<b>Complaints:</b> <?=$data2->Complaints;?><br>
+		<b>Customer Reviews:</b> <?=$customer_reviews->ctr;?>
+	</div>
+	<div style="margin-left: 20px; float: left;">
+		<b>Business Start Date:</b> <?=$data2->BusinessStartDate;?><br>
+		<b>Previous Join Date:</b> <?=$data2->JoinDate;?><br>
+		<b>Drop Date:</b> <?=$data2->DropDate;?>
+	</div>
+	<div style="clear: both;"></div>
+</div>
+<div style="margin-top: 20px;">
+	<? if (isset($_SESSION['previous_url'])) { ?>
+	<button id="back_url">Back to Results</button>
+	<? } ?>
+	<? if( count($leadinfo) > 0 ) : ?>
+	<button id="add_callback">Add Call Back</button>
+	<button id="non_ab">Non-AB BI</button>
+	<button id="edit_record">Edit Record</button>
+	<button id="new_application">New AB Application</button>
+	<button id="snapshot">Snapshot</button>
+	<button id="send_email">Send Email</button>
+	<button id="dues_calculator">Calculate Dues</button>
+	<select class="update_select" updateTarget="Stage">
+		<? foreach ($stage_array as $stage) { ?>
+		<option value="<?=$stage;?>" <?=($leadinfo->Stage == $stage ? 'selected' : '');?>><?=$stage;?></option>
+		<? } ?>
+	</select>
+	<b>Priority:</b>
+	<select class="update_select" updateTarget="Priority">
+	<? for ($i = 1; $i < 10; $i++) : ?>
+		<option value="<?=$i;?>" <?=($leadinfo->Priority == $i ? 'selected' : '');?>><?=$i;?></option>
+	<? endfor; ?>
+	</select>
+	<? elseif(count($abblock) > 0) : ?>
+	<button id="claim_lead">Claim This Lead</button>
+	<? endif; ?>
+</div>
+<? 
+$array_sales = array();
+if (count($salesnotes) == 1) {
+	$array_sales[0] = $salesnotes;
+} else {
+	$array_sales = $salesnotes;
+}
+?>
+<? if( count($salesnotes) > 0 ) : ?>
+<div style="max-height: 400px; margin-top: 20px; overflow-y: scroll;">
+	<table id="sales_table" class="table table-striped table-bordered">
+		<thead>
+		<tr>
+			<? foreach ($array_sales[0] as $saleskey => $salesval) { ?>
+				<th><?=$saleskey;?></th>
+			<? } ?>
+		</tr>
+		</thead>
+		<tbody>
+		<? foreach( $array_sales as $salesnote ) : ?>
+		<tr>
+			<? foreach ($salesnote as $saleskey => $salesval) { ?>
+				<td><?=$salesval;?></td>
+			<? } ?>
+		</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+</div>
+<? endif; ?>
+
+<? if ( strtolower(substr($tmp_journal[0]['option'], 0, 1)) == 'y' ) { ?>
+	<? if( count($journal_array) > 0 ) {
+	$array_journal = array();
+	if (count($journal_array) == 1) {
+		$array_journal[0] = $journal_array;
+	} else {
+		$array_journal = $journal_array;
+	}
+	?>
+	<h3>Journal</h3>
+	<div style="max-height: 400px; margin-top: 20px; overflow-y: scroll;">
+		<table id="journal_table" class="table table-striped table-bordered">
+			<thead>
+			<tr>
+				<th>Date</th>
+				<th>Staff</th>
+				<th>Type</th>
+				<th></th>
+				<th>Notes</th>
+			</tr>
+			</thead>
+			<tbody>
+			<? foreach( $array_journal as $journalnote ) : ?>
+			<tr>
+				<td><?=$journalnote->Date;?></td>
+				<td><?=$journalnote->Staff;?></td>
+				<td><?=$journalnote->Date;?></td>
+				<td><?=$journalnote->filelink;?></td>
+				<td><?=$journalnote->Notes;?></td>
+			</tr>
+			<? endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	<? } ?>
+<? } ?>
+
+<? if (isset($_SESSION['previous_url'])) { ?>
+<div id="url_dialog" title="Redirecting">
+  <p>Loading list.</p>
+</div>
+<? } ?>
+<? if ( strtolower(substr($tmp_newab[0]['option'], 0, 1)) != 'y' ) { ?>
+<div id="newab_dialog" title="Help">
+  <p>This option is not turned on for your BBB.</p>
+  <p>To use it, please have management turn on setup option 5706.</p>
+</div>
+<? } ?>
+<div id="update_dialog" title="Updating">
+  <p>Please wait while Lead updates, this notice should go away once it's done.</p>
+</div>
+<script type="text/javascript">
+	$('.update_select').change( function() {
+		var value = $(this).val();
+		var target = $(this).attr('updateTarget');
+		if (value == 'Remove Lead' || value == 'Declined') {
+			$.post('/ebindr/views/crm/index.php/api', {
+				mergecode: 'salescrm.lead decline',
+				bid: '<?=$segments[1];?>'
+			}, function(data) {
+				window.parent.ebindr.button.editr( "lite button bsalescrm+.editr" );
+			});
+		}
+		$("#update_dialog").dialog("open");
+		$.post('/ebindr/views/crm/index.php/api', {
+			mergecode: 'salescrm.lead edit',
+			bid: '<?=$segments[1];?>',
+			column: target,
+			value: value
+		}, function(data) {
+			setTimeout(function(){ $("#update_dialog").dialog("close"); }, 1000);
+		});
+	});
+
+	$('#claim_lead').click(function() {
+		var new_stage = $(this).val();
+		$.post('/ebindr/views/crm/index.php/api', {
+			mergecode: 'salescrm.claim lead',
+			staff: '<?=$_COOKIE['reportr_username'];?>',
+			bid: '<?=$segments[1];?>'
+		}, function(data) {
+			window.location.href = "/ebindr/views/crm/index.php/leaddetails/<?=$segments[1];?>?noremember=y";
+		});
+	});
+	///report/lite button bs/?ebindr2=y&noheader&bid=6000574&lid=1&cid=0&bbbid=9999
+	$('#add_callback').click(function() {
+		window.parent.ebindr.button.editr( "salescrm.bs+.editr" );
+		//lite-button-bs+-22007181
+		
+		var window_checker = setInterval(function(){
+			if(window.parent.ebindr.window.library.Windows.instances.get('salescrm.bs+-<?=$segments[1];?>') == null) {
+			// if (target_parent.$('#lite-button-bs+-<?=$segments[1];?>').length == 0) {
+				window.location.href = window.location.href;
+				clearInterval(window_checker);
+			}
+		}, 1000);
+		
+	});
+
+	$('#non_ab').click(function() {
+		window.open( window.parent.ebindr.data.store.nonabbbbbi );
+	});
+
+	$('#edit_record').click(function() {
+		<? if ( strtolower(substr($tmp_edit[0]['option'], 0, 1)) == 'y' ) : ?>
+		if(confirm("This will allow you to make basic changes to this business record, but your changes will not take effect until they are reviewed. Are you sure you wish to proceed?")) window.parent.editr_run("lite button bg.sales.sbq");
+		<? else : ?>
+		window.parent.$( 'tab-records' ).fireEvent( 'click' );
+		window.parent.ebindr.openBID(<?=($segments[1]);?>, false, 0, true);
+		<? endif; ?>
+	});
+
+	<? if ($new) : ?>
+	window.parent.$( 'tab-records' ).fireEvent( 'click' );
+	window.parent.ebindr.openBID(<?=($segments[1]);?>, false, 0, false);
+	<? endif; ?>
+	
+	$('#new_application').click( function() {
+		<? if ( strtolower(substr($tmp_newab[0]['option'], 0, 1)) == 'y' ) : ?>
+		window.open( window.parent.document.getElementById("katana") + '?app=newab/start/' + ( window.parent.ebindr.data.store.otherbid>0 ? window.parent.ebindr.data.store.otherbid : window.parent.ebindr.current.bid ) );
+		<? else : ?>
+		$("#newab_dialog").dialog("open");
+		<? endif; ?>
+	});
+
+	$('#snapshot').click( function() {
+		window.parent.ebindr.window.normal( 'dn', {
+			id: 'dn_window:' + Math.round((new Date()).getTime() / 1000), // + ebindr.current.bid,
+			title: 'menu.Stats.Inquiry by Bid',
+			tacable: true,
+			contentURL: '/report/menu.Stats.Inquiry by Bid/?ebindr2=y&bid=<?=$segments[1];?>'
+		});
+	});
+
+	<? if (isset($_SESSION['previous_url'])) : ?>
+  $("#url_dialog").dialog({
+  	autoOpen: false,
+    resizable: false,
+    height:250,
+    modal: true
+  });
+  
+	$('#back_url').click( function() {
+		window.location.href = "<?=($_SESSION['previous_url']);?>";
+		$("#url_dialog").dialog("open");
+	}); 
+	<? endif; ?>
+
+	<? if ( strtolower(substr($tmp_newab[0]['option'], 0, 1)) != 'y' ) : ?>
+  $("#newab_dialog").dialog({
+  	autoOpen: false,
+    resizable: false,
+    height:250,
+    modal: true,
+    buttons: {
+      "Ok": function() {
+        $( this ).dialog("close");
+      }
+    }
+  });
+  <? endif; ?>
+
+  $("#update_dialog").dialog({
+  	autoOpen: false,
+    resizable: false,
+    height:250,
+    modal: true
+  });
+
+	$('#send_email').click( function() {
+		new window.parent.ebindr.window.library.Window({
+			id: 'salescrm_email',
+			title: 'Sales CRM Lead Email',
+			loadMethod: 'iframe',
+			contentURL: '/ebindr/views/crm/index.php/sendemail',
+			width: window.parent.window.getSize().x-65,
+			height: window.parent.window.getSize().y-80,
+			padding: { top: 0, bottom: 0, left: 0, right: 0 }
+		});
+	});
+
+	$('#dues_calculator').click( function() {
+		new window.parent.ebindr.window.library.Window({
+			id: 'salescrm_calculator',
+			title: 'Sales CRM Dues Calculator',
+			loadMethod: 'iframe',
+			contentURL: '/ebindr/views/crm/index.php/calculator',
+			width: 500,
+			height: 350,
+			padding: { top: 0, bottom: 0, left: 0, right: 0 }
+		});
+	});
+</script>

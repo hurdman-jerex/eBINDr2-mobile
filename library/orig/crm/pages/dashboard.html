@@ -1,0 +1,72 @@
+<style type="text/css">
+	.circlethings .col-lg-3 {
+	  text-align: center;
+	}
+
+	.circlethings .circlediv {
+		display: inline-block;
+		text-align: center;
+		width: 32%;
+	}
+
+	.trigger {
+		font-size: 4em;
+	}
+</style>
+<? $data = $crm->mergecodeToVariables("salescrm.dashboard", array("staff" => $_COOKIE['reportr_username'])); ?>
+<? $circle_size = '105px'; ?>
+<div class="row hidden-xs circlethings">
+	<a href="/ebindr/views/crm/index.php/myleads">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="new-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #c7254e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Today'}?></div>
+	    <h2>Today's Calls</h2>
+	  </div>
+  </a>
+	<a href="/ebindr/views/crm/index.php/myleads/new">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="new-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #5cb85c; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'New Leads'}?></div>
+	    <h2>New Leads</h2>
+	  </div>
+  </a>
+  <a href="/ebindr/views/crm/index.php/myleads/prospecting">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="additionalinfo-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #f0ad4e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Prospecting'}?></div>
+	    <h2>Prospecting</h2>
+	  </div>
+	</a>
+	<a href="/ebindr/views/crm/index.php/myleads/meetings">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="unansweredunresolved-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #c7254e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Meetings'}?></div>
+	    <h2>Meetings</h2>
+	  </div>
+	</a>
+</div>
+<div style="width: 100%; height: 1px; background-color: #666666; margin-bottom: 10px;"></div>
+<div class="row hidden-xs circlethings">
+	<!-- <div style="margin: auto; width: 100%;"> -->
+	<a href="/ebindr/views/crm/index.php/myleads/applying">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="urgent-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #c7254e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Applying'}?></div>
+	    <h2>Applying</h2>
+	  </div>
+	</a>
+	<a href="/ebindr/views/crm/index.php/myleads/submitted">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="new-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #5cb85c; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Submitted'}?></div>
+	    <h2>Submitted</h2>
+	  </div>
+	</a>
+	<a href="/ebindr/views/crm/index.php/myleads/pending">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="additionalinfo-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #f0ad4e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Pending'}?></div>
+	    <h2>Pending</h2>
+	  </div>
+	</a>
+  <a href="/ebindr/views/crm/index.php/myleads/accredited">
+	  <div class="col-lg-3 col-md-3 col-sm-3">
+	    <div class="trigger" data-box="unansweredunresolved-complaints" style="cursor: pointer; display: inline-block; color: #fff; line-height: <?=$circle_size;?>; background-color: #c7254e; border-radius: <?=$circle_size;?>; width: <?=$circle_size;?>; height: <?=$circle_size;?>;"><?=$data->{'Accredited'}?></div>
+	    <h2>Accredited</h2>
+	  </div>
+	</a>
+	<!-- </div> -->
+</div>

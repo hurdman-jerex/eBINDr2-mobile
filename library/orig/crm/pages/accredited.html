@@ -1,0 +1,40 @@
+<? 
+$leads = $crm->mergecodeToVariables( "salescrm.accredited", array("staff" => $_COOKIE['reportr_username']) ); 
+?>
+<div style="text-align: center;">
+	Your Accredited Leads will remain on this list 30 days from their Join Date
+</div>
+<? if (sizeof($leads) > 0) : ?>
+<table id="mergecode" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+    <? if (sizeof($leads) == 1) : ?>
+    <? foreach( $leads as $lead_head => $value ) : ?>
+    	<th><?=$lead_head;?></th>
+    <? endforeach; ?>
+    </tr>
+    <? else : ?>
+    <? foreach( $leads[0] as $lead_head => $value ) : ?>
+      <th><?=$lead_head;?></th>
+    <? endforeach; ?>
+    <? endif; ?>
+  </thead>
+  <tbody>
+  	<? if (sizeof($leads) == 1) : ?>
+  	<tr>
+    <? foreach( $leads as $i => $row ) : ?>
+      <td><?=$row;?></td>
+    <? endforeach; ?>
+    </tr>
+    <? else : ?>
+    <? foreach( $leads as $i => $row ) : ?>
+      <tr>
+	      <? foreach( $row as $k => $v ) : ?>
+	      <td><?=$v;?></td>
+	      <? endforeach; ?>
+	    </tr>
+    <? endforeach; ?>
+    <? endif; ?>
+  </tbody>
+</table>
+<? endif; ?>

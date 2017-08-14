@@ -1,0 +1,86 @@
+<? $tmp_appfee = $crm->toarray( $crm->query( "select setup(121) as `appfee`" ) ); ?>
+<div style="padding: 10px; width: 100%;">
+	<div style="width: 100%; margin-bottom: 10px; padding: 5px; border: 1px solid #CCDFCD; border-radius: 10px; background-color: #CCDFCD; font-weight: bold; font-size: 20px;">
+		<span>Annual Dues</span>
+		<span id="annual_dues" style="float: right;"></span>
+	</div>
+	<div style="width: 100%; margin-bottom: 10px; padding: 5px; border: 1px solid #CCDFCD; border-radius: 10px; background-color: #CCDFCD; font-weight: bold; font-size: 20px;">
+		<span>Monthly Dues</span>
+		<span id="dues_count" style="float: right;"></span>
+	</div>
+	<div>
+		<div style="width: 45%; float: left; line-height: 26px;">
+			<span style="display: block; float: right;">Employees:</span><br>
+			<span style="display: block; float: right;">Additional Locations:</span><br>
+			<span style="display: block; float: right;">Affiliates:</span><br>
+			<span style="display: block; float: right;">Application Fee:</span><br>
+			<span style="display: block; float: right;">Online Fee:</span><br>
+			<span style="display: block; float: right;">Additional Monthly Fee:</span><br>
+		</div>
+		<div style="width: 45%; margin-left: 10px; float: left;">
+			<input id="employee_count" style="width: 100%;" placeholder=""><br>
+			<input id="location_count" style="width: 100%;" placeholder=""><br>
+			<input id="affiliate_count" style="width: 100%;" placeholder=""><br>
+			<input id="app_fee" style="width: 100%;" value="<?=(number_format($tmp_appfee[0]['appfee'],2));?>" placeholder=""><br>
+			<input id="online_fee" style="float: left; margin-top: 7px;" type="checkbox">
+			<button id="calculate_dues" style="display: block; float: right;">Calculate</button><br>
+			<input id="additional_monthly_fee" style="float: left; margin-top: 13px;" type="checkbox">
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#calculate_dues').click( function() {
+		var employees = $('#employee_count').val();
+		var addloc = $('#location_count').val();
+		var afcount = $('#affiliate_count').val();
+		var appfee = $('#app_fee').val();
+		if (addloc < 1) addloc = 0;
+		if (afcount < 1) afcount = 0;
+		query = "salescrm.dues calculator";
+		var time = new Date().getTime();
+		var props = {employees: employees, addloc: addloc, afcount: afcount, json: 'y', NOASK: '', query: query, t: time};
+		
+		gets = props;
+		if( typeof(gets) == 'undefined' ) gets = new Object();
+
+		var newQuery = ( query.substr( 0, 8 ) == '/ebindr/' ? query : '/report/merge/JSON.htm/' );
+
+		var abisEmpty = true;
+    if (gets == null) abisEmpty = true;
+
+    if (gets.length > 0) abisEmpty = false;
+    if (gets.length === 0) abisEmpty = true;
+
+    for (var key in gets) {
+      if (hasOwnProperty.call(gets, key)) abisEmpty = false;
+    }
+
+    if (!abisEmpty) {
+    	newQuery = newQuery + '?';
+			for( var name in gets ) {
+			  newQuery = newQuery + name + '=' + gets[name] + '&';
+			}
+    }
+
+		$.post(newQuery, function(data) {
+			var results = JSON.parse(data);
+			results = results.resultset;
+			if (results[0].locationdues < 1) results[0].locationdues = 0;
+			if (results[0].affiliatedues < 1) results[0].affiliatedues = 0;
+
+			var onlinedues = 0;
+			var addmonthly = 0;
+			if ($('#online_fee').is(':checked')) onlinedues = parseFloat(results[0].onlinedues);
+			if ($('#additional_monthly_fee').is(':checked')) addmonthly = parseFloat(results[0].addmonthly);
+
+			var total = ((parseFloat(results[0].dues) + parseFloat(results[0].locationdues) + parseFloat(results[0].affiliatedues) + onlinedues + (appfee * 100))/ 100).toFixed(2);
+			$('#annual_dues').text(total);
+			$('#dues_count').text(((total/12) + (addmonthly)).toFixed(2));
+		});
+	});
+
+	$( document ).ready(function() {
+    $('#additional_monthly_fee').css( "magin-left", "0px" );
+	});
+</script>
