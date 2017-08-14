@@ -263,7 +263,6 @@ function fireClickEvent( control ) {
 	}
 }
 
-
 if(window.parent.currentEditr) {
 	if(window.parent.currentEditr.indexOf("findr")>0 && document.getElementById("1-1-3")) {
 		fireClickEvent( document.getElementById("1-1-3") );

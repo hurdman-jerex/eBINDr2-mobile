@@ -1,6 +1,17 @@
 <?
-if( ! isset( $_GET['type'] ) )
-    $_GET['type'] = 'business-name';
+if(session_id() == '') {
+    session_start();
+}
+
+if( ! isset( $_GET['type'] ) ){
+    if( is_array( $_SESSION['lastsearch_query'] ) && ! isset( $_POST['search'] ) ){
+        //echo '<pre>'.print_r(  $_SESSION['lastsearch_query'], true ).'</pre>';
+        $_POST = $_SESSION['lastsearch_query'];
+        $_GET['type'] = isset( $_POST['get_type'] ) ? $_POST['get_type'] : 'business-name';
+    }else
+        $_GET['type'] = 'business-name';
+}
+
 
 $page = 'search';
 include "templates/header.html";
@@ -17,10 +28,17 @@ function remove_phone_format($number) {
     return $number;
 }
 
+
+
 if (sizeof($_POST) > 0) {
 $api_url = $myHost . $_SERVER['SERVER_NAME'].'/m/api/search/find/'. $_POST[ 'type' ].'?search='.$_POST['search'].'%';
 $businesses = json_decode($bbapi->get( $api_url ));
 $businesses = $businesses->results;
+
+$_SESSION['lastsearch_query'] = array_merge(
+    array('get_type' => ( isset( $_GET['type'] ) ? $_GET['type'] : 'business-name' ) ),
+    $_POST
+);
 }
 
 ?>

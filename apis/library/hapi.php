@@ -116,14 +116,14 @@ class hapi {
 	public function cache( $query, $expires ) {
 		$this->hash = md5( sha1($query) . md5(serialize(db::$parameters)) . $_SERVER['SERVER_NAME'] );
 		// see if there is an item in the cache
-		$cache = $this->riakGet( $this->hash );
-		if( $cache->exists ) {
-			// cache exists, lets check to see if its expired
-			if( $cache->data['stamp'] > (time()-$expires) ) {
-				$this->cached = TRUE;
-				return unserialize($cache->data['data']);
-			}
-		}
+//		$cache = $this->riakGet( $this->hash );
+//		if( $cache->exists ) {
+//			// cache exists, lets check to see if its expired
+//			if( $cache->data['stamp'] > (time()-$expires) ) {
+//				$this->cached = TRUE;
+//				return unserialize($cache->data['data']);
+//			}
+//		}
 		return false;
 		
 		

@@ -9,16 +9,12 @@
 <script type="text/javascript" src="/m/assets/js/core/ajax.js"></script>
 <script type="text/javascript" src="/m/assets/js/core/modal.js"></script>
 
-<!--<script type="text/javascript" language="javascript" src="/m/assets/js/datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.responsive.min.js"></script>
-<script type="text/javascript" language="javascript" src="/m/assets/js/datatables/responsive.bootstrap.min.js"></script>-->
+<!-- Plugins -->
+<script src="/m/assets/plugins/jquery-toast/jquery.toast.js"></script>
 
 <script type="text/javascript">jQuery.noConflict();</script>
 <script type="text/javascript" src="/m/assets/js/mootools/core-1.4.0.js"></script>
 <script type="text/javascript" src="/m/assets/js/mootools/more-1.4.0.1.js"></script>
-<!--<script type="text/javascript" src="/js-bin/control2.js"></script>
-<script type="text/javascript" src="/js-bin/functions.js"></script>-->
 <script type="text/javascript" src="/m/assets/js/ebindr.js.php?flex"></script>
 
 <!-- Custom Scripts in Mergecode [e2m custom scripts] -->
@@ -45,17 +41,20 @@
     });
 
     /* Let's try to load it when Window is successfully loaded */
-    /*ebindr.onWindowLoaded(function() {
-        ebindr.openFINDr2(ebindr.lastfindr);
-    });*/
-
     jQuery(document).ready(function() {
         if (document.getElementById('search-type').textContent == "ABs Near Address")
             ebindr.findr2.what = "ab-address";
 
         var init_findr2_vars = function(){
             ebindr.findr2.initIFrame( 'findr2-search-frame' );
-            ebindr.openFINDr2(ebindr.lastfindr);
+
+            if( ebindr.findr2.lastfindr_searchurl = Cookie.read( 'lastfindr_query' ) )
+                ebindr.findr2.first_load = true;
+
+            ebindr.current.link_search  = Cookie.read( 'lastfindrquery_value' ) || '';
+            ebindr.lastfindr = Cookie.read( 'lastfindrquery' ) || null;
+
+            ebindr.openFINDr2( ebindr.lastfindr );
         };
 
         ebindr.initializeMobile2Findr( function(){

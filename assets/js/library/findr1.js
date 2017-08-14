@@ -255,6 +255,7 @@ ebindr.library.findr2 = new Class({
 		Search Type actions and setting
 	*/
 	searchType: function() {
+        var $self = this;
 		$('search-by-type').addEvent( 'click', function(e) {
 			if( this.get('text') == 'Begins With *' ) {
 				this.set('text', '*Any Part Of*' );

@@ -134,7 +134,10 @@ ebindr.library.mfindr2 = new Class({
         ebindr.findr2.buttonEvents();
         ebindr.findr2.windowInit();
 
-        if( ebindr.current.link_search != '' ) {
+        if( ebindr.findr2.lastfindr_searchurl != '' ){
+
+        }
+        else if( ebindr.current.link_search != '' ) {
             $searchQ.value = ebindr.current.link_search;
             if (ebindr.current.auto_findr != '') {
                 ebindr.findr2.search(ebindr.current.auto_findr, ebindr.current.link_search);
@@ -525,8 +528,19 @@ ebindr.library.mfindr2 = new Class({
             '&lid=' + ebindr.current.lid +
             '&key1=' + ebindr.current.key1;
 
+        /* Lets load last query loaded from Findr */
+        if( ebindr.findr2.first_load ) {
+            searchurl = ebindr.findr2.lastfindr_searchurl;
+            /* then set to null so it will be loaded on the next search process */
+            ebindr.findr2.first_load = false;
+        }
+
         ebindr.findr2.loadIFrame( searchurl );
         ebindr.lastfindr = what;
+
+        /* Lets store last run query for findr */
+        Cookie.write( 'lastfindrquery', what, {duration:365} );
+        Cookie.write( 'lastfindrquery_value', $searchQ.get('value'), {duration:365} );
     },
 
     showLoading: function() {

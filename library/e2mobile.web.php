@@ -2,44 +2,68 @@
 /**
  * eBINDr2 Mobile
  */
-include '/home/serv/public_html/m/includes/helpers.php';
-include 'e2mobileAbstract.php';
 if(!class_exists('e2mobileWeb')) {
 
-    class e2mobileWeb extends e2mobileAbstract {
+    class e2mobileWeb{
 
-        protected $segments;
-        protected $http;
+        protected $page = '';
 
         public function __construct()
         {
-            parent::__construct();
-            $this->_initHeader();
+
         }
 
-        public function _initHeader()
+        public function setStyles( $styles = array() ){
+            foreach( $styles as $style )
+                $_SERVER['css'][] = $style;
+        }
+
+        public function setScripts( $scripts = array() ){
+            foreach( $scripts as $script )
+                $_SERVER['js'][] = $script;
+        }
+
+        public function setPage( $page = '' ){
+            $this->page = $page;
+        }
+
+        public function initHeader()
         {
-            $___ebindr2mobile_http = array();
-            include '/home/serv/public_html/m/includes/http.php';
-            $this->http = $___ebindr2mobile_http;
+            include '/home/serv/public_html/m/includes/readme.php';
         }
 
-        public function getHttp()
-        {
-            return $this->http;
+        public function getHeader( $pagetitle = '', $template = '' ){
+            $page = $pagetitle;
+            include '/home/serv/public_html/m/templates/'. $template .'/header.html';
+            include '/home/serv/public_html/m/templates/'. $template .'/nav-bar.html';
         }
 
-        public function getContent($path)
+        public function getFooter( $template = '' ){
+            include '/home/serv/public_html/m/templates/'. $template .'/footer.html';
+        }
+
+        public function getBody( $path ){
+            include '/home/serv/public_html/m/' . $path;
+        }
+
+        public function getContent( $page, $path)
         {
             //$base_uri = $this->http['segments'][0] . '/';
             //$path = str_replace( $base_uri, '', $path );
             ob_start();
-            include $path;
+            $this->getHeader( $page );
+            $this->getBody( $path );
+            $this->getFooter();
             $content = ob_get_contents();
             ob_end_clean();
 
             return $content;
         }
 
+        public function invoke( $path ){
+            echo $this->getContent( $this->page, $path );
+        }
+
     }
 }
+?>
