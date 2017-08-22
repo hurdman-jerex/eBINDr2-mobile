@@ -8,11 +8,11 @@
     }
 </style>
 
-<?/*
+<?
 $url = 'http://'.$_SERVER['SERVER_NAME'].'/m/api/business/basic/business/basic/' . $_SESSION['bid'];
 $dba = json_decode($bbapi->get($url))->results;
 $dba = $dba[0];
-*/?>
+?>
 
 <div class="container-fluid">
     <div class="row-fluid">

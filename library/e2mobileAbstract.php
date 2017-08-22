@@ -59,7 +59,6 @@ abstract class e2mobileAbstract {
 
     public function _include(){
         include "/home/serv/includes/readme.php";
-        include "/home/serv/public_html/m/_autoload/bbapi.php";
         include _DATABASE;
         include _PARSER;
 
@@ -118,6 +117,7 @@ abstract class e2mobileAbstract {
     }
 
     public function BBBApi( $args = array() ){
+        include "/home/serv/public_html/m/_autoload/bbapi.php";
         return new bbapi();
     }
 
@@ -127,6 +127,7 @@ abstract class e2mobileAbstract {
     }
 
     public function Template( $args = array() ){
+        include "/home/serv/public_html/m/library/template.php";
         return new mobileDisplay( $args );
     }
 

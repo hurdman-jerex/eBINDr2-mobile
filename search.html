@@ -4,7 +4,7 @@ if(session_id() == '') {
 }
 
 if( ! isset( $_GET['type'] ) ){
-    if( is_array( $_SESSION['lastsearch_query'] ) ){
+    if( is_array( $_SESSION['lastsearch_query'] ) && ! isset( $_POST['search'] ) ){
         //echo '<pre>'.print_r(  $_SESSION['lastsearch_query'], true ).'</pre>';
         $_POST = $_SESSION['lastsearch_query'];
         $_GET['type'] = isset( $_POST['get_type'] ) ? $_POST['get_type'] : 'business-name';

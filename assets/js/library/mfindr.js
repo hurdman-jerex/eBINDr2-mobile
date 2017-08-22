@@ -134,7 +134,10 @@ ebindr.library.mfindr2 = new Class({
         ebindr.findr2.buttonEvents();
         ebindr.findr2.windowInit();
 
-        if( ebindr.current.link_search != '' ) {
+        if( ebindr.findr2.lastfindr_searchurl != '' ){
+
+        }
+        else if( ebindr.current.link_search != '' ) {
             $searchQ.value = ebindr.current.link_search;
             if (ebindr.current.auto_findr != '') {
                 ebindr.findr2.search(ebindr.current.auto_findr, ebindr.current.link_search);
