@@ -9,60 +9,14 @@
     <link rel="stylesheet" type="text/css" href="/ebindr/styles/plugins/datepicker.css" />
     <link rel="stylesheet" type="text/css" href="/ebindr/styles/plugins/spellchecker.css" />
 
+    <link href="/m/assets/css/report.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="http://cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.css"/>-->
-
-    <!--<link href="/m/assets/css/report.css" rel="stylesheet">-->
-    <!--<link href="/m/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/m/assets/css/bootstrap-responsive.css" rel="stylesheet">-->
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/m/assets/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/m/assets/css/responsive.bootstrap.min.css">
-
-    <link rel="stylesheet" type="text/css" href="/m/assets/css/findr.css">
-
-    <script type="text/javascript" language="javascript" src="/m/assets/js/jquery/jquery-1.12.3.min.js">
-    </script>
-    <script type="text/javascript">jQuery.noConflict();</script>
-    <script type="text/javascript" language="javascript" src="/m/assets/bootstrap3.3.7/js/bootstrap.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/jquery.dataTables.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.bootstrap.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/dataTables.responsive.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="/m/assets/js/datatables/responsive.bootstrap.min.js">
-    </script>
-
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-            $dataTable = jQuery('.init-datatable').DataTable({
-                order: [],
-                responsive: {
-                    details: {
-                        display: jQuery.fn.dataTable.Responsive.display.modal( {
-                            header: function ( row ) {
-                                var data = row.data();
-                                return 'Details for '+ data[0];
-                            }
-                        } ),
-                        renderer: jQuery.fn.dataTable.Responsive.renderer.tableAll( {
-                            tableClass: 'table'
-                        } )
-                    }
-                },
-                paging: false
-            });
-            //jQuery( '<div class="divider"></div>').insertAfter( jQuery( '.dataTables_wrapper' ) );
-
-        } );
-    </script>
+    <link href="/m/assets/css/findr.css" rel="stylesheet">
 
     <script type="text/javascript" src="/ebindr/scripts/framework/core-1.4.0.js"></script>
     <script type="text/javascript" src="/ebindr/scripts/framework/more-1.4.0.1.js"></script>
-
 
     <!-- script type="text/javascript" src="/ebindr/scripts/framework/core.js"></script -->
     <!-- script type="text/javascript" src="/ebindr/scripts/framework/more-1.2.2.2.js"></script -->
@@ -270,14 +224,11 @@ var tmp2="";
 window.addEvent( 'load', function() {
 
             $$('a').each(function(el) {
-                if(el.hasClass('paginate_button'))
-                    return false;
 
                 if( el.hasClass( 'toplink' ) )
                     el.addClass( 'btn pull-right').setStyle('margin', '5px');
 
-                //el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
-                el.href=el.href.replace( /\/report\//i, "\/m\/report\/" );
+                el.href=el.href.replace( /\/report\/menu/i, "\/m\/report\/menu" );
                 if( typeof el.get('alt') !== "undefined" ){
                     el.set('alt', el.get('text') );
                 }
@@ -460,10 +411,7 @@ window.addEvent( 'load', function() {
                 //alert(window.parent.ebindr.window.parent.focusedWindow.options.id);
     </script>
 </head>
-<body ondblclick="DblClickHandle();">
-<div class="container-fluid">
-    <div class="row-fluid">
-
+<body onFocus="" id='body_id' STYLE="background:transparent" ondblclick="DblClickHandle();">
 <a href="#" style="display:none;" id="cr-email" title="Email this report" lang="<[current_query]>"><img style="display:none;" src="/ebindr/images/icons16x/email.png" alt="Email this report" /><span style="display:none;"><[USED_PARAMETERS]></span></a>
 
 <form name="limit" action="" method="post">
@@ -472,8 +420,6 @@ window.addEvent( 'load', function() {
     <[content]>
     <[submit]>
 </form>
-    </div>
-</div>
 <script>
     if("<[current_query]>"!="lite button myalerts" && "<[current_query]>"!="lite button info2") window.focus();
     if(document.complaintform) {
@@ -527,15 +473,7 @@ window.addEvent( 'load', function() {
         document.complaintform.next.value='Please wait...';
     }
 </script>
-<!--<script type="text/javascript" src="/ebindr/scripts/reports.js?version=3"></script>-->
+<script type="text/javascript" src="/ebindr/scripts/reports.js?version=3"></script>
 <[restriction_link_noheader]><[iptracking]>
-
-<script type="text/javascript">
-    var findrOpenBID = function( bid, start, cid, minimize ){
-        window.parent.ebindr.openBID( bid, start, cid, minimize );
-        window.parent.dopage("records");
-    }
-
-</script>
 </body>
 </html>

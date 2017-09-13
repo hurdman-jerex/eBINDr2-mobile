@@ -16,9 +16,9 @@ ebindr.library.keyboard = new Class({
 				console.log(document.activeElement);
 			}
 
-			/*if( $('alert-box') && (event.keyCode == 27 || event.keyCode == 32 || event.keyCode == 13) ) {
+			if( $('alert-box') && (event.keyCode == 27 || event.keyCode == 32 || event.keyCode == 13) ) {
 				ebindr.window.library.closeWindow( $('alert-box') );
-			}*/
+			}
 			
 			if (ebindr.authenticated) {
 				if (typeof(editr) == "undefined") { 
@@ -56,8 +56,8 @@ ebindr.library.keyboard = new Class({
 					
 					//var iframeid = ebindr.window.library.focusedWindow.options.id + '_iframe';
 					//var iframe = ebindr.window.iframe( ebindr.window.library.focusedWindow.options.id + '_iframe' );	
-					//ebindr.console( 'focused window? ' + ebindr.window.library.focusedWindow );
-					//ebindr.console( 'current focus? ' + ebindr.current.focus );
+					ebindr.console( 'focused window? ' + ebindr.window.library.focusedWindow );
+					ebindr.console( 'current focus? ' + ebindr.current.focus );
 					//ebindr.console( 'Frame ' + ebindr.current.page );
 					//event.stop();
 				}

@@ -8,7 +8,7 @@ $___ebindr2mobile_http = array(
     'servername' => $_SERVER[ 'SERVER_NAME' ]
 );
 // get rid of the get query string
-if( strpos($_SERVER['REQUEST_URI'],"?") ) list( $_SERVER['REQUEST_URI'], $___ebindr2mobile_uri[ 'args' ] ) = explode( "?", $_SERVER['REQUEST_URI'] );
+if( strpos($_SERVER['REQUEST_URI'],"?") ) list( $_SERVER['REQUEST_URI'], $___ebindr2mobile_http[ 'args' ] ) = explode( "?", $_SERVER['REQUEST_URI'] );
 
 $___ebindr2mobile_http['uri'] = $_SERVER['REQUEST_URI'];
 $___ebindr2mobile_http['segments'] = array_slice( explode( "/", $_SERVER['REQUEST_URI'] ), 2 );

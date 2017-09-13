@@ -1,43 +1,27 @@
-<?
-$page = 'search';
-$_SERVER['css'][] = '/m/assets/css/findr1.css';
-include "templates/header.html";
-include "templates/nav-bar.html";
-include "templates/search/sub_nav.php";
-?>
-    <div class="container-fluid" style="padding-top: 50px;">
-        <div class="row-fluid">
-            <div class="span12">
-                <div id="findr2-search-container">
-                    <div class="" id="search-result" style="padding-top: 10px;">
-                        <iframe id="findr2-search-frame" src="" marginwidth="0" marginheight="0" scrolling="auto" style="height: 565px; width: 100%;" frameborder="0" >
+<?php
+ob_start();
+if( preg_match( '/boldcommercial|boldfundraising|hurdmantest/i', $_SERVER['SERVER_NAME'], $match ) ){
+    $_definitions_file_path = '/home/'. $match[0] .'/definitions.php';
+    if( file_exists( $_definitions_file_path ) )
+        include $_definitions_file_path;
+}
 
-                        </iframe>
-                    </div>
-                </div>
-                <div id="findr2-loading" style="display: none; text-align: center;">
-                    <img src="/ebindr/images/findr1/loading2.gif" alt="Searching ..." style="padding-top: 100px;" /><br /><br />Searching
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        jQuery(document).ready(function() {
-            if (document.getElementById('search-type').textContent == "ABs Near Address")
-                ebindr.findr2.what = "ab-address";
-        });
-    </script>
-    <script type="text/javascript">
-        jQuery( document ).ready(function() {
-            ebindr.initializeFindr( function(){
+if(file_exists($_SERVER["DOCUMENT_ROOT"]."/../definitions.php")) {
+    include $_SERVER["DOCUMENT_ROOT"]."/../definitions.php"; // global definitions
+}
+if(file_exists("../../definitions.php")) {
+    include "../../definitions.php"; // global definitions
+}
+if(file_exists("/home/definitions.php")) {
+    $codes = file_get_contents( "/home/definitions.php" ); // global definitions
+}
+if(file_exists("../definitions.php")) {
+    include "../definitions.php"; // global definitions
+}
 
-                /*ebindr.include( "/m/assets/js/jquery-1.12.4.min.js" );
-                 ebindr.include( "/m/assets/js/bootstrap3.3.7.min.js" );
-                 ebindr.include( "/m/assets/js/datatables/compress.min.js" );*/
+echo '<pre>'.print_r( $codes, true ).'</pre>';
+$content = ob_get_contents();
+ob_end_clean();
 
-                ebindr.findr2.start();
-                ebindr.findr2.initIFrame( 'findr2-search-frame' );
-            } );
-        });
-    </script>
-<? include "templates/footer.html"; ?>
+echo '<pre>'.print_r( $content, true ).'</pre>';
+exit();

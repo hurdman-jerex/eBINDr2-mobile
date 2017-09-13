@@ -22,7 +22,7 @@ setbid = function(bid, start, cid, minimize) {
                 ebindr.toast( 'Information', 'Business Record Information Updated to BID# ' + ebindr.current.bid, 'info' );
                 //ebindr.toast('Information', 'Business Record Information Updated to BID# ' + ebindr.current.bid, 'info');
                 console.log('Business Record Information Updated to BID#' + ebindr.current.bid);
-                jQuery('#business-information-name').text($json_response.info['button_bn']);
+                jQuery('#business-information-name').html($json_response.info['button_bn']);
                 jQuery('#business-information-name-edit').attr('href', '/m/business/names-dba/edit.php?did=' + $json_response.info['did']);
             }
 
@@ -67,7 +67,7 @@ dopage = function(page) {
 
                     ebindr.toast( 'Information', 'Business Record Information Updated to BID# ' + ebindr.current.bid, 'info' );
                     console.log( 'Business Record Information Updated to BID#' + ebindr.current.bid );
-                    jQuery( '#business-information-name' ).text( $json_response.info['button_bn']  );
+                    jQuery( '#business-information-name' ).html( $json_response.info['button_bn']  );
                     jQuery( '#business-information-name-edit' ).attr('href', '/m/business/names-dba/edit.php?did=' + $json_response.info['did'] );
                 }
             }
