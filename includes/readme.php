@@ -142,7 +142,7 @@ $__page_title = mobile_title( $__page_title, $__business_info );
  */
 
 $__main_menu = array();
-$__main_menu['api'] = json_decode( $bbapi->get( $___ebindr2mobile_http['api_url'] . 'menu/main' ) );
+$__main_menu['api'] = json_decode( $bbapi->get( $___ebindr2mobile_http['api_url'] . 'menu/main/' . $_COOKIE['reportr_username'] ) );
 //echo '<pre>'.print_r( $__main_menu, true ).'</pre>';
 if( $__main_menu['api']->rows > 0 ){
     $__main_menu['ul'] = array();
