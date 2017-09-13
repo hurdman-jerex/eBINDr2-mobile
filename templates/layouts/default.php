@@ -485,6 +485,7 @@
 
 <[custom_header]>
 
+<div id="cr-top-wrap" style="display: <[staff_manager]>">
 <div class="cr-top">
     <a href="javascript:Print('<[query_run]>');"><img src="/ebindr/images/icons16x/print.png" alt="Print" /></a>
     <a href="#" id="cr-pdf"><img src="/ebindr/images/icons16x/pdf.gif" alt="Export to PDF" /></a>
@@ -518,6 +519,7 @@
         <div style="clear: both;"></div>
     </div>
     <div class="bottom"></div>
+</div>
 </div>
 <[heirarchy]>
 

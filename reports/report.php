@@ -49,6 +49,8 @@ if($task->num_rows == 1) { // we find a query with that name
         $parse->adopt(); // we need some parameters
 
     //dd( $reportr->_columns );
+
+    $device->define( 'staff_manager', ( $reportr->background->get_var( "SELECT sid from staff where initials = '".$_COOKIE["reportr_username"]."' AND  attributes like '%Manager%'" ) ? "" : "none" ) );
     echo $device->buffer($layout_template);
 }
 ?>
