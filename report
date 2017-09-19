@@ -32,6 +32,11 @@ $device->define("APPLICATION_FILENAME", APPLICATION_FILENAME);
 
 $reportr->background->select(NO_REPLICATE_DB);
 $reportr->background->query("replace into ".LOCAL_DB.".reportlog (mergecode, staff, day, count) select ifnull(mergecode,'".$reportr->current_query."'), ifnull(staff,'".$_COOKIE["reportr_username"]."'), ifnull(day,curdate()), ifnull(count+1,1) from ".LOCAL_DB.".reportlog where mergecode='".$reportr->current_query."' and staff='".$_COOKIE["reportr_username"]."' and day=curdate() having count(*) in (0,1)");
+
+/* store report log with parameters */
+$__current_query_params_string = implode( ",", $__current_query_params );
+$reportr->background->query("replace into ".LOCAL_DB.".reportlog_parameters (mergecode, staff, day, count, params) select ifnull(mergecode,'".$reportr->current_query."'), ifnull(staff,'".$_COOKIE["reportr_username"]."'), ifnull(day,now()), ifnull(count+1,1), '".$__current_query_params_string."' from ".LOCAL_DB.".reportlog_parameters where mergecode='".$reportr->current_query."' and staff='".$_COOKIE["reportr_username"]."' and day=curdate() having count(*) in (0,1)");
+
 $reportr->background->select(LOCAL_DB);
 
 if(ereg("mycomplaints",$_SERVER["REQUEST_URI"]) && ($_COOKIE["reportr_flag"]=="" || $_COOKIE["reportr_flag"]==" "))

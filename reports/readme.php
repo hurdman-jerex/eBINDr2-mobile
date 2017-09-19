@@ -42,6 +42,15 @@ $params = array(
     "host" => $variables["host"],
     "QUERY_DB" => QUERY_DB
 );
+
+/* Current Report and Parameters */
+$__current_query_params = array(
+    "tid" => $variables[1], // table id
+    "fid" =>$variables[2], // field name
+    "rid" =>$variables[3], // 1st column in row
+    "value" =>$variables[4] // value of field
+);
+
 //print_r($variables);
 //die("test");
 // if the sub report query is not empty and the extension is set then set extension
